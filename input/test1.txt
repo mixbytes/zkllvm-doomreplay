@@ -1,5 +1,4 @@
 #test1#
-x,,e,,e,,u,,u,,e,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,
 u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,
 u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,
