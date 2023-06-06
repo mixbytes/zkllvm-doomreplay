@@ -878,17 +878,6 @@ static default_t extra_defaults_list[] =
 
     CONFIG_VARIABLE_STRING(window_position),
 
-#ifdef FEATURE_MULTIPLAYER
-
-    //!
-    // Name to use in network games for identification.  This is only
-    // used on the "waiting" screen while waiting for the game to start.
-    //
-
-    CONFIG_VARIABLE_STRING(player_name),
-
-#endif
-
     //!
     // Joystick number to use; '0' is the first joystick.  A negative
     // value ('-1') indicates that no joystick is configured.

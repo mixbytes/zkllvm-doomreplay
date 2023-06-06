@@ -181,14 +181,6 @@ static boolean BuildNewTic(void)
     memset(&cmd, 0, sizeof(ticcmd_t));
     loop_interface->BuildTiccmd(&cmd, maketic);
 
-#ifdef FEATURE_MULTIPLAYER
-
-    if (net_client_connected)
-    {
-        NET_CL_SendTiccmd(&cmd, maketic);
-    }
-
-#endif
     ticdata[maketic % BACKUPTICS].cmds[localplayer] = cmd;
     ticdata[maketic % BACKUPTICS].ingame[localplayer] = true;
 
@@ -215,15 +207,6 @@ void NetUpdate (void)
 
     if (singletics)
         return;
-
-#ifdef FEATURE_MULTIPLAYER
-
-    // Run network subsystems
-
-    NET_CL_Run();
-    NET_SV_Run();
-
-#endif
 
     // check time
     nowtime = GetAdjustedTime() / ticdup;
@@ -456,101 +439,12 @@ void D_StartNetGame(net_gamesettings_t *settings,
 boolean D_InitNetGame(net_connect_data_t *connect_data)
 {
     boolean result = false;
-#ifdef FEATURE_MULTIPLAYER
-    net_addr_t *addr = NULL;
-    int i;
-#endif
 
     // Call D_QuitNetGame on exit:
 
     I_AtExit(D_QuitNetGame, true);
 
     player_class = connect_data->player_class;
-
-#ifdef FEATURE_MULTIPLAYER
-
-    //!
-    // @category net
-    //
-    // Start a multiplayer server, listening for connections.
-    //
-
-    if (M_CheckParm("-server") > 0
-     || M_CheckParm("-privateserver") > 0)
-    {
-        NET_SV_Init();
-        NET_SV_AddModule(&net_loop_server_module);
-        NET_SV_AddModule(&net_sdl_module);
-        NET_SV_RegisterWithMaster();
-
-        net_loop_client_module.InitClient();
-        addr = net_loop_client_module.ResolveAddress(NULL);
-    }
-    else
-    {
-        //!
-        // @category net
-        //
-        // Automatically search the local LAN for a multiplayer
-        // server and join it.
-        //
-
-        i = M_CheckParm("-autojoin");
-
-        if (i > 0)
-        {
-            addr = NET_FindLANServer();
-
-            if (addr == NULL)
-            {
-                I_Error("No server found on local LAN");
-            }
-        }
-
-        //!
-        // @arg <address>
-        // @category net
-        //
-        // Connect to a multiplayer server running on the given
-        // address.
-        //
-
-        i = M_CheckParmWithArgs("-connect", 1);
-
-        if (i > 0)
-        {
-            net_sdl_module.InitClient();
-            addr = net_sdl_module.ResolveAddress(myargv[i+1]);
-
-            if (addr == NULL)
-            {
-                I_Error("Unable to resolve '%s'\n", myargv[i+1]);
-            }
-        }
-    }
-
-    if (addr != NULL)
-    {
-        if (M_CheckParm("-drone") > 0)
-        {
-            connect_data->drone = true;
-        }
-
-        if (!NET_CL_Connect(addr, connect_data))
-        {
-            I_Error("D_InitNetGame: Failed to connect to %s\n",
-                    NET_AddrToString(addr));
-        }
-
-        printf("D_InitNetGame: Connected to %s\n", NET_AddrToString(addr));
-
-        // Wait for launch message received from server.
-
-        NET_WaitForLaunch();
-
-        result = true;
-    }
-#endif
 
     return result;
 }
@@ -563,10 +457,6 @@ boolean D_InitNetGame(net_connect_data_t *connect_data)
 //
 void D_QuitNetGame (void)
 {
-#ifdef FEATURE_MULTIPLAYER
-    NET_SV_Shutdown();
-    NET_CL_Disconnect();
-#endif
 }
 
 static int GetLowTic(void)
@@ -574,16 +464,6 @@ static int GetLowTic(void)
     int lowtic;
 
     lowtic = maketic;
-
-#ifdef FEATURE_MULTIPLAYER
-    if (net_client_connected)
-    {
-        if (drone || recvtic < lowtic)
-        {
-            lowtic = recvtic;
-        }
-    }
-#endif
 
     return lowtic;
 }
