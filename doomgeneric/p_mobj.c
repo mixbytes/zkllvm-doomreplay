@@ -156,7 +156,7 @@ void P_XYMovement (mobj_t* mo)
 	    ptryy = mo->y + ymove;
 	    xmove = ymove = 0;
 	}
-		
+
 	if (!P_TryMove (mo, ptryx, ptryy))
 	{
 	    // blocked move
@@ -446,6 +446,10 @@ void P_MobjThinker (mobj_t* mobj)
 	|| (mobj->flags&MF_SKULLFLY) )
     {
 	P_XYMovement (mobj);
+
+    printf("[DEBUG] mobj TryMove()<-P_XYMovement()<-P_MobjThinker(): tics: %d, (x,y,z): (%d, %d, %d), angle: %d, health: %d\n",
+        mobj->tics, mobj->x, mobj->y, mobj->z, mobj->angle, mobj->health);
+    //__builtin_dump_struct(mobj, &printf);
 
 	// FIXME: decent NOP/NULL/Nil function pointer please.
 	if (mobj->thinker.function.acv == (actionf_v) (-1))

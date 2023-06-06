@@ -4,11 +4,11 @@
 set -e
 
 
-ASSIGNER_BINARY=/home/boogerwooger/zkllvm/build/bin/assigner/assigner
-CLANG_BINARY=/home/boogerwooger/zkllvm/build/libs/circifier/llvm/bin/clang-16
+ASSIGNER_BINARY=${HOME}/zkllvm/build/bin/assigner/assigner
+CLANG_BINARY=${HOME}/zkllvm/build/libs/circifier/llvm/bin/clang-16
 
 
-WORKDIR=/home/boogerwooger/zkllvm-doomreplay
+WORKDIR=${HOME}/zkllvm-doomreplay
 BUILD_DIR=${WORKDIR}/zkbuild
 CCT=main
 
@@ -31,13 +31,13 @@ ${CLANG_BINARY} -target assigner \
     -Xclang -no-opaque-pointers \
     -Xclang -fpreserve-vec3-type \
     -std=gnu2x \
-    -I/home/boogerwooger/zkllvm/libs/stdlib/libcpp -I/home/boogerwooger/zkllvm/libs/stdlib/libc/include \
-    -I/home/boogerwooger/zkllvm/libs/crypto3/algebra/include -I/home/boogerwooger/zkllvm/build/include -I/usr/local/include -I -I/home/boogerwooger/zkllvm/libs/crypto3/block/include -I/usr/local/include -I/home/boogerwooger/zkllvm/libs/blueprint/include -I/home/boogerwooger/zkllvm/libs/crypto3/codec/include -I/home/boogerwooger/zkllvm/libs/crypto3/containers/include -I/home/boogerwooger/zkllvm/libs/crypto3/hash/include -I/home/boogerwooger/zkllvm/libs/crypto3/kdf/include -I/home/boogerwooger/zkllvm/libs/crypto3/mac/include -I/home/boogerwooger/zkllvm/libs/crypto3/marshalling/core/include -I -I/home/boogerwooger/zkllvm/libs/crypto3/marshalling/algebra/include -I/home/boogerwooger/zkllvm/libs/crypto3/marshalling/multiprecision/include -I/home/boogerwooger/zkllvm/libs/crypto3/marshalling/zk/include -I/home/boogerwooger/zkllvm/libs/crypto3/math/include -I/home/boogerwooger/zkllvm/libs/crypto3/modes/include -I/home/boogerwooger/zkllvm/libs/crypto3/multiprecision/include -I/home/boogerwooger/zkllvm/libs/crypto3/passhash/include -I/home/boogerwooger/zkllvm/libs/crypto3/pbkdf/include -I/home/boogerwooger/zkllvm/libs/crypto3/pkmodes/include -I/home/boogerwooger/zkllvm/libs/crypto3/pkpad/include -I/home/boogerwooger/zkllvm/libs/crypto3/pubkey/include -I/home/boogerwooger/zkllvm/libs/crypto3/random/include -I/home/boogerwooger/zkllvm/libs/crypto3/stream/include -I/home/boogerwooger/zkllvm/libs/crypto3/vdf/include -I/home/boogerwooger/zkllvm/libs/crypto3/zk/include \
+    -I${HOME}/zkllvm/libs/stdlib/libcpp -I${HOME}/zkllvm/libs/stdlib/libc/include \
+    -I${HOME}/zkllvm/libs/crypto3/algebra/include -I${HOME}/zkllvm/build/include -I/usr/local/include -I -I${HOME}/zkllvm/libs/crypto3/block/include -I/usr/local/include -I${HOME}/zkllvm/libs/blueprint/include -I${HOME}/zkllvm/libs/crypto3/codec/include -I${HOME}/zkllvm/libs/crypto3/containers/include -I${HOME}/zkllvm/libs/crypto3/hash/include -I${HOME}/zkllvm/libs/crypto3/kdf/include -I${HOME}/zkllvm/libs/crypto3/mac/include -I${HOME}/zkllvm/libs/crypto3/marshalling/core/include -I -I${HOME}/zkllvm/libs/crypto3/marshalling/algebra/include -I${HOME}/zkllvm/libs/crypto3/marshalling/multiprecision/include -I${HOME}/zkllvm/libs/crypto3/marshalling/zk/include -I${HOME}/zkllvm/libs/crypto3/math/include -I${HOME}/zkllvm/libs/crypto3/modes/include -I${HOME}/zkllvm/libs/crypto3/multiprecision/include -I${HOME}/zkllvm/libs/crypto3/passhash/include -I${HOME}/zkllvm/libs/crypto3/pbkdf/include -I${HOME}/zkllvm/libs/crypto3/pkmodes/include -I${HOME}/zkllvm/libs/crypto3/pkpad/include -I${HOME}/zkllvm/libs/crypto3/pubkey/include -I${HOME}/zkllvm/libs/crypto3/random/include -I${HOME}/zkllvm/libs/crypto3/stream/include -I${HOME}/zkllvm/libs/crypto3/vdf/include -I${HOME}/zkllvm/libs/crypto3/zk/include \
     -D__ZKLLVM__ \
     -D__GNUC_PREREQ\(...\)=0 \
     -emit-llvm -O1 -S \
     -o ${BUILD_DIR}/${CCT}.ll \
-    ./d_main.c
+    ./z_main.c
 
 ${ASSIGNER_BINARY} \
     -b ${BUILD_DIR}/${CCT}.ll \
@@ -46,7 +46,7 @@ ${ASSIGNER_BINARY} \
     -c ${BUILD_DIR}/${CCT}.crct \
     -e pallas
 
-python3 /home/boogerwooger/proof-market-toolchain/scripts/prepare_statement.py \
+python3 ${HOME}/proof-market-toolchain/scripts/prepare_statement.py \
     -c ${BUILD_DIR}/${CCT}.crct \
     -o ${BUILD_DIR}/${CCT}.json \
     -n ${CCT} -t placeholder-zkllvm # help="statement type: placeholder-zkllvm or placeholder-vanilla",
@@ -62,4 +62,4 @@ ls -la ${BUILD_DIR}
 set +x
 exit 
 
-# ${CLANG_BINARY} -target assigner -Xclang -no-opaque-pointers -Xclang -fpreserve-vec3-type -std=c++20 -D__ZKLLVM__ -I/home/boogerwooger/zkllvm/libs/crypto3/algebra/include -I/home/boogerwooger/zkllvm/build/include -I/usr/local/include -I -I/home/boogerwooger/zkllvm/libs/crypto3/block/include -I/usr/local/include -I/home/boogerwooger/zkllvm/libs/blueprint/include -I/home/boogerwooger/zkllvm/libs/crypto3/codec/include -I/home/boogerwooger/zkllvm/libs/crypto3/containers/include -I/home/boogerwooger/zkllvm/libs/crypto3/hash/include -I/home/boogerwooger/zkllvm/libs/crypto3/kdf/include -I/home/boogerwooger/zkllvm/libs/crypto3/mac/include -I/home/boogerwooger/zkllvm/libs/crypto3/marshalling/core/include -I -I/home/boogerwooger/zkllvm/libs/crypto3/marshalling/algebra/include -I/home/boogerwooger/zkllvm/libs/crypto3/marshalling/multiprecision/include -I/home/boogerwooger/zkllvm/libs/crypto3/marshalling/zk/include -I/home/boogerwooger/zkllvm/libs/crypto3/math/include -I/home/boogerwooger/zkllvm/libs/crypto3/modes/include -I/home/boogerwooger/zkllvm/libs/crypto3/multiprecision/include -I/home/boogerwooger/zkllvm/libs/crypto3/passhash/include -I/home/boogerwooger/zkllvm/libs/crypto3/pbkdf/include -I/home/boogerwooger/zkllvm/libs/crypto3/pkmodes/include -I/home/boogerwooger/zkllvm/libs/crypto3/pkpad/include -I/home/boogerwooger/zkllvm/libs/crypto3/pubkey/include -I/home/boogerwooger/zkllvm/libs/crypto3/random/include -I/home/boogerwooger/zkllvm/libs/crypto3/stream/include -I/home/boogerwooger/zkllvm/libs/crypto3/vdf/include -I/home/boogerwooger/zkllvm/libs/crypto3/zk/include -I/home/boogerwooger/zkllvm/libs/stdlib/libcpp -I/home/boogerwooger/zkllvm/libs/stdlib/libc/include -emit-llvm -O1 -S -o ${BUILD_DIR}/poseidon.ll ${BUILD_DIR}/poseidon.cpp
+# ${CLANG_BINARY} -target assigner -Xclang -no-opaque-pointers -Xclang -fpreserve-vec3-type -std=c++20 -D__ZKLLVM__ -I${HOME}/zkllvm/libs/crypto3/algebra/include -I${HOME}/zkllvm/build/include -I/usr/local/include -I -I${HOME}/zkllvm/libs/crypto3/block/include -I/usr/local/include -I${HOME}/zkllvm/libs/blueprint/include -I${HOME}/zkllvm/libs/crypto3/codec/include -I${HOME}/zkllvm/libs/crypto3/containers/include -I${HOME}/zkllvm/libs/crypto3/hash/include -I${HOME}/zkllvm/libs/crypto3/kdf/include -I${HOME}/zkllvm/libs/crypto3/mac/include -I${HOME}/zkllvm/libs/crypto3/marshalling/core/include -I -I${HOME}/zkllvm/libs/crypto3/marshalling/algebra/include -I${HOME}/zkllvm/libs/crypto3/marshalling/multiprecision/include -I${HOME}/zkllvm/libs/crypto3/marshalling/zk/include -I${HOME}/zkllvm/libs/crypto3/math/include -I${HOME}/zkllvm/libs/crypto3/modes/include -I${HOME}/zkllvm/libs/crypto3/multiprecision/include -I${HOME}/zkllvm/libs/crypto3/passhash/include -I${HOME}/zkllvm/libs/crypto3/pbkdf/include -I${HOME}/zkllvm/libs/crypto3/pkmodes/include -I${HOME}/zkllvm/libs/crypto3/pkpad/include -I${HOME}/zkllvm/libs/crypto3/pubkey/include -I${HOME}/zkllvm/libs/crypto3/random/include -I${HOME}/zkllvm/libs/crypto3/stream/include -I${HOME}/zkllvm/libs/crypto3/vdf/include -I${HOME}/zkllvm/libs/crypto3/zk/include -I${HOME}/zkllvm/libs/stdlib/libcpp -I${HOME}/zkllvm/libs/stdlib/libc/include -emit-llvm -O1 -S -o ${BUILD_DIR}/poseidon.ll ${BUILD_DIR}/poseidon.cpp
