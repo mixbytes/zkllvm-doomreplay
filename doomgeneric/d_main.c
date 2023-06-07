@@ -206,9 +206,6 @@ void D_Display (void)
     else
     	wipe = false;
 
-    if (gamestate == GS_LEVEL && gametic)
-    	HU_Erase();
-    
     // do buffered drawing
     switch (gamestate)
     {
@@ -251,9 +248,6 @@ void D_Display (void)
     if (gamestate == GS_LEVEL && !automapactive && gametic)
     	R_RenderPlayerView (&players[displayplayer]);
 
-    if (gamestate == GS_LEVEL && gametic)
-    	HU_Drawer ();
-    
     // clean up border stuff
     if (gamestate != oldgamestate && gamestate != GS_LEVEL)
     	I_SetPalette (W_CacheLumpName (DEH_String("PLAYPAL"),PU_CACHE));
@@ -504,65 +498,30 @@ static void D_Endoom(void)
 //
 void D_DoomMain (void)
 {
-    I_AtExit(D_Endoom, false);
-
-    // print banner
-
-    I_PrintBanner(PACKAGE_STRING);
-
+    
     DEH_printf("Z_Init: Init zone memory allocation daemon. \n");
     Z_Init ();
 
     nomonsters = 0;
-
     respawnparm = 0;
-
     fastparm = 0;
-
     devparm = 0;
-
 	deathmatch = 0;
-
-    // if (devparm)
-	// DEH_printf(D_DEVSTR);
     
-    // find which dir to use for config files
-    // Auto-detect the configuration dir.
     M_SetConfigDir(NULL);
-
-    /*
-    if ( (p=M_CheckParm ("-turbo")) )
-    {
-	int     scale = 200;
-	extern int forwardmove[2];
-	extern int sidemove[2];
-	
-	if (p<myargc-1)
-	    scale = atoi (myargv[p+1]);
-	if (scale < 10)
-	    scale = 10;
-	if (scale > 400)
-	    scale = 400;
-        DEH_printf("turbo scale: %i%%\n", scale);
-	forwardmove[0] = forwardmove[0]*scale/100;
-	forwardmove[1] = forwardmove[1]*scale/100;
-	sidemove[0] = sidemove[0]*scale/100;
-	sidemove[1] = sidemove[1]*scale/100;
-    }
-    */
 
     // init subsystems
     DEH_printf("V_Init: allocate screens.\n");
     V_Init ();
 
     // Load configuration files before initialising other subsystems.
-    DEH_printf("M_LoadDefaults: Load system defaults.\n");
-    M_SetConfigFilenames("default.cfg", PROGRAM_PREFIX "doom.cfg");
-    D_BindVariables();
-    M_LoadDefaults();
+    // DEH_printf("M_LoadDefaults: Load system defaults.\n");
+    // M_SetConfigFilenames("default.cfg", PROGRAM_PREFIX "doom.cfg");
+    // D_BindVariables();
+    // M_LoadDefaults();
 
     // Save configuration at exit.
-    I_AtExit(M_SaveDefaults, false);
+    // I_AtExit(M_SaveDefaults, false);
 
     // Find main IWAD file and load it.
     iwadfile = D_FindIWAD(IWAD_MASK_DOOM, &gamemission);
@@ -595,26 +554,10 @@ void D_DoomMain (void)
     // Generate the WAD hash table.  Speed things up a bit.
     W_GenerateHashTable();
 
-    // Load DEHACKED lumps from WAD files - but only if we give the right
-    // command line parameter.
-
-    // Set the gamedescription string. This is only possible now that
-    // we've finished loading Dehacked patches.
-    // D_SetGameDescription();
-
-    {
-        savegamedir = M_GetSaveGameDir(D_SaveGameIWADName(gamemission));
-    }
+    savegamedir = M_GetSaveGameDir(D_SaveGameIWADName(gamemission));
 
     DEH_printf("I_Init: Setting up machine state.\n");
-    // I_CheckIsScreensaver();
     I_InitTimer();
-    // I_InitJoystick();
-    // I_InitSound(true);
-    // I_InitMusic();
-
-    // Initial netgame startup. Connect to server etc.
-    // D_ConnectNetGame();
 
     // get skill / episode / map from parms
     startskill = sk_medium;
@@ -642,17 +585,8 @@ void D_DoomMain (void)
     DEH_printf("D_CheckNetGame: Checking network game status.\n");
     D_CheckNetGame ();
 
-    DEH_printf("HU_Init: Setting up heads up display.\n");
-    HU_Init ();
-
     DEH_printf("ST_Init: Init status bar.\n");
     ST_Init ();
-
-    if (M_CheckParmWithArgs("-statdump", 1))
-    {
-        I_AtExit(StatDump, true);
-        DEH_printf("External statistics registered.\n");
-    }
 
     // [AAAA] autostart
     autostart = 1;

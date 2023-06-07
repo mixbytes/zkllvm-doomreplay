@@ -426,7 +426,7 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
     }
 
     // buttons
-    cmd->chatchar = HU_dequeueChatChar(); 
+    // cmd->chatchar = HU_dequeueChatChar(); 
  
     if (gamekeydown[key_fire] || mousebuttons[mousebfire] 
 	|| joybuttons[joybfire]) 
@@ -767,15 +767,8 @@ boolean G_Responder (event_t* ev)
 
     if (gamestate == GS_LEVEL) 
     { 
-#if 0 
-	if (devparm && ev->type == ev_keydown && ev->data1 == ';') 
-	{ 
-	    G_DeathMatchSpawnPlayer (0); 
-	    return true; 
-	} 
-#endif 
-	if (HU_Responder (ev)) 
-	    return true;	// chat ate the event 
+	//if (HU_Responder (ev)) 
+	//    return true;	// chat ate the event 
 	if (ST_Responder (ev)) 
 	    return true;	// status window ate it 
 	if (AM_Responder (ev)) 
@@ -922,44 +915,6 @@ void G_Ticker (void)
 	    if (demorecording) 
 		G_WriteDemoTiccmd (cmd);
 	    
-	    // check for turbo cheats
-
-            // check ~ 4 seconds whether to display the turbo message. 
-            // store if the turbo threshold was exceeded in any tics
-            // over the past 4 seconds.  offset the checking period
-            // for each player so messages are not displayed at the
-            // same time.
-
-            if (cmd->forwardmove > TURBOTHRESHOLD)
-            {
-                turbodetected[i] = true;
-            }
-
-            if ((gametic & 31) == 0 
-             && ((gametic >> 5) % MAXPLAYERS) == i
-             && turbodetected[i])
-            {
-                static char turbomessage[80];
-                extern char *player_names[4];
-                M_snprintf(turbomessage, sizeof(turbomessage),
-                           "%s is turbo!", player_names[i]);
-                players[consoleplayer].message = turbomessage;
-                turbodetected[i] = false;
-            }
-
-	    if (netgame && !netdemo && !(gametic%ticdup) ) 
-	    { 
-		if (gametic > BACKUPTICS 
-		    && consistancy[i][buf] != cmd->consistancy) 
-		{ 
-		    I_Error ("consistency failure (%i should be %i)",
-			     cmd->consistancy, consistancy[i][buf]); 
-		} 
-		if (players[i].mo) 
-		    consistancy[i][buf] = players[i].mo->x; 
-		else 
-		    consistancy[i][buf] = rndindex; 
-	    } 
 	}
     }
     
@@ -1012,7 +967,7 @@ void G_Ticker (void)
 	P_Ticker (); 
 	ST_Ticker (); 
 	AM_Ticker (); 
-	HU_Ticker ();            
+	// HU_Ticker ();            
 	break; 
 	 
       case GS_INTERMISSION: 
