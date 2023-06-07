@@ -292,7 +292,6 @@ int W_CheckNumForName (char* name)
     }
 
     // TFB. Not found.
-
     return -1;
 }
 

@@ -595,9 +595,9 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
         carry = desired_angleturn - cmd->angleturn;
     }
     
-    // __builtin_dump_struct(cmd, &printf);
     printf("[DEBUG] forwardmove: %d, sidemove: %d, angleturn: %d, buttons: %x, buttons2: %x\n",
         cmd->forwardmove, cmd->sidemove, cmd->angleturn, cmd->buttons, cmd->buttons2);
+    //__builtin_dump_struct(cmd, &printf);
 } 
  
 

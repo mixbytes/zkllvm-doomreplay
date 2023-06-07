@@ -421,37 +421,17 @@ boolean D_GrabMouseCallback(void)
 //
 void D_DoomLoop (void)
 {
-    if (bfgedition &&
-        (demorecording || (gameaction == ga_playdemo) || netgame))
-    {
-        printf(" WARNING: You are playing using one of the Doom Classic\n"
-               " IWAD files shipped with the Doom 3: BFG Edition. These are\n"
-               " known to be incompatible with the regular IWAD files and\n"
-               " may cause demos and network games to get out of sync.\n");
-    }
-
-    if (demorecording)
-    	G_BeginRecording ();
 
     main_loop_started = true;
 
     TryRunTics();
 
-    I_SetWindowTitle(gamedescription);
-    I_GraphicsCheckCommandLine();
-    I_SetGrabMouseCallback(D_GrabMouseCallback);
     I_InitGraphics();
-    I_EnableLoadingDisk();
 
     V_RestoreBuffer();
     R_ExecuteSetViewSize();
 
     D_StartGameLoop();
-
-    if (testcontrols)
-    {
-        wipegamestate = gamestate;
-    }
 
     while (1)
     {
@@ -465,8 +445,6 @@ void D_DoomLoop (void)
 #endif
 
 		TryRunTics (); // will run at least one tic
-
-		S_UpdateSounds (players[consoleplayer].mo);// move positional sounds
 
 		// Update display, next frame, with current state.
 		if (screenvisible)
@@ -918,7 +896,6 @@ void D_DoomMain (void)
     modifiedgame = false;
 
     DEH_printf("W_Init: Init WADfiles.\n");
-    printf("[DEBUG]: using .wad: %s\n", iwadfile);
     D_AddFile(iwadfile);
 
     W_CheckCorrectIWAD(doom);
@@ -927,43 +904,6 @@ void D_DoomMain (void)
     // we're playing and which version of Vanilla Doom we need to emulate.
     D_IdentifyVersion();
     InitGameVersion();
-
-    // Doom 3: BFG Edition includes modified versions of the classic
-    // IWADs which can be identified by an additional DMENUPIC lump.
-    // Furthermore, the M_GDHIGH lumps have been modified in a way that
-    // makes them incompatible to Vanilla Doom and the modified version
-    // of doom2.wad is missing the TITLEPIC lump.
-    // We specifically check for DMENUPIC here, before PWADs have been
-    // loaded which could probably include a lump of that name.
-
-    if (W_CheckNumForName("dmenupic") >= 0)
-    {
-        printf("BFG Edition: Using workarounds as needed.\n");
-        bfgedition = true;
-
-        // BFG Edition changes the names of the secret levels to
-        // censor the Wolfenstein references. It also has an extra
-        // secret level (MAP33). In Vanilla Doom (meaning the DOS
-        // version), MAP33 overflows into the Plutonia level names
-        // array, so HUSTR_33 is actually PHUSTR_1.
-
-        DEH_AddStringReplacement(HUSTR_31, "level 31: idkfa");
-        DEH_AddStringReplacement(HUSTR_32, "level 32: keen");
-        DEH_AddStringReplacement(PHUSTR_1, "level 33: betray");
-
-        // The BFG edition doesn't have the "low detail" menu option (fair
-        // enough). But bizarrely, it reuses the M_GDHIGH patch as a label
-        // for the options menu (says "Fullscreen:"). Why the perpetrators
-        // couldn't just add a new graphic lump and had to reuse this one,
-        // I don't know.
-        //
-        // The end result is that M_GDHIGH is too wide and causes the game
-        // to crash. As a workaround to get a minimum level of support for
-        // the BFG edition IWADs, use the "ON"/"OFF" graphics instead.
-
-        DEH_AddStringReplacement("M_GDHIGH", "M_MSGON");
-        DEH_AddStringReplacement("M_GDLOW", "M_MSGOFF");
-    }
 
     // Load PWAD files.
     modifiedgame = W_ParseCommandLine();
@@ -984,38 +924,15 @@ void D_DoomMain (void)
         savegamedir = M_GetSaveGameDir(D_SaveGameIWADName(gamemission));
     }
 
-    if (W_CheckNumForName("SS_START") >= 0
-     || W_CheckNumForName("FF_END") >= 0)
-    {
-        I_PrintDivider();
-        printf(" WARNING: The loaded WAD file contains modified sprites or\n"
-               " floor textures.  You may want to use the '-merge' command\n"
-               " line option instead of '-file'.\n");
-    }
-
-    I_PrintStartupBanner(gamedescription);
-
-    // Freedoom's IWADs are Boom-compatible, which means they usually
-    // don't work in Vanilla (though FreeDM is okay). Show a warning
-    // message and give a link to the website.
-    if (W_CheckNumForName("FREEDOOM") >= 0 && W_CheckNumForName("FREEDM") < 0)
-    {
-        printf(" WARNING: You are playing using one of the Freedoom IWAD\n"
-               " files, which might not work in this port. See this page\n"
-               " for more information on how to play using Freedoom:\n"
-               "   http://www.chocolate-doom.org/wiki/index.php/Freedoom\n");
-        I_PrintDivider();
-    }
-
     DEH_printf("I_Init: Setting up machine state.\n");
-    I_CheckIsScreensaver();
+    // I_CheckIsScreensaver();
     I_InitTimer();
-    I_InitJoystick();
-    I_InitSound(true);
-    I_InitMusic();
+    // I_InitJoystick();
+    // I_InitSound(true);
+    // I_InitMusic();
 
     // Initial netgame startup. Connect to server etc.
-    D_ConnectNetGame();
+    // D_ConnectNetGame();
 
     // get skill / episode / map from parms
     startskill = sk_medium;
@@ -1023,59 +940,13 @@ void D_DoomMain (void)
     startmap = 1;
     autostart = false;
 
-    //!
-    // @arg <skill>
-    // @vanilla
-    //
-    // Set the game skill, 1-5 (1: easiest, 5: hardest).  A skill of
-    // 0 disables all monsters.
-    //
-
-    p = M_CheckParmWithArgs("-skill", 1);
-
-    if (p)
-    {
-	startskill = myargv[p+1][0]-'1';
-	autostart = true;
-    }
-
     timelimit = 0;
-
-    //!
-    // @arg [<x> <y> | <xy>]
-    // @vanilla
-    //
-    // Start a game immediately, warping to ExMy (Doom 1) or MAPxy
-    // (Doom 2)
-    //
-
-    p = M_CheckParmWithArgs("-warp", 1);
-
-    if (p)
-    {
-        if (gamemode == commercial)
-            startmap = atoi (myargv[p+1]);
-        else
-        {
-            startepisode = myargv[p+1][0]-'0';
-
-            if (p + 2 < myargc)
-            {
-                startmap = myargv[p+2][0]-'0';
-            }
-            else
-            {
-                startmap = 1;
-            }
-        }
-        autostart = true;
-    }
 
     // Not loading a game
     startloadgame = -1;
 
-    DEH_printf("M_Init: Init miscellaneous info.\n");
-    M_Init ();
+    // DEH_printf("M_Init: Init miscellaneous info.\n");
+    // M_Init ();
 
     DEH_printf("R_Init: Init DOOM refresh daemon - ");
     R_Init ();
@@ -1083,8 +954,8 @@ void D_DoomMain (void)
     DEH_printf("\nP_Init: Init Playloop state.\n");
     P_Init ();
 
-    DEH_printf("S_Init: Setting up sound.\n");
-    S_Init (sfxVolume * 8, musicVolume * 8);
+    // DEH_printf("S_Init: Setting up sound.\n");
+    // S_Init (sfxVolume * 8, musicVolume * 8);
 
     DEH_printf("D_CheckNetGame: Checking network game status.\n");
     D_CheckNetGame ();
@@ -1095,54 +966,10 @@ void D_DoomMain (void)
     DEH_printf("ST_Init: Init status bar.\n");
     ST_Init ();
 
-    // If Doom II without a MAP01 lump, this is a store demo.
-    // Moved this here so that MAP01 isn't constantly looked up
-    // in the main loop.
-
-    if (gamemode == commercial && W_CheckNumForName("map01") < 0)
-        storedemo = true;
-
     if (M_CheckParmWithArgs("-statdump", 1))
     {
         I_AtExit(StatDump, true);
         DEH_printf("External statistics registered.\n");
-    }
-
-    //!
-    // @arg <x>
-    // @category demo
-    // @vanilla
-    //
-    // Record a demo named x.lmp.
-    //
-
-    p = M_CheckParmWithArgs("-record", 1);
-
-    if (p)
-    {
-		G_RecordDemo (myargv[p+1]);
-		autostart = true;
-    }
-
-    p = M_CheckParmWithArgs("-playdemo", 1);
-    if (p)
-    {
-		singledemo = true;              // quit after one demo
-		G_DeferedPlayDemo (demolumpname);
-		D_DoomLoop ();  // never returns
-    }
-
-    p = M_CheckParmWithArgs("-timedemo", 1);
-    if (p)
-    {
-		G_TimeDemo (demolumpname);
-		D_DoomLoop ();  // never returns
-    }
-
-    if (startloadgame >= 0)
-    {
-        M_StringCopy(file, P_SaveGameFile(startloadgame), sizeof(file));
-        G_LoadGame(file);
     }
 
     // [AAAA] autostart

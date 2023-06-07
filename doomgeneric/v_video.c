@@ -658,7 +658,7 @@ void WritePCXfile(char *filename, byte *data,
     int		length;
     pcx_t*	pcx;
     byte*	pack;
-	
+
     pcx = Z_Malloc (width*height*2+1000, PU_STATIC, NULL);
 
     pcx->manufacturer = 0x0a;		// PCX id
