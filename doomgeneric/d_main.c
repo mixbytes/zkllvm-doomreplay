@@ -132,8 +132,6 @@ char		mapdir[1024];           // directory of development maps
 int             show_endoom = 1;
 
 
-void D_ConnectNetGame(void);
-void D_CheckNetGame(void);
 
 
 //
@@ -394,29 +392,6 @@ void D_BindVariables(void)
 }
 
 //
-// D_GrabMouseCallback
-//
-// Called to determine whether to grab the mouse pointer
-//
-
-boolean D_GrabMouseCallback(void)
-{
-    // Drone players don't need mouse focus
-
-    if (drone)
-        return false;
-
-    // when menu is active or game is paused, release the mouse 
- 
-    if (menuactive || paused)
-        return false;
-
-    // only grab mouse when playing levels (but not demos)
-
-    return (gamestate == GS_LEVEL) && !demoplayback && !advancedemo;
-}
-
-//
 //  D_DoomLoop
 //
 void D_DoomLoop (void)
@@ -465,121 +440,11 @@ char                    *pagename;
 
 
 //
-// D_PageTicker
-// Handles timing for warped projection
-//
-void D_PageTicker (void)
-{
-    if (--pagetic < 0)
-	D_AdvanceDemo ();
-}
-
-
-
-//
 // D_PageDrawer
 //
 void D_PageDrawer (void)
 {
     V_DrawPatch (0, 0, W_CacheLumpName(pagename, PU_CACHE));
-}
-
-
-//
-// D_AdvanceDemo
-// Called after each demo or intro demosequence finishes
-//
-void D_AdvanceDemo (void)
-{
-    advancedemo = true;
-}
-
-
-//
-// This cycles through the demo sequences.
-// FIXME - version dependend demo numbers?
-//
-void D_DoAdvanceDemo (void)
-{
-    players[consoleplayer].playerstate = PST_LIVE;  // not reborn
-    advancedemo = false;
-    usergame = false;               // no save / end game here
-    paused = false;
-    gameaction = ga_nothing;
-
-    // The Ultimate Doom executable changed the demo sequence to add
-    // a DEMO4 demo.  Final Doom was based on Ultimate, so also
-    // includes this change; however, the Final Doom IWADs do not
-    // include a DEMO4 lump, so the game bombs out with an error
-    // when it reaches this point in the demo sequence.
-
-    // However! There is an alternate version of Final Doom that
-    // includes a fixed executable.
-
-    if (gameversion == exe_ultimate || gameversion == exe_final)
-      demosequence = (demosequence+1)%7;
-    else
-      demosequence = (demosequence+1)%6;
-    
-    switch (demosequence)
-    {
-      case 0:
-	if ( gamemode == commercial )
-	    pagetic = TICRATE * 11;
-	else
-	    pagetic = 170;
-	gamestate = GS_DEMOSCREEN;
-	pagename = DEH_String("TITLEPIC");
-	if ( gamemode == commercial )
-	  S_StartMusic(mus_dm2ttl);
-	else
-	  S_StartMusic (mus_intro);
-	break;
-      case 1:
-	G_DeferedPlayDemo(DEH_String("demo1"));
-	break;
-      case 2:
-	pagetic = 200;
-	gamestate = GS_DEMOSCREEN;
-	pagename = DEH_String("CREDIT");
-	break;
-      case 3:
-	G_DeferedPlayDemo(DEH_String("demo2"));
-	break;
-      case 4:
-	gamestate = GS_DEMOSCREEN;
-	if ( gamemode == commercial)
-	{
-	    pagetic = TICRATE * 11;
-	    pagename = DEH_String("TITLEPIC");
-	    S_StartMusic(mus_dm2ttl);
-	}
-	else
-	{
-	    pagetic = 200;
-
-	    if ( gamemode == retail )
-	      pagename = DEH_String("CREDIT");
-	    else
-	      pagename = DEH_String("HELP2");
-	}
-	break;
-      case 5:
-	G_DeferedPlayDemo(DEH_String("demo3"));
-	break;
-        // THE DEFINITIVE DOOM Special Edition demo
-      case 6:
-	G_DeferedPlayDemo(DEH_String("demo4"));
-	break;
-    }
-
-    // The Doom 3: BFG Edition version of doom2.wad does not have a
-    // TITLETPIC lump. Use INTERPIC instead as a workaround.
-    if (bfgedition && !strcasecmp(pagename, "TITLEPIC")
-        && W_CheckNumForName("titlepic") < 0)
-    {
-        pagename = DEH_String("INTERPIC");
-    }
 }
 
 
@@ -591,93 +456,8 @@ void D_StartTitle (void)
 {
     gameaction = ga_nothing;
     demosequence = -1;
-    D_AdvanceDemo ();
 }
 
-// Strings for dehacked replacements of the startup banner
-//
-// These are from the original source: some of them are perhaps
-// not used in any dehacked patches
-
-static char *banners[] =
-{
-    // doom2.wad
-    "                         "
-    "DOOM 2: Hell on Earth v%i.%i"
-    "                           ",
-    // doom1.wad
-    "                            "
-    "DOOM Shareware Startup v%i.%i"
-    "                           ",
-    // doom.wad
-    "                            "
-    "DOOM Registered Startup v%i.%i"
-    "                           ",
-    // Registered DOOM uses this
-    "                          "
-    "DOOM System Startup v%i.%i"
-    "                          ",
-    // doom.wad (Ultimate DOOM)
-    "                         "
-    "The Ultimate DOOM Startup v%i.%i"
-    "                        ",
-    // tnt.wad
-    "                     "
-    "DOOM 2: TNT - Evilution v%i.%i"
-    "                           ",
-    // plutonia.wad
-    "                   "
-    "DOOM 2: Plutonia Experiment v%i.%i"
-    "                           ",
-};
-
-//
-// Get game name: if the startup banner has been replaced, use that.
-// Otherwise, use the name given
-// 
-
-static char *GetGameName(char *gamename)
-{
-    size_t i;
-    char *deh_sub;
-    
-    for (i=0; i<arrlen(banners); ++i)
-    {
-        // Has the banner been replaced?
-
-        deh_sub = DEH_String(banners[i]);
-        
-        if (deh_sub != banners[i])
-        {
-            size_t gamename_size;
-            int version;
-
-            // Has been replaced.
-            // We need to expand via printf to include the Doom version number
-            // We also need to cut off spaces to get the basic name
-
-            gamename_size = strlen(deh_sub) + 10;
-            gamename = Z_Malloc(gamename_size, PU_STATIC, 0);
-            version = G_VanillaVersionCode();
-            M_snprintf(gamename, gamename_size, deh_sub,
-                       version / 100, version % 100);
-
-            while (gamename[0] != '\0' && isspace((int)gamename[0]))
-            {
-                memmove(gamename, gamename + 1, gamename_size - 1);
-            }
-
-            while (gamename[0] != '\0' && isspace((int)gamename[strlen(gamename)-1]))
-            {
-                gamename[strlen(gamename) - 1] = '\0';
-            }
-
-            return gamename;
-        }
-    }
-
-    return gamename;
-}
 
 //
 // Find out what version of Doom is playing.
@@ -688,15 +468,6 @@ void D_IdentifyVersion(void)
     gamemode = shareware;
 }
 
-// Set the gamedescription string
-
-void D_SetGameDescription(void)
-{
-    gamedescription = "ZKLLVM Doomreplay";
-}
-
-//      print title for every printed line
-char            title[128];
 
 static boolean D_AddFile(char *filename)
 {
@@ -709,26 +480,7 @@ static boolean D_AddFile(char *filename)
 }
 
 
-static struct 
-{
-    char *description;
-    char *cmdline;
-    GameVersion_t version;
-} gameversions[] = {
-    {"Doom 1.666",           "1.666",      exe_doom_1_666},
-    {"Doom 1.7/1.7a",        "1.7",        exe_doom_1_7},
-    {"Doom 1.8",             "1.8",        exe_doom_1_8},
-    {"Doom 1.9",             "1.9",        exe_doom_1_9}, // our variant
-    {"Hacx",                 "hacx",       exe_hacx},
-    {"Ultimate Doom",        "ultimate",   exe_ultimate},
-    {"Final Doom",           "final",      exe_final},
-    {"Final Doom (alt)",     "final2",     exe_final2},
-    {"Chex Quest",           "chex",       exe_chex},
-    { NULL,                  NULL,         0},
-};
-
 // Initialize the game version
-
 static void InitGameVersion(void)
 {
     gameversion = exe_doom_1_9;
@@ -739,16 +491,6 @@ static void InitGameVersion(void)
 static void D_Endoom(void)
 {
     byte *endoom;
-
-    // Don't show ENDOOM if we have it disabled, or we're running
-    // in screensaver or control test mode. Only show it once the
-    // game has actually started.
-
-    if (!show_endoom || !main_loop_started
-     || screensaver_mode || M_CheckParm("-testcontrols") > 0)
-    {
-        return;
-    }
 
     endoom = W_CacheLumpName(DEH_String("ENDOOM"), PU_STATIC);
 
@@ -762,10 +504,6 @@ static void D_Endoom(void)
 //
 void D_DoomMain (void)
 {
-    int p;
-    char file[256];
-    char demolumpname[9];
-
     I_AtExit(D_Endoom, false);
 
     // print banner
@@ -775,81 +513,24 @@ void D_DoomMain (void)
     DEH_printf("Z_Init: Init zone memory allocation daemon. \n");
     Z_Init ();
 
-    //!
-    // @vanilla
-    //
-    // Disable monsters.
-    //
-	
-    nomonsters = M_CheckParm ("-nomonsters");
+    nomonsters = 0;
 
-    //!
-    // @vanilla
-    //
-    // Monsters respawn after being killed.
-    //
+    respawnparm = 0;
 
-    respawnparm = M_CheckParm ("-respawn");
+    fastparm = 0;
 
-    //!
-    // @vanilla
-    //
-    // Monsters move faster.
-    //
+    devparm = 0;
 
-    fastparm = M_CheckParm ("-fast");
+	deathmatch = 0;
 
-    //! 
-    // @vanilla
-    //
-    // Developer mode.  F1 saves a screenshot in the current working
-    // directory.
-    //
-
-    devparm = M_CheckParm ("-devparm");
-
-    I_DisplayFPSDots(devparm);
-
-    //!
-    // @category net
-    // @vanilla
-    //
-    // Start a deathmatch game.
-    //
-
-    if (M_CheckParm ("-deathmatch"))
-	deathmatch = 1;
-
-    //!
-    // @category net
-    // @vanilla
-    //
-    // Start a deathmatch 2.0 game.  Weapons do not stay in place and
-    // all items respawn after 30 seconds.
-    //
-
-    if (M_CheckParm ("-altdeath"))
-	deathmatch = 2;
-
-    if (devparm)
-	DEH_printf(D_DEVSTR);
+    // if (devparm)
+	// DEH_printf(D_DEVSTR);
     
     // find which dir to use for config files
+    // Auto-detect the configuration dir.
+    M_SetConfigDir(NULL);
 
-    {
-        // Auto-detect the configuration dir.
-
-        M_SetConfigDir(NULL);
-    }
-
-    //!
-    // @arg <x>
-    // @vanilla
-    //
-    // Turbo mode.  The player's speed is multiplied by x%.  If unspecified,
-    // x defaults to 200.  Values are rounded up to 10 and down to 400.
-    //
-
+    /*
     if ( (p=M_CheckParm ("-turbo")) )
     {
 	int     scale = 200;
@@ -868,7 +549,8 @@ void D_DoomMain (void)
 	sidemove[0] = sidemove[0]*scale/100;
 	sidemove[1] = sidemove[1]*scale/100;
     }
-    
+    */
+
     // init subsystems
     DEH_printf("V_Init: allocate screens.\n");
     V_Init ();
@@ -918,7 +600,7 @@ void D_DoomMain (void)
 
     // Set the gamedescription string. This is only possible now that
     // we've finished loading Dehacked patches.
-    D_SetGameDescription();
+    // D_SetGameDescription();
 
     {
         savegamedir = M_GetSaveGameDir(D_SaveGameIWADName(gamemission));

@@ -151,13 +151,6 @@ static boolean BuildNewTic(void)
 
     loop_interface->RunMenu();
 
-    if (drone)
-    {
-        // In drone mode, do not generate any ticcmds.
-
-        return false;
-    }
-
     if (new_sync)
     {
        // If playing single player, do not allow tics to buffer
@@ -177,7 +170,7 @@ static boolean BuildNewTic(void)
            return false;
     }
 
-    //printf ("mk:%i ",maketic);
+    printf ("mk:%i ",maketic);
     memset(&cmd, 0, sizeof(ticcmd_t));
     loop_interface->BuildTiccmd(&cmd, maketic);
 
@@ -327,103 +320,6 @@ static void BlockUntilStart(net_gamesettings_t *settings,
 void D_StartNetGame(net_gamesettings_t *settings,
                     netgame_startup_callback_t callback)
 {
-#if ORIGCODE
-    int i;
-
-    offsetms = 0;
-    recvtic = 0;
-
-    settings->consoleplayer = 0;
-    settings->num_players = 1;
-    settings->player_classes[0] = player_class;
-
-    //!
-    // @category net
-    //
-    // Use new network client sync code rather than the classic
-    // sync code. This is currently disabled by default because it
-    // has some bugs.
-    //
-    if (M_CheckParm("-newsync") > 0)
-        settings->new_sync = 1;
-    else
-        settings->new_sync = 0;
-
-    // TODO: New sync code is not enabled by default because it's
-    // currently broken. 
-    //if (M_CheckParm("-oldsync") > 0)
-    //    settings->new_sync = 0;
-    //else
-    //    settings->new_sync = 1;
-
-    //!
-    // @category net
-    // @arg <n>
-    //
-    // Send n extra tics in every packet as insurance against dropped
-    // packets.
-    //
-
-    i = M_CheckParmWithArgs("-extratics", 1);
-
-    if (i > 0)
-        settings->extratics = atoi(myargv[i+1]);
-    else
-        settings->extratics = 1;
-
-    //!
-    // @category net
-    // @arg <n>
-    //
-    // Reduce the resolution of the game by a factor of n, reducing
-    // the amount of network bandwidth needed.
-    //
-
-    i = M_CheckParmWithArgs("-dup", 1);
-
-    if (i > 0)
-        settings->ticdup = atoi(myargv[i+1]);
-    else
-        settings->ticdup = 1;
-
-    if (net_client_connected)
-    {
-        // Send our game settings and block until game start is received
-        // from the server.
-
-        NET_CL_StartGame(settings);
-        BlockUntilStart(settings, callback);
-
-        // Read the game settings that were received.
-
-        NET_CL_GetSettings(settings);
-    }
-
-    if (drone)
-    {
-        settings->consoleplayer = 0;
-    }
-
-    // Set the local player and playeringame[] values.
-
-    localplayer = settings->consoleplayer;
-
-    for (i = 0; i < NET_MAXPLAYERS; ++i)
-    {
-        local_playeringame[i] = i < settings->num_players;
-    }
-
-    // Copy settings to global variables.
-
-    ticdup = settings->ticdup;
-    new_sync = settings->new_sync;
-
-    // TODO: Message disabled until we fix new_sync.
-    //if (!new_sync)
-    //{
-    //    printf("Syncing netgames like Vanilla Doom.\n");
-    //}
-#else
     settings->consoleplayer = 0;
 	settings->num_players = 1;
 	settings->player_classes[0] = player_class;
@@ -433,7 +329,6 @@ void D_StartNetGame(net_gamesettings_t *settings,
 
 	ticdup = settings->ticdup;
 	new_sync = settings->new_sync;
-#endif
 }
 
 boolean D_InitNetGame(net_connect_data_t *connect_data)

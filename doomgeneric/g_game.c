@@ -1024,8 +1024,7 @@ void G_Ticker (void)
 	break; 
  
       case GS_DEMOSCREEN: 
-	D_PageTicker (); 
-	break;
+	    break;
     }        
 } 
  
@@ -2270,36 +2269,7 @@ boolean G_CheckDemoStatus (void)
                  gametic, realtics, fps);
     } 
 	 
-    if (demoplayback) 
-    { 
-        W_ReleaseLumpName(defdemoname);
-	demoplayback = false; 
-	netdemo = false;
-	netgame = false;
-	deathmatch = false;
-	playeringame[1] = playeringame[2] = playeringame[3] = 0;
-	respawnparm = false;
-	fastparm = false;
-	nomonsters = false;
-	consoleplayer = 0;
-        
-        if (singledemo) 
-            I_Quit (); 
-        else 
-            D_AdvanceDemo (); 
 
-	return true; 
-    } 
- 
-    if (demorecording) 
-    { 
-	*demo_p++ = DEMOMARKER; 
-	M_WriteFile (demoname, demobuffer, demo_p - demobuffer); 
-	Z_Free (demobuffer); 
-	demorecording = false; 
-	I_Error ("Demo %s recorded",demoname); 
-    } 
-	 
     return false; 
 } 
  
