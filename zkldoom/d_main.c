@@ -74,9 +74,7 @@
 
 #include "d_main.h"
 
-#ifdef DOOMREPLAY
 #include "doomreplay.h"
-#endif
 
 //
 // D-DoomLoop()
@@ -184,9 +182,6 @@ void D_Display (void)
     boolean			wipe;
     boolean			redrawsbar;
 
-    if (nodrawers)
-    	return;                    // for comparative timing / profiling
-		
     redrawsbar = false;
     
     wipe = false;
@@ -197,19 +192,12 @@ void D_Display (void)
       case GS_LEVEL:
 		if (!gametic)
 			break;
-		if (inhelpscreensstate && !inhelpscreens)
-			redrawsbar = true;              // just put away the help screen
 		ST_Drawer (viewheight == 200, redrawsbar );
 		fullscreen = viewheight == 200;
 		break;
+
     }
     
-#ifdef DOOMREPLAY
-    // do not render the scene if we are not going to record the current frame.
-    // start drawing stuff 100 frames earlier than necessary, just in case we
-    // need to start during a screen wipe
-    if (DR_NeedRender(100)) {
-#endif
     // draw buffered stuff to screen
     I_UpdateNoBlit ();
     
@@ -246,9 +234,6 @@ void D_Display (void)
 
         V_DrawMouseSpeedBox(testcontrols_mousespeed);
     }
-#ifdef DOOMREPLAY
-    }
-#endif
 
     menuactivestate = menuactive;
     viewactivestate = viewactive;
@@ -286,18 +271,14 @@ void D_Display (void)
 
     do
     {
-	do
-	{
-#ifdef DOOMREPLAY
-        // during screen wipe, we are stuck in this loop so we
-        // have to update the artificial clock on each iteration
-        DR_UpdateTime();
-#endif
-	    nowtime = I_GetTime ();
-	    tics = nowtime - wipestart;
-	     I_Sleep(1);
-	} while (tics <= 0);
-        
+        do
+        {
+                DR_UpdateTime();
+                nowtime = I_GetTime ();
+                tics = nowtime - wipestart;
+                I_Sleep(1);
+        } while (tics <= 0);
+                
 	wipestart = nowtime;
 	done = wipe_ScreenWipe(wipe_Melt
 			       , 0, 0, SCREENWIDTH, SCREENHEIGHT, tics);
@@ -376,12 +357,9 @@ void D_DoomLoop (void)
 		// frame syncronous IO operations
 		I_StartFrame ();
 
-#ifdef DOOMREPLAY
-		// feed keyboard events from our replay input before the next
-		// frame is rendered
-		DR_ProcessInput ();
-#endif
-
+		// AAAAAAAAAA
+        DR_ProcessInput ();
+        
 		TryRunTics (); // will run at least one tic
 
 		// Update display, next frame, with current state.
@@ -563,4 +541,11 @@ void D_DoomMain (void)
 
     D_DoomLoop ();  // never returns
 }
+
+
+//int main(int argc, char **argv)                                                                                                                                                      
+//{
+//    D_DoomMain ();                                                                                                                                                                   
+//    return 0;
+//}
 
