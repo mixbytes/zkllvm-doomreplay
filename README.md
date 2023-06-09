@@ -2,7 +2,18 @@
 ZKLLVM compilation, proof generation, and verification of "user input"->"target game state" state transitions in the Doom core.
 
 
-*Next part is taken from original "doomreplay" repo*
+```
+cd doomgeneric
+make -f Makefile.dr
+./doomgeneric -iwad ../doom1.wad -input ../input/test1.txt -nrecord 3500 -framerate 35 -render_frame -render_input -render_username -output test1.mp4
+```
+
+
+
+
+
+
+# [ORIGINAL README.MD]
 
 Replay Doom by providing keyboard input from a file and optionally storing the replay as a video file
 
