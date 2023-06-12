@@ -289,53 +289,6 @@ void D_Display (void)
 }
 
 //
-// Add configuration file variable bindings.
-//
-
-void D_BindVariables(void)
-{
-    int i;
-
-    M_ApplyPlatformDefaults();
-
-    I_BindVideoVariables();
-    I_BindJoystickVariables();
-    I_BindSoundVariables();
-
-    M_BindBaseControls();
-    M_BindWeaponControls();
-    M_BindMapControls();
-    M_BindMenuControls();
-    M_BindChatControls(MAXPLAYERS);
-
-    key_multi_msgplayer[0] = HUSTR_KEYGREEN;
-    key_multi_msgplayer[1] = HUSTR_KEYINDIGO;
-    key_multi_msgplayer[2] = HUSTR_KEYBROWN;
-    key_multi_msgplayer[3] = HUSTR_KEYRED;
-
-    M_BindVariable("mouse_sensitivity",      &mouseSensitivity);
-    M_BindVariable("sfx_volume",             &sfxVolume);
-    M_BindVariable("music_volume",           &musicVolume);
-    M_BindVariable("show_messages",          &showMessages);
-    M_BindVariable("screenblocks",           &screenblocks);
-    M_BindVariable("detaillevel",            &detailLevel);
-    M_BindVariable("snd_channels",           &snd_channels);
-    M_BindVariable("vanilla_savegame_limit", &vanilla_savegame_limit);
-    M_BindVariable("vanilla_demo_limit",     &vanilla_demo_limit);
-    M_BindVariable("show_endoom",            &show_endoom);
-
-    // Multiplayer chat macros
-
-    for (i=0; i<10; ++i)
-    {
-        char buf[12];
-
-        M_snprintf(buf, sizeof(buf), "chatmacro%i", i);
-        M_BindVariable(buf, &chat_macros[i]);
-    }
-}
-
-//
 //  D_DoomLoop
 //
 void D_DoomLoop (void)
@@ -455,53 +408,13 @@ void D_DoomMain (void)
     devparm = 0;
 	deathmatch = 0;
     
-    M_SetConfigDir(NULL);
-
-    // init subsystems
-    DEH_printf("V_Init: allocate screens.\n");
-    V_Init ();
-
-    // Load configuration files before initialising other subsystems.
-    // DEH_printf("M_LoadDefaults: Load system defaults.\n");
-    // M_SetConfigFilenames("default.cfg", PROGRAM_PREFIX "doom.cfg");
-    // D_BindVariables();
-    // M_LoadDefaults();
-
-    // Save configuration at exit.
-    // I_AtExit(M_SaveDefaults, false);
-
-    // Find main IWAD file and load it.
-    iwadfile = D_FindIWAD(IWAD_MASK_DOOM, &gamemission);
-
-    // None found?
-
-    if (iwadfile == NULL)
-    {
-        I_Error("Game mode indeterminate.  No IWAD file was found.  Try\n"
-                "specifying one with the '-iwad' command line parameter.\n");
-    }
-
     modifiedgame = false;
 
-    DEH_printf("W_Init: Init WADfiles.\n");
-    D_AddFile(iwadfile);
-
-    W_CheckCorrectIWAD(doom);
-
-    // Now that we've loaded the IWAD, we can figure out what gamemission
-    // we're playing and which version of Vanilla Doom we need to emulate.
-    D_IdentifyVersion();
-    InitGameVersion();
-
-    // Load PWAD files.
-    modifiedgame = W_ParseCommandLine();
-
-    I_AtExit((atexit_func_t) G_CheckDemoStatus, true);
-
+    D_AddFile("../doom1.wad");
+    
     // Generate the WAD hash table.  Speed things up a bit.
-    W_GenerateHashTable();
-
-    savegamedir = M_GetSaveGameDir(D_SaveGameIWADName(gamemission));
+    // HZ CCCCCCCCCCC check
+    //W_GenerateHashTable();
 
     DEH_printf("I_Init: Setting up machine state.\n");
     I_InitTimer();
@@ -517,22 +430,16 @@ void D_DoomMain (void)
     // Not loading a game
     startloadgame = -1;
 
-    // DEH_printf("M_Init: Init miscellaneous info.\n");
-    // M_Init ();
-
     DEH_printf("R_Init: Init DOOM refresh daemon - ");
     R_Init ();
 
     DEH_printf("\nP_Init: Init Playloop state.\n");
     P_Init ();
 
-    // DEH_printf("S_Init: Setting up sound.\n");
-    // S_Init (sfxVolume * 8, musicVolume * 8);
-
     DEH_printf("D_CheckNetGame: Checking network game status.\n");
     D_CheckNetGame ();
 
-    DEH_printf("ST_Init: Init status bar.\n");
+    //DEH_printf("ST_Init: Init status bar.\n");
     ST_Init ();
 
     // [AAAA] autostart
@@ -541,11 +448,4 @@ void D_DoomMain (void)
 
     D_DoomLoop ();  // never returns
 }
-
-
-//int main(int argc, char **argv)                                                                                                                                                      
-//{
-//    D_DoomMain ();                                                                                                                                                                   
-//    return 0;
-//}
 
