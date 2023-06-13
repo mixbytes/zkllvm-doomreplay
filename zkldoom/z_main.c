@@ -52,8 +52,6 @@ int main(int argc, char **argv)
     replay_data_t replay_data;
 
     int pidx_input     = M_CheckParmWithArgs("-input",     1);
-    int pidx_output    = M_CheckParmWithArgs("-output",    1);
-    int pidx_framerate = M_CheckParmWithArgs("-framerate", 1);
     int pidx_nstart    = M_CheckParmWithArgs("-nstart",    1);
     int pidx_nrecord   = M_CheckParmWithArgs("-nrecord",   1);
     int pidx_nfreeze   = M_CheckParmWithArgs("-nfreeze",   1);
@@ -63,70 +61,30 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    if (!pidx_output) {
-        fprintf(stderr, "Please specify output file for storing the generated video via '-output'\n");
-        return -1;
-    }
-
-    replay_data.fname_output = myargv[pidx_output + 1];
+    replay_data.fname_output = "zkltest.mp4";
 
     // framerate
     replay_data.framerate = 35;
-    if (pidx_framerate) {
-        replay_data.framerate = atoi(myargv[pidx_framerate + 1]);
-    }
-
-    if (replay_data.framerate <= 0 || replay_data.framerate > 60) {
-        fprintf(stderr, "Invalid framerate: %d\n", replay_data.framerate);
-        return -1;
-    }
 
     // start recording after n frames
     replay_data.n_start = -1;
-    if (pidx_nstart) {
-        replay_data.n_start = atoi(myargv[pidx_nstart + 1]);
-    }
 
     // n frames to record
     replay_data.n_record = 10*replay_data.framerate;
-    if (pidx_nrecord) {
-        replay_data.n_record = atoi(myargv[pidx_nrecord + 1]);
-    }
-
-    if (replay_data.n_record <= 0) {
-        fprintf(stderr, "Invalid nrecord: %d\n", replay_data.n_record);
-        return -1;
-    }
 
     // n frames to freeze the last frame
     replay_data.n_freeze = 0;
-    if (pidx_nfreeze) {
-        replay_data.n_freeze = atoi(myargv[pidx_nfreeze + 1]);
-    }
-
-    if (replay_data.n_freeze < 0) {
-        fprintf(stderr, "Invalid nfreeze: %d\n", replay_data.n_freeze);
-        return -1;
-    }
 
     // render the current frame on the screen ?
-    replay_data.render_frame = 0;
-    if (M_CheckParm("-render_frame") > 0) {
-        replay_data.render_frame = 1;
-    }
+    replay_data.render_frame = 1;
 
-    // render the current keyboard input on the screen ?
     replay_data.render_input = 0;
-    if (M_CheckParm("-render_input") > 0) {
-        replay_data.render_input = 1;
-    }
-
-    // render the username that provided the current input on the screen ?
+    
     replay_data.render_username = 0;
-    //if (M_CheckParm("-render_username") > 0) {
-    //    replay_data.render_username = 1;
-    //}
 
+    replay_data.n_frames = 1;
+    replay_data.n_usernames = 1;
+    
     const char * param_input = myargv[pidx_input + 1];
 
     FILE *f = fopen(param_input, "rb");
@@ -143,31 +101,16 @@ int main(int argc, char **argv)
     fread(input, 1, fsize, f);
     fclose(f);
 
-    replay_data.n_frames = 1;
-    replay_data.n_usernames = 1;
 
     int in_username = 0;
     for (int i = 0; i < fsize; ++i) {
         switch (input[i]) {
-            case '#': {
-                          if (in_username == 0) {
-                              in_username = 1;
-                          } else {
-                              ++replay_data.n_usernames;
-                              in_username = 0;
-                          }
-                      } break;
             case ',': {
                           if (in_username == 0) {
                               ++replay_data.n_frames;
                           }
                       } break;
         };
-    }
-
-    if (in_username) {
-        fprintf(stderr, "Invalid input format : username tags are invalid\n");
-        return -3;
     }
 
     if (replay_data.n_start == -1) {
@@ -195,18 +138,6 @@ int main(int argc, char **argv)
         frame_data_t    * frame    = replay_data.frames + cur_frame;
         username_data_t * username = replay_data.usernames + cur_username;
 
-        if (in_username) {
-            switch (input[i]) {
-                case '#': {
-                              in_username = 0;
-                          } break;
-                default: {
-                             username->buf[username->len] = input[i];
-                             username->len++;
-                             username->buf[username->len] = 0;
-                         } break;
-            };
-        } else {
             switch (input[i]) {
                 case '#': {
                               in_username = 1;
@@ -240,17 +171,9 @@ int main(int argc, char **argv)
                 case '8': frame->pressed[dr_key_8]            = 1; break;
                 case '9': frame->pressed[dr_key_9]            = 1; break;
             };
-        }
     }
 
     DR_Init(replay_data);
-
-
-
-
-
-
-    M_FindResponseFile();
 
     // start doom
     printf("Starting D_DoomMain\r\n");

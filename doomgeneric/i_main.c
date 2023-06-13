@@ -148,27 +148,13 @@ int main(int argc, char **argv)
     replay_data.n_usernames = 1;
 
     int in_username = 0;
+    
     for (int i = 0; i < fsize; ++i) {
         switch (input[i]) {
-            case '#': {
-                          if (in_username == 0) {
-                              in_username = 1;
-                          } else {
-                              ++replay_data.n_usernames;
-                              in_username = 0;
-                          }
-                      } break;
-            case ',': {
-                          if (in_username == 0) {
-                              ++replay_data.n_frames;
-                          }
+               case ',': {
+                            ++replay_data.n_frames;
                       } break;
         };
-    }
-
-    if (in_username) {
-        fprintf(stderr, "Invalid input format : username tags are invalid\n");
-        return -3;
     }
 
     if (replay_data.n_start == -1) {
@@ -246,8 +232,6 @@ int main(int argc, char **argv)
 
     DR_Init(replay_data);
 #endif
-
-    M_FindResponseFile();
 
     // start doom
     printf("Starting D_DoomMain\r\n");
