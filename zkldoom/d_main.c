@@ -363,14 +363,14 @@ void D_IdentifyVersion(void)
 }
 
 
-static boolean D_AddFile(char *filename)
+static void D_AddFile(char *filename)
 {
     wad_file_t *handle;
 
     printf(" adding %s\n", filename);
     handle = W_AddFile(filename);
 
-    return handle != NULL;
+    return;
 }
 
 

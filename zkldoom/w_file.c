@@ -24,17 +24,17 @@
 #include "m_argv.h"
 
 #include "w_file.h"
+#include "../doom1_wad_hardcopy.h"
+
 
 extern wad_file_class_t stdc_wad_file;
 
 static wad_file_class_t *wad_file_classes[] = 
 {
-#ifdef HAVE_MMAP
-    &posix_wad_file,
-#endif
     &stdc_wad_file,
 };
 
+/*
 wad_file_t *W_OpenFile(char *path)
 {
     wad_file_t *result;
@@ -71,10 +71,16 @@ void W_CloseFile(wad_file_t *wad)
 {
     wad->file_class->CloseFile(wad);
 }
+*/
 
 size_t W_Read(wad_file_t *wad, unsigned int offset,
               void *buffer, size_t buffer_len)
 {
-    return wad->file_class->Read(wad, offset, buffer, buffer_len);
+    int i = 0;
+    for (i = 0; i < buffer_len; i++) {
+        ((char *)buffer)[i] = wad_contents[offset + i];
+    }
+
+    return buffer_len;
 }
 

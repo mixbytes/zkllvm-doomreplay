@@ -150,60 +150,31 @@ wad_file_t *W_AddFile (char *filename)
 
     // open the file and add to directory
 
-    wad_file = W_OpenFile(filename);
-
-    if (wad_file == NULL)
-    {
-		printf (" couldn't open %s\n", filename);
-		return NULL;
-    }
-
     newnumlumps = numlumps;
 
-    if (strcasecmp(filename+strlen(filename)-3 , "wad" ) )
-    {
-    	// single lump file
+    // AAAAAAAAAAAAAAAA
+    wad_file = NULL;
 
-        // fraggle: Swap the filepos and size here.  The WAD directory
-        // parsing code expects a little-endian directory, so will swap
-        // them back.  Effectively we're constructing a "fake WAD directory"
-        // here, as it would appear on disk.
 
-		fileinfo = Z_Malloc(sizeof(filelump_t), PU_STATIC, 0);
-		fileinfo->filepos = LONG(0);
-		fileinfo->size = LONG(wad_file->length);
+    // WAD file
+    W_Read(wad_file, 0, &header, sizeof(header));
 
-        // Name the lump after the base of the filename (without the
-        // extension).
-
-		M_ExtractFileBase (filename, fileinfo->name);
-		newnumlumps++;
+    if (strncmp(header.identification,"IWAD",4)) {
+        // Homebrew levels?
+        if (strncmp(header.identification,"PWAD",4)) {
+            I_Error ("Wad file %s doesn't have IWAD "
+         "or PWAD id\n", filename);
+        }
+        // ???modifiedgame = true;
     }
-    else 
-    {
-    	// WAD file
-        W_Read(wad_file, 0, &header, sizeof(header));
 
-		if (strncmp(header.identification,"IWAD",4))
-		{
-			// Homebrew levels?
-			if (strncmp(header.identification,"PWAD",4))
-			{
-			I_Error ("Wad file %s doesn't have IWAD "
-				 "or PWAD id\n", filename);
-			}
+    header.numlumps = LONG(header.numlumps);
+    header.infotableofs = LONG(header.infotableofs);
+    length = header.numlumps*sizeof(filelump_t);
+    fileinfo = Z_Malloc(length, PU_STATIC, 0);
 
-			// ???modifiedgame = true;
-		}
-
-		header.numlumps = LONG(header.numlumps);
-		header.infotableofs = LONG(header.infotableofs);
-		length = header.numlumps*sizeof(filelump_t);
-		fileinfo = Z_Malloc(length, PU_STATIC, 0);
-
-        W_Read(wad_file, header.infotableofs, fileinfo, length);
-        newnumlumps += header.numlumps;
-    }
+    W_Read(wad_file, header.infotableofs, fileinfo, length);
+    newnumlumps += header.numlumps;
 
     // Increase size of numlumps array to accomodate the new file.
     startlump = numlumps;
@@ -232,7 +203,6 @@ wad_file_t *W_AddFile (char *filename)
         Z_Free(lumphash);
         lumphash = NULL;
     }
-
     return wad_file;
 }
 
@@ -384,38 +354,21 @@ void *W_CacheLumpNum(int lumpnum, int tag)
 {
     byte *result;
     lumpinfo_t *lump;
-
-    if ((unsigned)lumpnum >= numlumps)
-    {
-	I_Error ("W_CacheLumpNum: %i >= numlumps", lumpnum);
+    
+    if ((unsigned)lumpnum >= numlumps) {
+	    I_Error ("W_CacheLumpNum: %i >= numlumps", lumpnum);
     }
 
     lump = &lumpinfo[lumpnum];
 
-    // Get the pointer to return.  If the lump is in a memory-mapped
-    // file, we can just return a pointer to within the memory-mapped
-    // region.  If the lump is in an ordinary file, we may already
-    // have it cached; otherwise, load it into memory.
-
-    if (lump->wad_file->mapped != NULL)
-    {
-        // Memory mapped file, return from the mmapped region.
-
-        result = lump->wad_file->mapped + lump->position;
-    }
-    else if (lump->cache != NULL)
-    {
+    if (lump->cache != NULL) {
         // Already cached, so just switch the zone tag.
-
         result = lump->cache;
         Z_ChangeTag(lump->cache, tag);
-    }
-    else
-    {
+    } else {
         // Not yet loaded, so load it now
-
         lump->cache = Z_Malloc(W_LumpLength(lumpnum), tag, &lump->cache);
-	W_ReadLump (lumpnum, lump->cache);
+	    W_ReadLump (lumpnum, lump->cache);
         result = lump->cache;
     }
 	
@@ -446,21 +399,13 @@ void W_ReleaseLumpNum(int lumpnum)
 {
     lumpinfo_t *lump;
 
-    if ((unsigned)lumpnum >= numlumps)
-    {
-	I_Error ("W_ReleaseLumpNum: %i >= numlumps", lumpnum);
+    if ((unsigned)lumpnum >= numlumps) {
+	    I_Error ("W_ReleaseLumpNum: %i >= numlumps", lumpnum);
     }
 
     lump = &lumpinfo[lumpnum];
-
-    if (lump->wad_file->mapped != NULL)
-    {
-        // Memory-mapped file, so nothing needs to be done here.
-    }
-    else
-    {
-        Z_ChangeTag(lump->cache, PU_CACHE);
-    }
+    
+    Z_ChangeTag(lump->cache, PU_CACHE);
 }
 
 void W_ReleaseLumpName(char *name)
