@@ -32,10 +32,10 @@
 
 #else
 
-#include <strings.h>
+// [FIXME] - simpy removed this reference to avoid troubles with __THROW macro
+// #include <strings.h>
 
 #endif
-
 
 //
 // The packed attribute forces structures to be packed into the minimum 
@@ -59,6 +59,13 @@
 // of Solaris don't have stdint.h and only have inttypes.h (the 
 // pre-standardisation version).  inttypes.h is also in the C99 
 // standard and defined to include stdint.h, so include this. 
+
+
+// [FIXME] Added to remove undefined __THROW macro(must be defined and empty)
+// which breaks compilation in 'inittypes.h'
+#undef __THROW
+#define __THROW
+#define __GNUC_PREREQ(...) 0
 
 #include <inttypes.h>
 

@@ -40,6 +40,12 @@ void M_FindResponseFile(void);
 
 void dg_Create();
 
+/*
+[[circuit]] int main_circuit(int a) {
+    int b = a + 10;
+    return b;
+}
+*/
 
 int main(int argc, char **argv)
 {
@@ -175,9 +181,6 @@ int main(int argc, char **argv)
 
     DR_Init(replay_data);
 
-    // start doom
-    printf("Starting D_DoomMain\r\n");
-    
 	dg_Create();
 
 	D_DoomMain ();

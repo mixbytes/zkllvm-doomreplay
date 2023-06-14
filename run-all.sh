@@ -5,7 +5,7 @@ set -e
 
 
 ASSIGNER_BINARY=${HOME}/zkllvm/build/bin/assigner/assigner
-CLANG_BINARY=${HOME}/zkllvm/build/libs/circifier/llvm/bin/clang-16
+CLANG_BINARY=${HOME}/zkllvm/build/libs/circifier/llvm/bin/clang
 
 
 WORKDIR=${HOME}/zkllvm-doomreplay
@@ -25,19 +25,23 @@ fi
 set -x
 
 
-cd ${WORKDIR}/doomgeneric
+cd ${WORKDIR}/zkldoom
+
+# -S used when CIRCUIT_ASSEMBLY_OUTPUT
 
 ${CLANG_BINARY} -target assigner \
     -Xclang -no-opaque-pointers \
     -Xclang -fpreserve-vec3-type \
-    -std=gnu2x \
-    -I${HOME}/zkllvm/libs/stdlib/libcpp -I${HOME}/zkllvm/libs/stdlib/libc/include \
-    -I${HOME}/zkllvm/libs/crypto3/algebra/include -I${HOME}/zkllvm/build/include -I/usr/local/include -I -I${HOME}/zkllvm/libs/crypto3/block/include -I/usr/local/include -I${HOME}/zkllvm/libs/blueprint/include -I${HOME}/zkllvm/libs/crypto3/codec/include -I${HOME}/zkllvm/libs/crypto3/containers/include -I${HOME}/zkllvm/libs/crypto3/hash/include -I${HOME}/zkllvm/libs/crypto3/kdf/include -I${HOME}/zkllvm/libs/crypto3/mac/include -I${HOME}/zkllvm/libs/crypto3/marshalling/core/include -I -I${HOME}/zkllvm/libs/crypto3/marshalling/algebra/include -I${HOME}/zkllvm/libs/crypto3/marshalling/multiprecision/include -I${HOME}/zkllvm/libs/crypto3/marshalling/zk/include -I${HOME}/zkllvm/libs/crypto3/math/include -I${HOME}/zkllvm/libs/crypto3/modes/include -I${HOME}/zkllvm/libs/crypto3/multiprecision/include -I${HOME}/zkllvm/libs/crypto3/passhash/include -I${HOME}/zkllvm/libs/crypto3/pbkdf/include -I${HOME}/zkllvm/libs/crypto3/pkmodes/include -I${HOME}/zkllvm/libs/crypto3/pkpad/include -I${HOME}/zkllvm/libs/crypto3/pubkey/include -I${HOME}/zkllvm/libs/crypto3/random/include -I${HOME}/zkllvm/libs/crypto3/stream/include -I${HOME}/zkllvm/libs/crypto3/vdf/include -I${HOME}/zkllvm/libs/crypto3/zk/include \
-    -D__ZKLLVM__ \
-    -D__GNUC_PREREQ\(...\)=0 \
+    -std=c99 \
     -emit-llvm -O1 -S \
+    -I${HOME}/zkllvm/libs/stdlib/libc/include \
+    -I${HOME}/zkllvm/libs/stdlib/libcpp \
+    -I${HOME}/zkllvm/libs/crypto3/algebra/include -I${HOME}/zkllvm/build/include -I/usr/local/include -I -I${HOME}/zkllvm/libs/crypto3/block/include -I/usr/local/include -I${HOME}/zkllvm/libs/blueprint/include -I${HOME}/zkllvm/libs/crypto3/codec/include -I${HOME}/zkllvm/libs/crypto3/containers/include -I${HOME}/zkllvm/libs/crypto3/hash/include -I${HOME}/zkllvm/libs/crypto3/kdf/include -I${HOME}/zkllvm/libs/crypto3/mac/include -I${HOME}/zkllvm/libs/crypto3/marshalling/core/include -I -I${HOME}/zkllvm/libs/crypto3/marshalling/algebra/include -I${HOME}/zkllvm/libs/crypto3/marshalling/multiprecision/include -I${HOME}/zkllvm/libs/crypto3/marshalling/zk/include -I${HOME}/zkllvm/libs/crypto3/math/include -I${HOME}/zkllvm/libs/crypto3/modes/include -I${HOME}/zkllvm/libs/crypto3/multiprecision/include -I${HOME}/zkllvm/libs/crypto3/passhash/include -I${HOME}/zkllvm/libs/crypto3/pbkdf/include -I${HOME}/zkllvm/libs/crypto3/pkmodes/include -I${HOME}/zkllvm/libs/crypto3/pkpad/include -I${HOME}/zkllvm/libs/crypto3/pubkey/include -I${HOME}/zkllvm/libs/crypto3/random/include -I${HOME}/zkllvm/libs/crypto3/stream/include -I${HOME}/zkllvm/libs/crypto3/vdf/include -I${HOME}/zkllvm/libs/crypto3/zk/include \
+    -D__ZKLLVM__=1 \
     -o ${BUILD_DIR}/${CCT}.ll \
     ./z_main.c
+
+echo "22" > ${BUILD_DIR}/${CCT}.inp
 
 ${ASSIGNER_BINARY} \
     -b ${BUILD_DIR}/${CCT}.ll \
