@@ -130,8 +130,6 @@ void DR_UpdateTime() {
     g_time_gs += g_dt_gs;
 }
 
-void DG_Init() {}
-
 void DG_DrawFrame() {
     if (DR_NeedRender(0)) {
         if (g_fp == NULL) {

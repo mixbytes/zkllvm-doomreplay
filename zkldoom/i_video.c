@@ -37,6 +37,9 @@ rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 #include "doomkeys.h"
 
 #include "doomgeneric.h"
+#ifdef DOOMREPLAY
+#include "doomreplay.h"
+#endif
 
 #include <stdbool.h>
 #include <stdlib.h>
@@ -47,7 +50,6 @@ rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 
 #include <sys/types.h>
 
-//#define CMAP256
 
 struct FB_BitField
 {
@@ -252,10 +254,18 @@ void I_UpdateNoBlit (void)
 
 void I_FinishUpdate (void)
 {
+#ifdef DOOMREPLAY
+    // no need to blit the VideoBuffer if it is not time to record yet
+    if (DR_NeedRender(0) == false) {
+        DG_DrawFrame();
+        return;
+    }
+#endif
+
     int y;
     int x_offset, y_offset, x_offset_end;
     unsigned char *line_in, *line_out;
-    printf("[DEBUG] I_FinishUpdate(i_video.c): offsets x,y,x_end: (%d,%d,%d)\n", x_offset, y_offset, x_offset_end);
+
     /* Offsets in case FB is bigger than DOOM */
     /* 600 = s_Fb heigt, 200 screenheight */
     /* 600 = s_Fb heigt, 200 screenheight */
@@ -276,16 +286,7 @@ void I_FinishUpdate (void)
         int i;
         for (i = 0; i < fb_scaling; i++) {
             line_out += x_offset;
-#ifdef CMAP256
-            for (fb_scaling == 1) {
-                memcpy(line_out, line_in, SCREENWIDTH); /* fb_width is bigger than Doom SCREENWIDTH... */
-            } else {
-                //XXX FIXME fb_scaling support!
-            }
-#else
-            //cmap_to_rgb565((void*)line_out, (void*)line_in, SCREENWIDTH);
             cmap_to_fb((void*)line_out, (void*)line_in, SCREENWIDTH);
-#endif
             line_out += (SCREENWIDTH * fb_scaling * (s_Fb.bits_per_pixel/8)) + x_offset_end;
         }
         line_in += SCREENWIDTH;
@@ -374,6 +375,10 @@ int I_GetPaletteIndex (int r, int g, int b)
     }
 
     return best;
+#ifdef DOOMREPLAY
+    // fix compile warning
+    (void) (rcsid);
+#endif
 }
 
 void I_BeginRead (void)
