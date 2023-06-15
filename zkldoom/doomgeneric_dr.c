@@ -101,7 +101,6 @@ void DR_Init(replay_data_t replay_data) {
     printf("Start frame:        %6d (%g seconds)\n", g_replay_data.n_start,  (float)(g_replay_data.n_start)/TICRATE);
     printf("Frames to record:   %6d (%g seconds)\n", g_replay_data.n_record, (float)(g_replay_data.n_record)/TICRATE);
     printf("Framerate:          %6d\n", g_replay_data.framerate);
-    printf("Usernames:          %6d\n", g_replay_data.n_usernames);
     printf("Render frame idx:   %6d\n", g_replay_data.render_frame);
     printf("Render input:       %6d\n", g_replay_data.render_input);
     printf("Render username:    %6d\n", g_replay_data.render_username);

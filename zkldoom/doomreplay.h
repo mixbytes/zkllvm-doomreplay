@@ -29,6 +29,8 @@ typedef enum {
     dr_key_7,
     dr_key_8,
     dr_key_9,
+    // careful with new "dr_key_SKIP" and filling all pressed keys (uses dr_key_COUNT) in z_main.c
+    dr_key_SKIP,
     dr_key_COUNT,
 } dr_keys_e;
 
