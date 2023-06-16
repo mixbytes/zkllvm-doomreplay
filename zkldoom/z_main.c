@@ -43,7 +43,6 @@ unsigned long prepare_inputs(char * input, unsigned char *input_codes) {
     // string with inputs like 
     // ",,,,,,,,,,,,,,,,,,,,,,,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,r,r,r,r,f,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,f,f,f,f,f,f";
     unsigned long n_inputs = strlen(input);
-    printf("n_inputs: %d\n", n_inputs);
     for (int i = 0; i < n_inputs; ++i) {
             switch (input[i]) {
                 case ',': input_codes[i] = dr_key_SKIP; break;
