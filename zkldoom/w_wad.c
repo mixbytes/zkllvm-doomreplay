@@ -36,6 +36,9 @@
 
 #include "w_wad.h"
 
+// AAAAAAAAAAAAA
+#include "../doom1_wad_hardcopy.h"
+
 typedef struct
 {
     // Should be "IWAD" or "PWAD".
@@ -64,6 +67,21 @@ unsigned int numlumps = 0;
 // Hash table for fast lookups
 
 static lumpinfo_t **lumphash;
+
+
+
+
+size_t W_Read(unsigned int offset,
+              void *buffer, size_t buffer_len)
+{
+    int i = 0;
+    for (i = 0; i < buffer_len; i++) {
+        ((char *)buffer)[i] = wad_contents[offset + i];
+    }
+
+    return buffer_len;
+}
+
 
 // Hash function used for lump names.
 
@@ -157,7 +175,7 @@ wad_file_t *W_AddFile (char *filename)
 
 
     // WAD file
-    W_Read(wad_file, 0, &header, sizeof(header));
+    W_Read(0, &header, sizeof(header));
 
     if (strncmp(header.identification,"IWAD",4)) {
         // Homebrew levels?
@@ -173,7 +191,7 @@ wad_file_t *W_AddFile (char *filename)
     length = header.numlumps*sizeof(filelump_t);
     fileinfo = Z_Malloc(length, PU_STATIC, 0);
 
-    W_Read(wad_file, header.infotableofs, fileinfo, length);
+    W_Read(header.infotableofs, fileinfo, length);
     newnumlumps += header.numlumps;
 
     // Increase size of numlumps array to accomodate the new file.
@@ -322,7 +340,7 @@ void W_ReadLump(unsigned int lump, void *dest)
 	
     I_BeginRead ();
 	
-    c = W_Read(l->wad_file, l->position, dest, l->size);
+    c = W_Read(l->position, dest, l->size);
 
     if (c < l->size)
     {
