@@ -115,15 +115,14 @@ boolean         storedemo;
 // "BFG Edition" version of doom2.wad does not include TITLEPIC.
 boolean         bfgedition;
 
+// If true, the main game loop has started.
+boolean         main_loop_started = false;
 
 char		wadfile[1024];		// primary wad file
 char		mapdir[1024];           // directory of development maps
 
+int             show_endoom = 1;
 
-// If true, the main game loop has started.
-// boolean         main_loop_started = false;
-
-// int             show_endoom = 1;
 
 
 
@@ -247,8 +246,8 @@ int main(int argc, char **argv)
     
     modifiedgame = false;
     
-    W_AddFile("mocked doom1.wad");
-    exit(0);
+    D_AddFile("../doom1.wad");
+    
     // Generate the WAD hash table.  Speed things up a bit.
     // HZ CCCCCCCCCCC check
     //W_GenerateHashTable();

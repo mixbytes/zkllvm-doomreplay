@@ -72,7 +72,7 @@ void W_CloseFile(wad_file_t *wad);
 // data is read from the specified offset from the start of the file.
 // Returns the number of bytes read.
 
-size_t W_Read(unsigned int offset,
+size_t W_Read(wad_file_t *wad, unsigned int offset,
               void *buffer, size_t buffer_len);
 
 #endif /* #ifndef __W_FILE__ */

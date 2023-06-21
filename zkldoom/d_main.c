@@ -130,6 +130,8 @@ char		mapdir[1024];           // directory of development maps
 int             show_endoom = 1;
 
 
+
+
 //
 // D_ProcessEvents
 // Send all the events of the given timestamp down the responder chain
