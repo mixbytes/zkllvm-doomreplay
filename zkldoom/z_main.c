@@ -18,31 +18,87 @@
 
 //#include "config.h"
 
+#include "doomtype.h"
 #include <stdio.h>
-#include <strings.h>
-//#include "doomtype.h"
+//#include <strings.h>
 //#include "i_system.h"
 #include "m_argv.h"
 
 
 #include <stdlib.h>                                                                                                                    
 #include "doomreplay.h"
+#include "doomgeneric.h"
 
+#include "doom.h"
+#include "z_main.h"
 
-/*[[circuit]] int main_circuit(int a) {
-    int b = a + 10;
-    return b;
-}
-*/
 
 
 char *USER_INPUT = ",,,,,,,,,,,,,,,,,,,,,,,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,r,r,r,r,f,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,f,f,f,f,f,f";
 
 
+__attribute__((circuit)) int z_main(unsigned char *input_codes, unsigned long n_inputs)
+{
+    replay_data_t replay_data;
+
+    replay_data.framerate = 35;
+    replay_data.n_start = 0;
+    replay_data.n_record = 10*replay_data.framerate;
+    replay_data.n_freeze = 0;
+    replay_data.render_frame = 1;
+    replay_data.render_input = 0;
+    replay_data.render_username = 0;
+    replay_data.n_frames = 1;
+    
+    for (int i = 0; i < n_inputs; ++i) {
+        switch (input_codes[i]) {
+            case dr_key_SKIP: {
+                        ++replay_data.n_frames;
+                      } break;
+        };
+    }
+
+    printf("[DEBUG] target n_frames: %d\n", replay_data.n_frames);
+    
+    replay_data.frames    = malloc(replay_data.n_frames*sizeof(frame_data_t));
+    replay_data.usernames = malloc(replay_data.n_usernames*sizeof(username_data_t));
+
+    for (int f = 0; f < replay_data.n_frames; ++f) {
+        for (int i = 0; i < dr_key_COUNT; ++i) {
+            replay_data.frames[f].pressed[i] = 0;
+        }
+    }
+
+    int cur_frame    = 0;
+    int cur_username = 0;
+
+    for (int i = 0; i < n_inputs; ++i) {
+        frame_data_t    * frame    = replay_data.frames + cur_frame;
+        if (input_codes[i] == dr_key_SKIP) {
+            ++cur_frame;
+        } else {
+            frame->pressed[input_codes[i]] = 1;
+        }
+    }
+
+    DR_Init(replay_data);
+	
+    DG_ScreenBuffer = malloc(DOOMGENERIC_RESX * DOOMGENERIC_RESY * 4);
+
+	D_DoomMain ();
+
+    return 10;
+}
+
+
+
+
+
+
 unsigned long prepare_inputs(char * input, unsigned char *input_codes) {
     // string with inputs like 
     // ",,,,,,,,,,,,,,,,,,,,,,,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,r,r,r,r,f,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,f,f,f,f,f,f";
-    unsigned long n_inputs = strlen(input);
+    unsigned long n_inputs = 118;// [FIXME] strlen(input);
     for (int i = 0; i < n_inputs; ++i) {
             switch (input[i]) {
                 case ',': input_codes[i] = dr_key_SKIP; break;
@@ -77,60 +133,11 @@ unsigned long prepare_inputs(char * input, unsigned char *input_codes) {
 }
 
 
-
-int main(int argc, char **argv)
-{
-    replay_data_t replay_data;
-
-    replay_data.framerate = 35;
-    replay_data.n_start = 0;
-    replay_data.n_record = 10*replay_data.framerate;
-    replay_data.n_freeze = 0;
-    replay_data.render_frame = 1;
-    replay_data.render_input = 0;
-    replay_data.render_username = 0;
-    replay_data.n_frames = 1;
-    
-    unsigned char *input_codes = malloc(sizeof(unsigned char) * strlen(USER_INPUT));
+int main(int argc, char **argv) {
+    unsigned char *input_codes = malloc(sizeof(unsigned char) * 118); // [FIXME] strlen(USER_INPUT));
     unsigned int n_inputs = prepare_inputs(USER_INPUT, input_codes);
-    
-    for (int i = 0; i < n_inputs; ++i) {
-        switch (input_codes[i]) {
-            case dr_key_SKIP: {
-                        ++replay_data.n_frames;
-                      } break;
-        };
-    }
-
-    printf("[DEBUG] target n_frames: %d %d\n", replay_data.n_frames);
-    
-    replay_data.frames    = malloc(replay_data.n_frames*sizeof(frame_data_t));
-    replay_data.usernames = malloc(replay_data.n_usernames*sizeof(username_data_t));
-
-    for (int f = 0; f < replay_data.n_frames; ++f) {
-        for (int i = 0; i < dr_key_COUNT; ++i) {
-            replay_data.frames[f].pressed[i] = 0;
-        }
-    }
-
-    int cur_frame    = 0;
-    int cur_username = 0;
-
-    for (int i = 0; i < n_inputs; ++i) {
-        frame_data_t    * frame    = replay_data.frames + cur_frame;
-        if (input_codes[i] == dr_key_SKIP) {
-            ++cur_frame;
-        } else {
-            frame->pressed[input_codes[i]] = 1;
-        }
-    }
-
-    DR_Init(replay_data);
-
-	dg_Create();
-
-	D_DoomMain ();
-
+    int a = z_main(input_codes, n_inputs);
     return 0;
 }
+
 
