@@ -39,16 +39,17 @@ char *USER_INPUT = ",,,,,,,,,,,,,,,,,,,,,,,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u
 
 __attribute__((circuit)) int z_main(int n_inputs)
 {
+    // n_inputs < 64
     unsigned int *input_codes;
     input_codes = malloc(4*64);
     unsigned int counter = 0;
-    for (int i=0; i < 64; i++) { // fill array with keys
+    for (int i=0; i < n_inputs; i++) { // fill array with keys
         input_codes[i] = 42; //dr_key_up;
+        counter++;
     }
-    for (int i=0; i < 64; i++) { // sum all array values
-        counter += input_codes[i];
-    }
+
     return counter;
+
 
     /*
     replay_data_t replay_data;
