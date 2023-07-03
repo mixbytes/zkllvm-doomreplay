@@ -37,8 +37,20 @@
 char *USER_INPUT = ",,,,,,,,,,,,,,,,,,,,,,,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,r,r,r,r,f,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,f,f,f,f,f,f";
 
 
-__attribute__((circuit)) int z_main(unsigned char *input_codes, unsigned long n_inputs)
+__attribute__((circuit)) int z_main(int n_inputs)
 {
+    unsigned int *input_codes;
+    input_codes = malloc(4*64);
+    unsigned int counter = 0;
+    for (int i=0; i < 64; i++) { // fill array with keys
+        input_codes[i] = 42; //dr_key_up;
+    }
+    for (int i=0; i < 64; i++) { // sum all array values
+        counter += input_codes[i];
+    }
+    return counter;
+
+    /*
     replay_data_t replay_data;
 
     replay_data.framerate = 35;
@@ -87,7 +99,8 @@ __attribute__((circuit)) int z_main(unsigned char *input_codes, unsigned long n_
 
 	D_DoomMain ();
 
-    return 10;
+    return cur_frame;
+    */
 }
 
 
@@ -134,9 +147,13 @@ unsigned long prepare_inputs(char * input, unsigned char *input_codes) {
 
 
 int main(int argc, char **argv) {
+    /*
     unsigned char *input_codes = malloc(sizeof(unsigned char) * 118); // [FIXME] strlen(USER_INPUT));
     unsigned int n_inputs = prepare_inputs(USER_INPUT, input_codes);
     int a = z_main(input_codes, n_inputs);
+    
+    */
+    //int a = z_main(118);
     return 0;
 }
 
