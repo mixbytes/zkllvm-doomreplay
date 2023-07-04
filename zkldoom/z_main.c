@@ -34,12 +34,11 @@
 
 
 
-char *USER_INPUT = ",,,,,,,,,,,,,,,,,,,,,,,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,r,r,r,r,f,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,f,f,f,f,f,f";
-
 
 __attribute__((circuit)) int z_main(int n_inputs)
 {
     // n_inputs < 64
+    /*
     unsigned int *input_codes;
     input_codes = malloc(4*64);
     unsigned int counter = 0;
@@ -49,28 +48,32 @@ __attribute__((circuit)) int z_main(int n_inputs)
     }
 
     return counter;
+    */
 
-
-    /*
     replay_data_t replay_data;
 
     replay_data.framerate = 35;
     replay_data.n_start = 0;
-    replay_data.n_record = 10*replay_data.framerate;
+    replay_data.n_record = 10 * replay_data.framerate;
     replay_data.n_freeze = 0;
     replay_data.render_frame = 1;
     replay_data.render_input = 0;
     replay_data.render_username = 0;
     replay_data.n_frames = 1;
-    
-    for (int i = 0; i < n_inputs; ++i) {
-        switch (input_codes[i]) {
-            case dr_key_SKIP: {
-                        ++replay_data.n_frames;
-                      } break;
-        };
-    }
 
+    char USER_INPUT[118] = ",,,,,,,,,,,,,,,,,,,,,,,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,r,r,r,r,f,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,f,f,f,f,f,f";
+    
+    unsigned int counter = 0;
+    for (int i = 0; i < 118; ++i) {
+        if (USER_INPUT[i] == ',') {
+                replay_data.n_frames++;
+        }
+    }
+    return replay_data.n_frames;
+    
+
+
+    /*
     printf("[DEBUG] target n_frames: %d\n", replay_data.n_frames);
     
     replay_data.frames    = malloc(replay_data.n_frames*sizeof(frame_data_t));
@@ -154,7 +157,7 @@ int main(int argc, char **argv) {
     int a = z_main(input_codes, n_inputs);
     
     */
-    //int a = z_main(118);
+    int a = z_main(118);
     return 0;
 }
 

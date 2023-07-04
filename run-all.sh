@@ -85,7 +85,8 @@ ${ASSIGNER_BINARY} \
     -i ${BUILD_DIR}/${CCT}.inp.json \
     -t ${BUILD_DIR}/${CCT}.tbl \
     -c ${BUILD_DIR}/${CCT}.crct \
-    -e pallas
+    -e pallas \
+    --check
 
 #head -n 5 ${BUILD_DIR}/${CCT}.tbl
 
