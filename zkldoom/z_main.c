@@ -33,23 +33,10 @@
 #include "z_main.h"
 
 
-
+char USER_INPUT[118] = ",,,,,,,,,,,,,,,,,,,,,,,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,r,r,r,r,f,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,f,f,f,f,f,f";
 
 __attribute__((circuit)) int z_main(int n_inputs)
 {
-    // n_inputs < 64
-    /*
-    unsigned int *input_codes;
-    input_codes = malloc(4*64);
-    unsigned int counter = 0;
-    for (int i=0; i < n_inputs; i++) { // fill array with keys
-        input_codes[i] = 42; //dr_key_up;
-        counter++;
-    }
-
-    return counter;
-    */
-
     replay_data_t replay_data;
 
     replay_data.framerate = 35;
@@ -61,17 +48,15 @@ __attribute__((circuit)) int z_main(int n_inputs)
     replay_data.render_username = 0;
     replay_data.n_frames = 1;
 
-    char USER_INPUT[118] = ",,,,,,,,,,,,,,,,,,,,,,,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,r,r,r,r,f,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,f,f,f,f,f,f";
     
     unsigned int counter = 0;
-    for (int i = 0; i < 118; ++i) {
+    for (int i = 0; i < 118; i++) {
         if (USER_INPUT[i] == ',') {
-                replay_data.n_frames++;
+            replay_data.n_frames++;
         }
     }
     return replay_data.n_frames;
     
-
 
     /*
     printf("[DEBUG] target n_frames: %d\n", replay_data.n_frames);
