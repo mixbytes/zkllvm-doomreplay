@@ -64,7 +64,6 @@ __attribute__((circuit)) int z_main(int n_inputs, int m)
             replay_data.frames[f].pressed[i] = 0;
         }
     }
-    return replay_data.frames[1].pressed[0];
 
     int cur_frame    = 0;
     int cur_username = 0;
@@ -102,18 +101,16 @@ __attribute__((circuit)) int z_main(int n_inputs, int m)
             };
     }
 
+    return replay_data.n_frames;
     
-    DR_Init(replay_data);
+    /*DR_Init(replay_data);
 	
     DG_ScreenBuffer = malloc(DOOMGENERIC_RESX * DOOMGENERIC_RESY * 4);
 
 	D_DoomMain ();
 
-    return replay_data.n_frames;
+    return replay_data.n_frames;*/
 }
-
-
-
 
 
 
