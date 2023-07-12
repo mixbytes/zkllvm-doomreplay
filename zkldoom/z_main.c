@@ -28,6 +28,7 @@
 #include <stdlib.h>                                                                                                                    
 #include "doomreplay.h"
 #include "doomgeneric.h"
+#include "doomgeneric.c"
 
 #include "doom.h"
 #include "z_main.h"
@@ -35,8 +36,9 @@
 
 char USER_INPUT[118] = ",,,,,,,,,,,,,,,,,,,,,,,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,r,r,r,r,f,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,f,f,f,f,f,f";
 
-__attribute__((circuit)) int z_main(int n_inputs)
+__attribute__((circuit)) int z_main(int n_inputs, int m)
 {
+    
     replay_data_t replay_data;
 
     replay_data.framerate = 35;
@@ -48,48 +50,66 @@ __attribute__((circuit)) int z_main(int n_inputs)
     replay_data.render_username = 0;
     replay_data.n_frames = 1;
 
-    
-    unsigned int counter = 0;
-    for (int i = 0; i < 118; i++) {
+    for (int i = 0; i < n_inputs; i++) {
         if (USER_INPUT[i] == ',') {
             replay_data.n_frames++;
         }
     }
-    return replay_data.n_frames;
-    
-
-    /*
-    printf("[DEBUG] target n_frames: %d\n", replay_data.n_frames);
     
     replay_data.frames    = malloc(replay_data.n_frames*sizeof(frame_data_t));
     replay_data.usernames = malloc(replay_data.n_usernames*sizeof(username_data_t));
-
+    
     for (int f = 0; f < replay_data.n_frames; ++f) {
         for (int i = 0; i < dr_key_COUNT; ++i) {
             replay_data.frames[f].pressed[i] = 0;
         }
     }
+    return replay_data.frames[1].pressed[0];
 
     int cur_frame    = 0;
     int cur_username = 0;
-
     for (int i = 0; i < n_inputs; ++i) {
         frame_data_t    * frame    = replay_data.frames + cur_frame;
-        if (input_codes[i] == dr_key_SKIP) {
-            ++cur_frame;
-        } else {
-            frame->pressed[input_codes[i]] = 1;
-        }
+        username_data_t * username = replay_data.usernames + cur_username;
+
+            switch (USER_INPUT[i]) {
+                case ',': ++cur_frame;                             break;
+                case 'x': frame->pressed[dr_key_escape]       = 1; break;
+                case 'e': frame->pressed[dr_key_enter]        = 1; break;
+                case 'l': frame->pressed[dr_key_left]         = 1; break;
+                case 'r': frame->pressed[dr_key_right]        = 1; break;
+                case 'u': frame->pressed[dr_key_up]           = 1; break;
+                case 'd': frame->pressed[dr_key_down]         = 1; break;
+                case 'a': frame->pressed[dr_key_alt]          = 1; break;
+                case 's': frame->pressed[dr_key_shift]        = 1; break;
+                case 'p': frame->pressed[dr_key_use]          = 1; break;
+                case 'f': frame->pressed[dr_key_fire]         = 1; break;
+                case 't': frame->pressed[dr_key_tab]          = 1; break;
+                case 'y': frame->pressed[dr_key_yes]          = 1; break;
+                case 'n': frame->pressed[dr_key_no]           = 1; break;
+                case '<': frame->pressed[dr_key_strafe_left]  = 1; break;
+                case '>': frame->pressed[dr_key_strafe_right] = 1; break;
+                case '0': frame->pressed[dr_key_0]            = 1; break;
+                case '1': frame->pressed[dr_key_1]            = 1; break;
+                case '2': frame->pressed[dr_key_2]            = 1; break;
+                case '3': frame->pressed[dr_key_3]            = 1; break;
+                case '4': frame->pressed[dr_key_4]            = 1; break;
+                case '5': frame->pressed[dr_key_5]            = 1; break;
+                case '6': frame->pressed[dr_key_6]            = 1; break;
+                case '7': frame->pressed[dr_key_7]            = 1; break;
+                case '8': frame->pressed[dr_key_8]            = 1; break;
+                case '9': frame->pressed[dr_key_9]            = 1; break;
+            };
     }
 
+    
     DR_Init(replay_data);
 	
     DG_ScreenBuffer = malloc(DOOMGENERIC_RESX * DOOMGENERIC_RESY * 4);
 
 	D_DoomMain ();
 
-    return cur_frame;
-    */
+    return replay_data.n_frames;
 }
 
 
@@ -142,7 +162,7 @@ int main(int argc, char **argv) {
     int a = z_main(input_codes, n_inputs);
     
     */
-    int a = z_main(118);
+    int a = z_main(118,11);
     return 0;
 }
 

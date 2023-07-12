@@ -29,11 +29,15 @@ set -x
 cd ${WORKDIR}/zkldoom
 
 # -S used when CIRCUIT_ASSEMBLY_OUTPUT
+# -O0 - no optimizations, allow to be sure that even non-used parts of code are compiled
+
 
 #    -I${HOME}/zkllvm/libs/crypto3/block/include -I${HOME}/zkllvm/libs/crypto3/codec/include -I${HOME}/zkllvm/libs/crypto3/containers/include -I${HOME}/zkllvm/libs/crypto3/hash/include -I${HOME}/zkllvm/libs/crypto3/kdf/include -I${HOME}/zkllvm/libs/crypto3/mac/include -I${HOME}/zkllvm/libs/crypto3/marshalling/core/include -I -I${HOME}/zkllvm/libs/crypto3/marshalling/algebra/include -I${HOME}/zkllvm/libs/crypto3/marshalling/multiprecision/include -I${HOME}/zkllvm/libs/crypto3/marshalling/zk/include -I${HOME}/zkllvm/libs/crypto3/math/include -I${HOME}/zkllvm/libs/crypto3/modes/include -I${HOME}/zkllvm/libs/crypto3/multiprecision/include -I${HOME}/zkllvm/libs/crypto3/passhash/include -I${HOME}/zkllvm/libs/crypto3/pbkdf/include -I${HOME}/zkllvm/libs/crypto3/pkmodes/include -I${HOME}/zkllvm/libs/crypto3/pkpad/include -I${HOME}/zkllvm/libs/crypto3/pubkey/include -I${HOME}/zkllvm/libs/crypto3/random/include -I${HOME}/zkllvm/libs/crypto3/stream/include -I${HOME}/zkllvm/libs/crypto3/vdf/include -I${HOME}/zkllvm/libs/crypto3/zk/include \
 #    -I${HOME}/zkllvm/libs/blueprint/include \
 #    -I${HOME}/zkllvm/libs/crypto3/algebra/include \
 #    -I${HOME}/zkllvm/libs/stdlib/libcpp \
+#    -I${HOME}/zkllvm/build/include \
+    #-I/usr/local/include \
 
 ${CLANG_BINARY} -target assigner \
     -Xclang -no-opaque-pointers \
@@ -41,8 +45,6 @@ ${CLANG_BINARY} -target assigner \
     -std=c99 \
     -emit-llvm -O1 -S \
     -I${HOME}/zkllvm/libs/stdlib/libc/include \
-    -I${HOME}/zkllvm/build/include \
-    -I/usr/local/include \
     -D__ZKLLVM__ \
     -o ${BUILD_DIR}/${CCT}.ll \
     ./z_main.c
@@ -53,6 +55,7 @@ ${CLANG_BINARY} -target assigner \
 
 # run zkllvm in docker
 #docker run --rm -it --platform=linux/amd64 --user $(id -u ${USER}):$(id -g ${USER}) --volume ${WORKDIR}:${WORKDIR} --name myzkllvm myzkllvm
+
 
 #docker exec  \
 #   --workdir ${WORKDIR} \
@@ -71,14 +74,10 @@ ${CLANG_BINARY} -target assigner \
 
 #echo "[{\"int\": 4, \"int\": 5}]" > ${BUILD_DIR}/${CCT}.inp
 
-echo "[{\"int\": \"4\"}]" > ${BUILD_DIR}/${CCT}.inp.json
+echo "[{\"int\": \"118\"}, {\"int\": \"42\"}]" > ${BUILD_DIR}/${CCT}.inp.json
 # echo "4" > ${BUILD_DIR}/${CCT}.inp
 
-#echo "{\"input\": \"\"}" > ${BUILD_DIR}/${CCT}.inp.json
-#echo "" > ${BUILD_DIR}/${CCT}.inp
-
-cat ${BUILD_DIR}/${CCT}.inp
-# cat ${BUILD_DIR}/${CCT}.inp.json
+cat ${BUILD_DIR}/${CCT}.inp.json
 
 ${ASSIGNER_BINARY} \
     -b ${BUILD_DIR}/${CCT}.ll \
