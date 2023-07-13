@@ -7,6 +7,8 @@
 # See accompanying file LICENSE_1_0.txt or copy at
 # http://www.boost.org/LICENSE_1_0.txt
 #---------------------------------------------------------------------------#
+include(CMakePrintHelpers)
+
 
 function(add_circuit name)
     set(prefix ARG)
@@ -38,6 +40,9 @@ function(add_circuit name)
         endif()
     endforeach()
 
+    
+
+
     set(INCLUDE_DIRS_LIST "")
     # Collect include directories from dependencies first
     foreach(lib ${ARG_LINK_LIBRARIES})
@@ -53,13 +58,15 @@ function(add_circuit name)
         endif()
         list(APPEND INCLUDE_DIRS_LIST "-I${include_dir}")
     endforeach()
-    if (ZKLLVM_DEV_ENVIRONMENT)
-        list(APPEND INCLUDE_DIRS_LIST -I${CMAKE_SOURCE_DIR}/libs/stdlib/libcpp -I${CMAKE_SOURCE_DIR}/libs/stdlib/libc/include)
-    endif()
+
+    # add stdlib from zkllvm for Doom
+    list(APPEND INCLUDE_DIRS_LIST -I${CMAKE_SOURCE_DIR}/../zkllvm/libs/stdlib/libc/include)
     list(REMOVE_DUPLICATES INCLUDE_DIRS_LIST)
 
-    set(link_options "-opaque-pointers=0")
+    
 
+    set(link_options "-opaque-pointers=0")
+    set(CIRCUIT_ASSEMBLY_OUTPUT 1)
     if(CIRCUIT_ASSEMBLY_OUTPUT)
         set(extension ll)
         set(format_option -S)
@@ -69,13 +76,20 @@ function(add_circuit name)
         set(format_option -c)
     endif()
 
-    if (ZKLLVM_DEV_ENVIRONMENT)
-        set(CLANG $<TARGET_FILE:clang>)
-        set(LINKER $<TARGET_FILE:llvm-link>)
-    else()
-        set(CLANG clang)
-        set(LINKER llvm-link)
-    endif()
+    cmake_print_variables(ZKLLVM_DEV_ENVIRONMENT)
+    
+    # TEMP (to use different self-compiled parts of zkllvm)
+    set(CLANG ${CMAKE_SOURCE_DIR}/../zkllvm/build/libs/circifier/llvm/bin/clang)
+    set(LINKER ${CMAKE_SOURCE_DIR}/../zkllvm/build/libs/circifier/llvm/bin/llvm-link)
+    set(ASSIGNER ${CMAKE_SOURCE_DIR}/../zkllvm/build/bin/assigner/assigner)
+    
+    #if (ZKLLVM_DEV_ENVIRONMENT)
+    #    set(CLANG $<TARGET_FILE:clang>)
+    #    set(LINKER $<TARGET_FILE:llvm-link>)
+    #else()
+    #    set(CLANG clang)
+    #    set(LINKER llvm-link)
+    #endif()
 
     # Compile sources
     set(compiler_outputs "")
@@ -83,8 +97,17 @@ function(add_circuit name)
     foreach(source ${CIRCUIT_SOURCES})
         get_filename_component(source_base_name ${source} NAME)
         add_custom_target(${name}_${source_base_name}_${extension}
-                        COMMAND ${CLANG} -target assigner -Xclang -no-opaque-pointers -Xclang -fpreserve-vec3-type -std=c++20
-                        -D__ZKLLVM__ ${INCLUDE_DIRS_LIST} -emit-llvm -O1 ${format_option} -o ${source_base_name}.${extension} ${source}
+                        COMMAND ${CLANG} 
+                        -target assigner 
+                        -Xclang -no-opaque-pointers
+                        -Xclang -fpreserve-vec3-type
+                        -std=c99
+                        -D__ZKLLVM__
+                        ${INCLUDE_DIRS_LIST}
+                        -emit-llvm -O1 
+                        ${format_option}
+                        -o ${source_base_name}.${extension}
+                        ${source}
 
                         VERBATIM COMMAND_EXPAND_LISTS
 
@@ -99,4 +122,5 @@ function(add_circuit name)
                       DEPENDS ${name}_compile_sources
                       VERBATIM COMMAND_EXPAND_LISTS)
     set_target_properties(${name} PROPERTIES OUTPUT_NAME ${name}.${extension})
+
 endfunction(add_circuit)

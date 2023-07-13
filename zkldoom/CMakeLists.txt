@@ -1,4 +1,4 @@
-function(add_example example_target)
+function(compile_circuit example_target)
     set(prefix ARG)
     set(noValues "")
     set(singleValues INPUT)
