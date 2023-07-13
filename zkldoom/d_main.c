@@ -398,7 +398,8 @@ static void D_Endoom(void)
 //
 void D_DoomMain (void)
 {
-    
+    return;
+    /*
     DEH_printf("Z_Init: Init zone memory allocation daemon. \n");
     Z_Init ();
 
@@ -447,5 +448,6 @@ void D_DoomMain (void)
     G_InitNew (startskill, startepisode, startmap);
 
     D_DoomLoop ();  // never returns
+    */
 }
 

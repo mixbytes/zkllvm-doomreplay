@@ -4,29 +4,30 @@
 set -e
 
 
-ASSIGNER_BINARY=${HOME}/zkllvm/build/bin/assigner/assigner
 CLANG_BINARY=${HOME}/zkllvm/build/libs/circifier/llvm/bin/clang
+LLVM_LINKER_BINARY=${HOME}/zkllvm/build/libs/circifier/llvm/bin/llvm-link
+ASSIGNER_BINARY=${HOME}/zkllvm/build/bin/assigner/assigner
+
 ZKLLVM_VERSION=0.0.58
 TOOLCHAIN_VERSION=0.0.31
 
 WORKDIR=${HOME}/zkllvm-doomreplay
 BUILD_DIR=${WORKDIR}/zkbuild
 CCT=main
+cd ${WORKDIR}
 
 if [ ${#BUILD_DIR} -lt 1 ]; then 
     echo "BUILD_DIR var is empty, exiting";
     exit 2;
 fi
 echo "Removing previous build dir ./$BUILD_DIR to create new empty"
-rm -rf ./$BUILD_DIR
+rm -rf $BUILD_DIR
 if [ ! -d "$BUILD_DIR" ]; then
     mkdir "$BUILD_DIR"
 fi
 
 set -x
 
-
-cd ${WORKDIR}/zkldoom
 
 # -S used when CIRCUIT_ASSEMBLY_OUTPUT
 # -O0 - no optimizations, allow to be sure that even non-used parts of code are compiled
@@ -39,16 +40,27 @@ cd ${WORKDIR}/zkldoom
 #    -I${HOME}/zkllvm/build/include \
     #-I/usr/local/include \
 
+cd ${BUILD_DIR}
+
 ${CLANG_BINARY} -target assigner \
     -Xclang -no-opaque-pointers \
     -Xclang -fpreserve-vec3-type \
     -std=c99 \
-    -emit-llvm -O1 -S \
+    -emit-llvm -O0 -S \
     -I${HOME}/zkllvm/libs/stdlib/libc/include \
     -D__ZKLLVM__ \
     -o ${BUILD_DIR}/${CCT}.ll \
-    ./z_main.c
+    ../zkldoom/z_main.c
+   
 
+#${LLVM_LINKER_BINARY} \
+#    -opaque-pointers=0 \
+#    -o ${BUILD_DIR}/${CCT}.ll \
+#    ${BUILD_DIR}/z_main.ll ${BUILD_DIR}/d_main.ll
+
+
+
+#
 #    -I${HOME}/zkllvm/libs/stdlib/libc/include \
 #    -I${HOME}/zkllvm/build/include \
 #    -I/usr/local/include \

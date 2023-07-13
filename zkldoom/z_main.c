@@ -20,8 +20,6 @@
 
 #include "doomtype.h"
 #include <stdio.h>
-//#include <strings.h>
-//#include "i_system.h"
 #include "m_argv.h"
 
 
@@ -100,16 +98,12 @@ __attribute__((circuit)) int z_main(int n_inputs, int m)
                 case '9': frame->pressed[dr_key_9]            = 1; break;
             };
     }
+    
+    uint32_t* DG_ScreenBuffer = 0;
+    DG_ScreenBuffer = malloc(DOOMGENERIC_RESX * DOOMGENERIC_RESY * 4);
+	// D_DoomMain ();
 
     return replay_data.n_frames;
-    
-    /*DR_Init(replay_data);
-	
-    DG_ScreenBuffer = malloc(DOOMGENERIC_RESX * DOOMGENERIC_RESY * 4);
-
-	D_DoomMain ();
-
-    return replay_data.n_frames;*/
 }
 
 
