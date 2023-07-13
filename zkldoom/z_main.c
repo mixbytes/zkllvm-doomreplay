@@ -19,20 +19,26 @@
 //#include "config.h"
 
 #include "doomtype.h"
-#include <stdio.h>
+//#include <stdio.h>
 #include "m_argv.h"
 
 
 #include <stdlib.h>                                                                                                                    
 #include "doomreplay.h"
 #include "doomgeneric.h"
-#include "doomgeneric.c"
 
 #include "doom.h"
 #include "z_main.h"
 
-
 char USER_INPUT[118] = ",,,,,,,,,,,,,,,,,,,,,,,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,r,r,r,r,f,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,f,f,f,f,f,f";
+
+
+void *malloc(size_t size) {                                                                                                          
+    return __builtin_assigner_malloc(size);                                                                                          
+}
+void free(void *ptr) {                                                                                                               
+    __builtin_assigner_free(ptr);                                                                                                    
+} 
 
 __attribute__((circuit)) int z_main(int n_inputs, int m)
 {

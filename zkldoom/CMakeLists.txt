@@ -39,4 +39,4 @@ function(compile_circuit example_target)
                 ${Boost_LIBRARIES})
 endfunction()
 
-compile_circuit(zkldoom SOURCES z_main.c INPUT main.inp.json)
+compile_circuit(zkldoom SOURCES z_main.c d_main.c INPUT main.inp.json)

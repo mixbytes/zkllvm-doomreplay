@@ -76,7 +76,6 @@ function(add_circuit name)
         set(format_option -c)
     endif()
 
-    cmake_print_variables(ZKLLVM_DEV_ENVIRONMENT)
     
     # TEMP (to use different self-compiled parts of zkllvm)
     set(CLANG ${CMAKE_SOURCE_DIR}/../zkllvm/build/libs/circifier/llvm/bin/clang)
@@ -117,10 +116,16 @@ function(add_circuit name)
     endforeach()
 
     # Link sources
-    add_custom_target(${name}
+    add_custom_target(${name}_link_sources
                       COMMAND ${LINKER} ${link_options} -o ${name}.${extension} ${compiler_outputs}
                       DEPENDS ${name}_compile_sources
                       VERBATIM COMMAND_EXPAND_LISTS)
+    
+    # Final target target
+    add_custom_target(${name}
+                      DEPENDS ${name}_link_sources)
     set_target_properties(${name} PROPERTIES OUTPUT_NAME ${name}.${extension})
+    
+
 
 endfunction(add_circuit)

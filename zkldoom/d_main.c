@@ -22,7 +22,7 @@
 
 #include <ctype.h>
 #include <stdio.h>
-#include <stdlib.h>
+//#include <stdlib.h>
 #include <string.h>
 
 #include "config.h"
@@ -390,7 +390,7 @@ static void D_Endoom(void)
 
     I_Endoom(endoom);
 
-	exit(0);
+	//exit(0);
 }
 
 //
