@@ -337,33 +337,6 @@ static int oldnettics;
 
 // Returns true if there are players in the game:
 
-static boolean PlayersInGame(void)
-{
-    boolean result = false;
-    unsigned int i;
-
-    // If we are connected to a server, check if there are any players
-    // in the game.
-
-    if (net_client_connected)
-    {
-        for (i = 0; i < NET_MAXPLAYERS; ++i)
-        {
-            result = result || local_playeringame[i];
-        }
-    }
-
-    // Whether single or multi-player, unless we are running as a drone,
-    // we are in the game.
-
-    if (!drone)
-    {
-        result = true;
-    }
-
-    return result;
-}
-
 // When using ticdup, certain values must be cleared out when running
 // the duplicate ticcmds.
 
@@ -465,7 +438,7 @@ void TryRunTics (void)
 
     // wait for new tics if needed
 
-    while (!PlayersInGame() || lowtic < gametic/ticdup + counts)
+    while (lowtic < gametic/ticdup + counts)
     {
 	NetUpdate ();
 
@@ -498,31 +471,23 @@ void TryRunTics (void)
     {
         ticcmd_set_t *set;
 
-        if (!PlayersInGame())
-        {
-            return;
-        }
-
         set = &ticdata[(gametic / ticdup) % BACKUPTICS];
 
-        if (!net_client_connected)
-        {
-            SinglePlayerClear(set);
-        }
+        SinglePlayerClear(set);
 
 	for (i=0 ; i<ticdup ; i++)
 	{
-            if (gametic/ticdup > lowtic)
-                I_Error ("gametic>lowtic");
+        if (gametic/ticdup > lowtic)
+            I_Error ("gametic>lowtic");
 
-            memcpy(local_playeringame, set->ingame, sizeof(local_playeringame));
+        memcpy(local_playeringame, set->ingame, sizeof(local_playeringame));
 
-            loop_interface->RunTic(set->cmds, set->ingame);
-	    gametic++;
+        loop_interface->RunTic(set->cmds, set->ingame);
+        gametic++;
 
-	    // modify command for duplicated tics
+        // modify command for duplicated tics
 
-            TicdupSquash(set);
+        TicdupSquash(set);
 	}
 
 	NetUpdate ();	// check for new console commands
