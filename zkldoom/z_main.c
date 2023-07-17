@@ -32,14 +32,6 @@
 
 char USER_INPUT[118] = ",,,,,,,,,,,,,,,,,,,,,,,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,r,r,r,r,f,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,f,f,f,f,f,f";
 
-
-void *malloc(size_t size) {                                                                                                          
-    return __builtin_assigner_malloc(size);                                                                                          
-}
-void free(void *ptr) {                                                                                                               
-    __builtin_assigner_free(ptr);                                                                                                    
-} 
-
 __attribute__((circuit)) int z_main(int n_inputs, int m)
 {
     
@@ -104,12 +96,12 @@ __attribute__((circuit)) int z_main(int n_inputs, int m)
                 case '9': frame->pressed[dr_key_9]            = 1; break;
             };
     }
-    
-    uint32_t* DG_ScreenBuffer = 0;
-    DG_ScreenBuffer = malloc(DOOMGENERIC_RESX * DOOMGENERIC_RESY * 4);
-	// D_DoomMain ();
+    DR_Init(replay_data);
 
-    return replay_data.n_frames;
+    dg_Create();
+
+	D_DoomMain ();
+
 }
 
 

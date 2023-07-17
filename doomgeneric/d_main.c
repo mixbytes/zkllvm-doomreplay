@@ -197,8 +197,8 @@ void D_Display (void)
       case GS_LEVEL:
 		if (!gametic)
 			break;
-		if (inhelpscreensstate && !inhelpscreens)
-			redrawsbar = true;              // just put away the help screen
+		//if (inhelpscreensstate && !inhelpscreens)
+		//	redrawsbar = true;              // just put away the help screen
 		ST_Drawer (viewheight == 200, redrawsbar );
 		fullscreen = viewheight == 200;
 		break;
@@ -271,7 +271,6 @@ void D_Display (void)
     M_Drawer ();          // menu is drawn even on top of everything
     NetUpdate ();         // send out any new accumulation
 
-
     // normal update
     if (!wipe)
     {
@@ -295,7 +294,7 @@ void D_Display (void)
 #endif
 	    nowtime = I_GetTime ();
 	    tics = nowtime - wipestart;
-	     I_Sleep(1);
+	    I_Sleep(1);
 	} while (tics <= 0);
         
 	wipestart = nowtime;
@@ -381,9 +380,7 @@ void D_DoomLoop (void)
 		// frame is rendered
 		DR_ProcessInput ();
 #endif
-
 		TryRunTics (); // will run at least one tic
-
 		// Update display, next frame, with current state.
 		if (screenvisible)
 		{

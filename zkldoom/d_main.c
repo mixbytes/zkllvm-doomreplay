@@ -185,7 +185,7 @@ void D_Display (void)
     redrawsbar = false;
     
     wipe = false;
-
+    
     // do buffered drawing
     switch (gamestate)
     {
@@ -256,7 +256,6 @@ void D_Display (void)
     M_Drawer ();          // menu is drawn even on top of everything
     NetUpdate ();         // send out any new accumulation
 
-
     // normal update
     if (!wipe)
     {
@@ -312,7 +311,6 @@ void D_DoomLoop (void)
 
 		// AAAAAAAAAA
         DR_ProcessInput ();
-        
 		TryRunTics (); // will run at least one tic
 
 		// Update display, next frame, with current state.
@@ -398,8 +396,6 @@ static void D_Endoom(void)
 //
 void D_DoomMain (void)
 {
-    return;
-    /*
     DEH_printf("Z_Init: Init zone memory allocation daemon. \n");
     Z_Init ();
 
@@ -448,6 +444,5 @@ void D_DoomMain (void)
     G_InitNew (startskill, startepisode, startmap);
 
     D_DoomLoop ();  // never returns
-    */
 }
 
