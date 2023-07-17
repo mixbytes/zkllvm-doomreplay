@@ -2,22 +2,29 @@
 ZKLLVM compilation, proof generation, and verification of "user input"->"target game state" state transitions in the Doom core.
 
 
+## Compilation, linking of circuits
+[TEMP] build for zkllvm is made with CMake. Now at compile/linking/assigner stages. Don't forget to read what you're going to run :)
+
+Now ZKLLVM compiler/assigner/linkers are pointing to ${HOME}/zkllvm pre-build binaries of needed versions
+(needed to debug different dev brahches of each submodule).
+```
+mkipr -p build
+cd build
+cmake .. 
+make zkldoom_compile_sources
+```
 
 
 ## Doomreplay run (generate video demo)
- 
 ```
 cd doomgeneric
-make -f Makefile.dr
-./doomgeneric -iwad ../doom1.wad -input ../input/test1.txt -nrecord 3500 -framerate 35 -render_frame -render_input -render_username -output test1.mp4
+make -f Makefile.dr && ./doomgeneric -iwad ../doom1.wad -output test1.mp4
 ```
 
-## Zkldoom run (super stripped version for zk proving)
- 
+## Zkldoom run (super stripped version for zk proving and check consistencey with original "doomreplay")
 ```
 cd zkldoom
-make -f Makefile.zkld
-./zkldoom -iwad ../doom1.wad -input ../input/test1.txt -nrecord 3500 -framerate 35 -render_frame -render_input -render_username -output test1.mp4
+make -f Makefile.zkld && ./zkldoom
 ```
 
 
