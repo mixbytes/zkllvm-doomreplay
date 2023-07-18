@@ -142,8 +142,10 @@ extern  line_t*	linespeciallist[MAXLINEANIMS];
 
 void P_InitPicAnims (void)
 {
+    return;
+    /*
     int		i;
-
+    
     
     //	Init animation
     lastanim = anims;
@@ -182,6 +184,7 @@ void P_InitPicAnims (void)
 	lastanim->speed = animdefs[i].speed;
 	lastanim++;
     }
+    */
 	
 }
 

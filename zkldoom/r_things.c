@@ -65,15 +65,18 @@ typedef struct
 //  which increases counter clockwise (protractor).
 // There was a lot of stuff grabbed wrong, so I changed it...
 //
-fixed_t		pspritescale;
-fixed_t		pspriteiscale;
 
-lighttable_t**	spritelights;
+//fixed_t		pspritescale;
+//fixed_t		pspriteiscale;
+
+//lighttable_t**	spritelights;
 
 // constant arrays
 //  used for psprite clipping and initializing clipping
-short		negonearray[SCREENWIDTH];
-short		screenheightarray[SCREENWIDTH];
+
+
+//short		negonearray[SCREENWIDTH];
+//short		screenheightarray[SCREENWIDTH];
 
 
 //
@@ -174,13 +177,13 @@ R_InstallSpriteLump
 void R_InitSpriteDefs (char** namelist) 
 { 
     char**	check;
-    int		i;
-    int		l;
-    int		frame;
-    int		rotation;
-    int		start;
-    int		end;
-    int		patched;
+    // int		i;
+    // int		l;
+    // int		frame;
+    // int		rotation;
+    // int		start;
+    // int		end;
+    // int		patched;
 		
     // count the number of sprite names
     check = namelist;
@@ -295,9 +298,9 @@ int		newvissprite;
 //
 void R_InitSprites (char** namelist)
 {
-    int		i;
-	
-    // AAAAAA -commented 
+	// AAAAAA -commented 
+    
+    // int		i;
     // for (i=0 ; i<SCREENWIDTH ; i++)
     // {
 	// negonearray[i] = -1;
@@ -314,7 +317,10 @@ void R_InitSprites (char** namelist)
 //
 void R_ClearSprites (void)
 {
+    return;
+    /*
     vissprite_p = vissprites;
+    */
 }
 
 
@@ -859,8 +865,9 @@ void R_SortVisSprites (void)
 //
 // R_DrawSprite
 //
-static short		clipbot[SCREENWIDTH];
-static short		cliptop[SCREENWIDTH];
+
+//static short		clipbot[SCREENWIDTH];
+//static short		cliptop[SCREENWIDTH];
 void R_DrawSprite (vissprite_t* spr)
 {
     return;

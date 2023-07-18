@@ -762,6 +762,8 @@ int R_FlatNumForName (char* name)
 //
 int	R_CheckTextureNumForName (char *name)
 {
+    return 1;
+    /*
     texture_t *texture;
     int key;
 
@@ -782,6 +784,7 @@ int	R_CheckTextureNumForName (char *name)
     }
     
     return -1;
+    */
 }
 
 
@@ -793,6 +796,8 @@ int	R_CheckTextureNumForName (char *name)
 //
 int	R_TextureNumForName (char* name)
 {
+    return 0;
+    /*
     int		i;
 	
     i = R_CheckTextureNumForName (name);
@@ -803,6 +808,7 @@ int	R_TextureNumForName (char* name)
 		 name);
     }
     return i;
+    */
 }
 
 
@@ -818,6 +824,8 @@ int		spritememory;
 
 void R_PrecacheLevel (void)
 {
+    return;
+    /*
     char*		flatpresent;
     char*		texturepresent;
     char*		spritepresent;
@@ -924,6 +932,7 @@ void R_PrecacheLevel (void)
     }
 
     Z_Free(spritepresent);
+    */
 }
 
 
