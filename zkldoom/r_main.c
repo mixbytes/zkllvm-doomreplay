@@ -539,6 +539,8 @@ void R_InitTables (void)
 //
 void R_InitTextureMapping (void)
 {
+    return;
+    /*
     int			i;
     int			x;
     int			t;
@@ -596,6 +598,7 @@ void R_InitTextureMapping (void)
     }
 	
     clipangle = xtoviewangle[0];
+    */
 }
 
 
@@ -609,6 +612,8 @@ void R_InitTextureMapping (void)
 
 void R_InitLightTables (void)
 {
+    return;
+    /*
     int		i;
     int		j;
     int		level;
@@ -635,6 +640,7 @@ void R_InitLightTables (void)
 	    zlight[i][j] = colormaps + level*256;
 	}
     }
+    */
 }
 
 
@@ -666,6 +672,8 @@ R_SetViewSize
 //
 void R_ExecuteSetViewSize (void)
 {
+    return;
+    /*
     fixed_t	cosadj;
     fixed_t	dy;
     int		i;
@@ -754,6 +762,7 @@ void R_ExecuteSetViewSize (void)
 	    scalelight[i][j] = colormaps + level*256;
 	}
     }
+    */
 }
 
 
@@ -824,6 +833,7 @@ void R_SetupFrame (player_t* player)
 {		
     int		i;
     
+    /*
     viewplayer = player;
     viewx = player->mo->x;
     viewy = player->mo->y;
@@ -850,7 +860,7 @@ void R_SetupFrame (player_t* player)
     }
     else
 	fixedcolormap = 0;
-		
+	*/	
     framecount++;
     validcount++;
 }
@@ -862,6 +872,8 @@ void R_SetupFrame (player_t* player)
 //
 void R_RenderPlayerView (player_t* player)
 {	
+    return;
+    /*
     R_SetupFrame (player);
 
     // Clear buffers.
@@ -887,5 +899,6 @@ void R_RenderPlayerView (player_t* player)
     R_DrawMasked ();
 
     // Check for new console commands.
-    NetUpdate ();				
+    NetUpdate ();
+    */
 }

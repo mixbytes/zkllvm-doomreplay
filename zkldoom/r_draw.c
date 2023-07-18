@@ -100,7 +100,9 @@ int			dccount;
 //  be used. It has also been used with Wolfenstein 3D.
 // 
 void R_DrawColumn (void) 
-{ 
+{
+    return;
+    /*
     int			count; 
     byte*		dest; 
     fixed_t		frac;
@@ -142,6 +144,7 @@ void R_DrawColumn (void)
 	frac += fracstep;
 	
     } while (count--); 
+    */
 } 
 
 
@@ -207,6 +210,8 @@ void R_DrawColumn (void)
 
 void R_DrawColumnLow (void) 
 { 
+    return;
+    /*
     int			count; 
     byte*		dest; 
     byte*		dest2;
@@ -248,6 +253,7 @@ void R_DrawColumnLow (void)
 	frac += fracstep; 
 
     } while (count--);
+    */
 }
 
 
@@ -281,7 +287,9 @@ int	fuzzpos = 0;
 //  i.e. spectres and invisible players.
 //
 void R_DrawFuzzColumn (void) 
-{ 
+{
+    return;
+    /*
     int			count; 
     byte*		dest; 
     fixed_t		frac;
@@ -334,13 +342,16 @@ void R_DrawFuzzColumn (void)
 	dest += SCREENWIDTH;
 
 	frac += fracstep; 
-    } while (count--); 
+    } while (count--);
+    */
 } 
 
 // low detail mode version
  
 void R_DrawFuzzColumnLow (void) 
 { 
+    return;
+    /*
     int			count; 
     byte*		dest; 
     byte*		dest2; 
@@ -402,7 +413,8 @@ void R_DrawFuzzColumnLow (void)
 	dest2 += SCREENWIDTH;
 
 	frac += fracstep; 
-    } while (count--); 
+    } while (count--);
+    */
 } 
  
   
@@ -422,7 +434,9 @@ byte*	dc_translation;
 byte*	translationtables;
 
 void R_DrawTranslatedColumn (void) 
-{ 
+{
+    return;
+    /*
     int			count; 
     byte*		dest; 
     fixed_t		frac;
@@ -463,10 +477,13 @@ void R_DrawTranslatedColumn (void)
 	
 	frac += fracstep; 
     } while (count--); 
+    */
 } 
 
 void R_DrawTranslatedColumnLow (void) 
-{ 
+{
+    return;
+    /*
     int			count; 
     byte*		dest; 
     byte*		dest2; 
@@ -514,7 +531,8 @@ void R_DrawTranslatedColumnLow (void)
 	dest2 += SCREENWIDTH;
 	
 	frac += fracstep; 
-    } while (count--); 
+    } while (count--);
+    */
 } 
 
 
@@ -529,6 +547,8 @@ void R_DrawTranslatedColumnLow (void)
 //
 void R_InitTranslationTables (void)
 {
+    return;
+    /*
     int		i;
 	
     translationtables = Z_Malloc (256*3, PU_STATIC, 0);
@@ -550,6 +570,7 @@ void R_InitTranslationTables (void)
 		= translationtables[i+512] = i;
 	}
     }
+    */
 }
 
 
@@ -588,7 +609,9 @@ int			dscount;
 //
 // Draws the actual span.
 void R_DrawSpan (void) 
-{ 
+{
+    return;
+    /*
     unsigned int position, step;
     byte *dest;
     int count;
@@ -636,6 +659,7 @@ void R_DrawSpan (void)
         position += step;
 
     } while (count--);
+    */
 }
 
 
@@ -718,6 +742,8 @@ void R_DrawSpan (void)
 //
 void R_DrawSpanLow (void)
 {
+    return;
+    /*
     unsigned int position, step;
     unsigned int xtemp, ytemp;
     byte *dest;
@@ -764,6 +790,7 @@ void R_DrawSpanLow (void)
 	position += step;
 
     } while (count--);
+    */
 }
 
 //
@@ -778,6 +805,8 @@ R_InitBuffer
 ( int		width,
   int		height ) 
 { 
+    return;
+    /*
     int		i; 
 
     // Handle resize,
@@ -798,6 +827,7 @@ R_InitBuffer
     // Preclaculate all row offsets.
     for (i=0 ; i<height ; i++) 
 	ylookup[i] = I_VideoBuffer + (i+viewwindowy)*SCREENWIDTH; 
+    */
 } 
  
  
@@ -811,6 +841,8 @@ R_InitBuffer
 //
 void R_FillBackScreen (void) 
 { 
+    return;
+    /*
     byte*	src;
     byte*	dest; 
     int		x;
@@ -909,6 +941,7 @@ void R_FillBackScreen (void)
                 W_CacheLumpName(DEH_String("brdr_br"),PU_CACHE));
 
     V_RestoreBuffer();
+    */
 } 
  
 
@@ -919,17 +952,20 @@ void
 R_VideoErase
 ( unsigned	ofs,
   int		count ) 
-{ 
+{
   // LFB copy.
   // This might not be a good idea if memcpy
   //  is not optiomal, e.g. byte by byte on
   //  a 32bit CPU, as GNU GCC/Linux libc did
   //  at one point.
 
+    return; 
+    /*
     if (background_buffer != NULL)
     {
         memcpy(I_VideoBuffer + ofs, background_buffer + ofs, count); 
     }
+    */
 } 
 
 
@@ -939,7 +975,9 @@ R_VideoErase
 //  for different size windows?
 //
 void R_DrawViewBorder (void) 
-{ 
+{
+    return;
+    /*
     int		top;
     int		side;
     int		ofs;
@@ -970,6 +1008,7 @@ void R_DrawViewBorder (void)
 
     // ? 
     V_MarkRect (0,0,SCREENWIDTH, SCREENHEIGHT-SBARHEIGHT); 
+    */
 } 
  
  

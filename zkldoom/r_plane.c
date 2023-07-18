@@ -359,6 +359,8 @@ R_MakeSpans
 //
 void R_DrawPlanes (void)
 {
+    return;
+    /*
     visplane_t*		pl;
     int			light;
     int			x;
@@ -443,4 +445,5 @@ void R_DrawPlanes (void)
 	
         W_ReleaseLumpNum(lumpnum);
     }
+    */
 }

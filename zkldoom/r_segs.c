@@ -98,6 +98,8 @@ R_RenderMaskedSegRange
   int		x1,
   int		x2 )
 {
+    return;
+    /*
     unsigned	index;
     column_t*	col;
     int		lightnum;
@@ -179,7 +181,7 @@ R_RenderMaskedSegRange
 	}
 	spryscale += rw_scalestep;
     }
-	
+	*/
 }
 
 
@@ -198,6 +200,8 @@ R_RenderMaskedSegRange
 
 void R_RenderSegLoop (void)
 {
+    return;
+    /*
     angle_t		angle;
     unsigned		index;
     int			yl;
@@ -358,6 +362,7 @@ void R_RenderSegLoop (void)
 	topfrac += topstep;
 	bottomfrac += bottomstep;
     }
+    */
 }
 
 
@@ -373,6 +378,8 @@ R_StoreWallRange
 ( int	start,
   int	stop )
 {
+    return;
+    /*
     fixed_t		hyp;
     fixed_t		sineval;
     angle_t		distangle, offsetangle;
@@ -739,5 +746,6 @@ R_StoreWallRange
 	ds_p->bsilheight = INT_MAX;
     }
     ds_p++;
+    */
 }
 

@@ -189,6 +189,8 @@ R_DrawColumnInCache
   int		originy,
   int		cacheheight )
 {
+    return;
+    /*
     int		count;
     int		position;
     byte*	source;
@@ -213,6 +215,7 @@ R_DrawColumnInCache
 		
 	patch = (column_t *)(  (byte *)patch + patch->length + 4); 
     }
+    */
 }
 
 
@@ -225,6 +228,8 @@ R_DrawColumnInCache
 //
 void R_GenerateComposite (int texnum)
 {
+    return;
+    /*
     byte*		block;
     texture_t*		texture;
     texpatch_t*		patch;	
@@ -284,6 +289,7 @@ void R_GenerateComposite (int texnum)
     // Now that the texture has been built in column cache,
     //  it is purgable from zone memory.
     Z_ChangeTag (block, PU_CACHE);
+    */
 }
 
 
@@ -293,6 +299,8 @@ void R_GenerateComposite (int texnum)
 //
 void R_GenerateLookup (int texnum)
 {
+    return;
+    /*
     texture_t*		texture;
     byte*		patchcount;	// patchcount[texture->width]
     texpatch_t*		patch;	
@@ -371,6 +379,7 @@ void R_GenerateLookup (int texnum)
     }
 
     Z_Free(patchcount);
+    */
 }
 
 
@@ -403,6 +412,7 @@ R_GetColumn
 
 static void GenerateTextureHashTable(void)
 {
+    // TODO
     texture_t **rover;
     int i;
     int key;
@@ -411,6 +421,7 @@ static void GenerateTextureHashTable(void)
             = Z_Malloc(sizeof(texture_t *) * numtextures, PU_STATIC, 0);
 
     memset(textures_hashtable, 0, sizeof(texture_t *) * numtextures);
+
 
     // Add all textures to hash table
 
@@ -450,6 +461,7 @@ static void GenerateTextureHashTable(void)
 //
 void R_InitTextures (void)
 {
+    // TODO
     maptexture_t*	mtexture;
     texture_t*		texture;
     mappatch_t*		mpatch;
@@ -654,6 +666,7 @@ void R_InitFlats (void)
 //
 void R_InitSpriteLumps (void)
 {
+    // TODO
     int		i;
     patch_t	*patch;
 	
@@ -664,7 +677,9 @@ void R_InitSpriteLumps (void)
     spritewidth = Z_Malloc (numspritelumps*sizeof(*spritewidth), PU_STATIC, 0);
     spriteoffset = Z_Malloc (numspritelumps*sizeof(*spriteoffset), PU_STATIC, 0);
     spritetopoffset = Z_Malloc (numspritelumps*sizeof(*spritetopoffset), PU_STATIC, 0);
-	
+    
+    return;
+    /*
     for (i=0 ; i< numspritelumps ; i++)
     {
 	if (!(i&63))
@@ -675,6 +690,7 @@ void R_InitSpriteLumps (void)
 	spriteoffset[i] = SHORT(patch->leftoffset)<<FRACBITS;
 	spritetopoffset[i] = SHORT(patch->topoffset)<<FRACBITS;
     }
+    */
 }
 
 
@@ -684,12 +700,15 @@ void R_InitSpriteLumps (void)
 //
 void R_InitColormaps (void)
 {
+    return;
+    /*
     int	lump;
 
     // Load in the light tables, 
     //  256 byte align tables.
     lump = W_GetNumForName(DEH_String("COLORMAP"));
     colormaps = W_CacheLumpNum(lump, PU_STATIC);
+    */
 }
 
 
@@ -707,8 +726,8 @@ void R_InitData (void)
     R_InitFlats ();
     printf (".");
     R_InitSpriteLumps ();
-    printf (".");
-    R_InitColormaps ();
+    // printf (".");
+    // R_InitColormaps ();
 }
 
 

@@ -103,6 +103,8 @@ R_InstallSpriteLump
   unsigned	rotation,
   boolean	flipped )
 {
+    return;
+    /*
     int		r;
 	
     if (frame >= 29 || rotation > 8)
@@ -148,6 +150,7 @@ R_InstallSpriteLump
 		
     sprtemp[frame].lump[rotation] = lump - firstspritelump;
     sprtemp[frame].flip[rotation] = (byte)flipped;
+    */
 }
 
 
@@ -191,6 +194,8 @@ void R_InitSpriteDefs (char** namelist)
 		
     sprites = Z_Malloc(numsprites *sizeof(*sprites), PU_STATIC, NULL);
 	
+    return; // AAAAAAAAAAAAAAAAAAAAA
+    /*
     start = firstspritelump-1;
     end = lastspritelump+1;
 	
@@ -269,7 +274,7 @@ void R_InitSpriteDefs (char** namelist)
 	    Z_Malloc (maxframe * sizeof(spriteframe_t), PU_STATIC, NULL);
 	memcpy (sprites[i].spriteframes, sprtemp, maxframe*sizeof(spriteframe_t));
     }
-
+    */
 }
 
 
@@ -292,10 +297,11 @@ void R_InitSprites (char** namelist)
 {
     int		i;
 	
-    for (i=0 ; i<SCREENWIDTH ; i++)
-    {
-	negonearray[i] = -1;
-    }
+    // AAAAAA -commented 
+    // for (i=0 ; i<SCREENWIDTH ; i++)
+    // {
+	// negonearray[i] = -1;
+    // }
 	
     R_InitSpriteDefs (namelist);
 }
@@ -342,6 +348,8 @@ fixed_t		sprtopscreen;
 
 void R_DrawMaskedColumn (column_t* column)
 {
+    return;
+    /*
     int		topscreen;
     int 	bottomscreen;
     fixed_t	basetexturemid;
@@ -377,6 +385,7 @@ void R_DrawMaskedColumn (column_t* column)
     }
 	
     dc_texturemid = basetexturemid;
+    */
 }
 
 
@@ -391,6 +400,8 @@ R_DrawVisSprite
   int			x1,
   int			x2 )
 {
+    return;
+    /*
     column_t*		column;
     int			texturecolumn;
     fixed_t		frac;
@@ -432,6 +443,7 @@ R_DrawVisSprite
     }
 
     colfunc = basecolfunc;
+    */
 }
 
 
@@ -443,6 +455,8 @@ R_DrawVisSprite
 //
 void R_ProjectSprite (mobj_t* thing)
 {
+    return;
+    /*
     fixed_t		tr_x;
     fixed_t		tr_y;
     
@@ -592,7 +606,8 @@ void R_ProjectSprite (mobj_t* thing)
 	    index = MAXLIGHTSCALE-1;
 
 	vis->colormap = spritelights[index];
-    }	
+    }
+    */	
 }
 
 
@@ -604,6 +619,8 @@ void R_ProjectSprite (mobj_t* thing)
 //
 void R_AddSprites (sector_t* sec)
 {
+    return;
+    /*
     mobj_t*		thing;
     int			lightnum;
 
@@ -629,6 +646,7 @@ void R_AddSprites (sector_t* sec)
     // Handle all things in sector.
     for (thing = sec->thinglist ; thing ; thing = thing->snext)
 	R_ProjectSprite (thing);
+    */
 }
 
 
@@ -637,6 +655,8 @@ void R_AddSprites (sector_t* sec)
 //
 void R_DrawPSprite (pspdef_t* psp)
 {
+    return;
+    /*
     fixed_t		tx;
     int			x1;
     int			x2;
@@ -728,6 +748,7 @@ void R_DrawPSprite (pspdef_t* psp)
     }
 	
     R_DrawVisSprite (vis, vis->x1, vis->x2);
+    */
 }
 
 
@@ -737,6 +758,8 @@ void R_DrawPSprite (pspdef_t* psp)
 //
 void R_DrawPlayerSprites (void)
 {
+    return;
+    /*
     int		i;
     int		lightnum;
     pspdef_t*	psp;
@@ -765,6 +788,7 @@ void R_DrawPlayerSprites (void)
 	if (psp->state)
 	    R_DrawPSprite (psp);
     }
+    */
 }
 
 
@@ -778,6 +802,8 @@ vissprite_t	vsprsortedhead;
 
 void R_SortVisSprites (void)
 {
+    return;
+    /*
     int			i;
     int			count;
     vissprite_t*	ds;
@@ -825,6 +851,7 @@ void R_SortVisSprites (void)
 	vsprsortedhead.prev->next = best;
 	vsprsortedhead.prev = best;
     }
+    */
 }
 
 
@@ -836,6 +863,8 @@ static short		clipbot[SCREENWIDTH];
 static short		cliptop[SCREENWIDTH];
 void R_DrawSprite (vissprite_t* spr)
 {
+    return;
+    /*
     drawseg_t*		ds;
     int			x;
     int			r1;
@@ -940,6 +969,7 @@ void R_DrawSprite (vissprite_t* spr)
     mfloorclip = clipbot;
     mceilingclip = cliptop;
     R_DrawVisSprite (spr, spr->x1, spr->x2);
+    */
 }
 
 
@@ -950,6 +980,8 @@ void R_DrawSprite (vissprite_t* spr)
 //
 void R_DrawMasked (void)
 {
+    return;
+    /*
     vissprite_t*	spr;
     drawseg_t*		ds;
 	
@@ -976,6 +1008,7 @@ void R_DrawMasked (void)
     //  but does not draw on side views
     if (!viewangleoffset)		
 	R_DrawPlayerSprites ();
+    */
 }
 
 
