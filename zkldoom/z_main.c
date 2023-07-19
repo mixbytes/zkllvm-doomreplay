@@ -64,17 +64,7 @@ char USER_INPUT[] =
 ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
 ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
 "sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd"
-",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
-",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
-",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
-",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
 ;
-
-
-void LOG_ENGINE(int tick, int x, int y, int z, int angle, int health) {
-
-}
-
 
 
 __attribute__((circuit)) int z_main(int n_inputs, int m)
@@ -84,7 +74,6 @@ __attribute__((circuit)) int z_main(int n_inputs, int m)
 
     replay_data.framerate = 35;
     replay_data.n_start = 0;
-    replay_data.n_record = 10 * replay_data.framerate;
     replay_data.n_freeze = 0;
     replay_data.render_frame = 1;
     replay_data.render_input = 0;
@@ -139,6 +128,9 @@ __attribute__((circuit)) int z_main(int n_inputs, int m)
                 case '9': frame->pressed[dr_key_9]            = 1; break;
             };
     }
+    
+    replay_data.n_record = cur_frame;
+    
     DR_Init(replay_data);
 
     dg_Create();

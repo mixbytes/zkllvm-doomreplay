@@ -73,10 +73,6 @@ char USER_INPUT[] =
 ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
 ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
 "sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd"
-",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
-",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
-",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
-",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
 ;
 
 int main(int argc, char **argv)
@@ -98,7 +94,6 @@ int main(int argc, char **argv)
  
     replay_data.framerate = 35;
     replay_data.n_start = 0;
-    replay_data.n_record = 10 * replay_data.framerate;
     replay_data.n_freeze = 0;
     replay_data.render_frame = 1;
     replay_data.render_input = 0;
@@ -153,6 +148,8 @@ int main(int argc, char **argv)
                 case '9': frame->pressed[dr_key_9]            = 1; break;
             };
     }
+    
+    replay_data.n_record = cur_frame;
 
     DR_Init(replay_data);
 #endif
