@@ -448,8 +448,8 @@ void P_MobjThinker (mobj_t* mobj)
 	P_XYMovement (mobj);
 
     if (mobj->player) {
-        printf("[DEBUG] mobj TryMove()<-P_XYMovement()<-P_MobjThinker(): tics: %d, (x,y,z): (%d, %d, %d), angle: %d, health: %d\n",
-            mobj->tics, mobj->x, mobj->y, mobj->z, mobj->angle, mobj->health);
+        printf("[DEBUG] Tick: %d, playerState: (x,y,z): (%d, %d, %d), angle: %d, health: %d\n",
+            gametic, mobj->x, mobj->y, mobj->z, mobj->angle, mobj->health);
         //__builtin_dump_struct(mobj, &printf);
     }
 

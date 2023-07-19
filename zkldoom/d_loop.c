@@ -168,7 +168,6 @@ static boolean BuildNewTic(void)
            return false;
     }
 
-    printf ("[DEBUG] Tick(maketick): %i\n",maketic);
     memset(&cmd, 0, sizeof(ticcmd_t));
     loop_interface->BuildTiccmd(&cmd, maketic);
 
@@ -396,7 +395,6 @@ void TryRunTics (void)
     // in singletics mode, run a single tic every time this function
     // is called.
     
-    printf("[DEBUG] Ticks: entertic, realtics: %i, %i\n", entertic, realtics);
     if (singletics)
     {
         BuildNewTic();
@@ -434,8 +432,6 @@ void TryRunTics (void)
     if (counts < 1)
 	counts = 1;
     
-    printf("[DEBUG] Ticks: realtics, availableticks, counts: %i, %i, %i\n", realtics, availabletics, counts);
-
     // wait for new tics if needed
 
     while (lowtic < gametic/ticdup + counts)

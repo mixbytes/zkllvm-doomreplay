@@ -134,9 +134,9 @@ void DR_UpdateTime() {
 
 void DG_DrawFrame() {
 
-    printf("frame = %d\n", g_frame_id);
-    printf("frame = %d, time = %d, x = %d, diff = %d\n",
-           g_frame_id, g_time_gs/(g_dt/1000), g_time_gs/g_dt_gs, g_time_gs/g_dt_gs - g_frame_id);
+    // printf("frame = %d\n", g_frame_id);
+    // printf("frame = %d, time = %d, x = %d, diff = %d\n",
+    //       g_frame_id, g_time_gs/(g_dt/1000), g_time_gs/g_dt_gs, g_time_gs/g_dt_gs - g_frame_id);
 
     if (g_frame_id == 0) {
         g_t_start = clock();

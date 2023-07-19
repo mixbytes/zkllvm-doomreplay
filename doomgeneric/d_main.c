@@ -141,6 +141,7 @@ int             show_endoom = 1;
 void D_ProcessEvents (void)
 {
     event_t*	ev;
+    //__builtin_dump_struct(ev, &printf);
 	
     // IF STORE DEMO, DO NOT ACCEPT INPUT
     if (storedemo)
