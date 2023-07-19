@@ -30,7 +30,52 @@
 #include "doom.h"
 #include "z_main.h"
 
-char USER_INPUT[118] = ",,,,,,,,,,,,,,,,,,,,,,,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,r,r,r,r,f,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,f,f,f,f,f,f";
+
+//#define USER_INPUT_LENGTH 118
+//char USER_INPUT[118] = ",,,,,,,,,,,,,,,,,,,,,,,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,r,r,r,r,f,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,f,f,f,f,f,f";
+
+char USER_INPUT[] = 
+"u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,"
+"u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,"
+"    r,r,r,r,r,r,r,r,r,r,r,r,"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,"
+"p,"
+"r,r,r,r,r,"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"l,l,l,l,l,l,l,l"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"su,su,su,su,su,su,su,su,su,su,su,su,su"
+",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
+"sd,sd,sd,sd,sd"
+"r,r,r,r"
+"f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f"
+"f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f"
+"f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f"
+"f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f"
+"f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f"
+",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
+",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
+",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
+"sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd"
+",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
+",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
+",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
+",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
+;
+
+
+void LOG_ENGINE(int tick, int x, int y, int z, int angle, int health) {
+
+}
+
+
 
 __attribute__((circuit)) int z_main(int n_inputs, int m)
 {
@@ -53,7 +98,6 @@ __attribute__((circuit)) int z_main(int n_inputs, int m)
     }
     
     replay_data.frames    = malloc(replay_data.n_frames*sizeof(frame_data_t));
-    replay_data.usernames = malloc(replay_data.n_usernames*sizeof(username_data_t));
     
     for (int f = 0; f < replay_data.n_frames; ++f) {
         for (int i = 0; i < dr_key_COUNT; ++i) {
@@ -65,7 +109,6 @@ __attribute__((circuit)) int z_main(int n_inputs, int m)
     int cur_username = 0;
     for (int i = 0; i < n_inputs; ++i) {
         frame_data_t    * frame    = replay_data.frames + cur_frame;
-        username_data_t * username = replay_data.usernames + cur_username;
 
             switch (USER_INPUT[i]) {
                 case ',': ++cur_frame;                             break;
@@ -109,7 +152,7 @@ __attribute__((circuit)) int z_main(int n_inputs, int m)
 unsigned long prepare_inputs(char * input, unsigned char *input_codes) {
     // string with inputs like 
     // ",,,,,,,,,,,,,,,,,,,,,,,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,r,r,r,r,f,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,f,f,f,f,f,f";
-    unsigned long n_inputs = 118;// [FIXME] strlen(input);
+    unsigned long n_inputs = sizeof(input);
     for (int i = 0; i < n_inputs; ++i) {
             switch (input[i]) {
                 case ',': input_codes[i] = dr_key_SKIP; break;
@@ -145,13 +188,7 @@ unsigned long prepare_inputs(char * input, unsigned char *input_codes) {
 
 
 int main(int argc, char **argv) {
-    /*
-    unsigned char *input_codes = malloc(sizeof(unsigned char) * 118); // [FIXME] strlen(USER_INPUT));
-    unsigned int n_inputs = prepare_inputs(USER_INPUT, input_codes);
-    int a = z_main(input_codes, n_inputs);
-    
-    */
-    int a = z_main(118,11);
+    int a = z_main(sizeof(USER_INPUT),11);
     return 0;
 }
 

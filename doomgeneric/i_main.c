@@ -42,8 +42,42 @@ void M_FindResponseFile(void);
 void dg_Create();
 
 
-char USER_INPUT[118] = ",,,,,,,,,,,,,,,,,,,,,,,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,r,r,r,r,f,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,f,f,f,f,f,f";
-//  char USER_INPUT[118] = ",,,,,,,,,,,,,,,,,,,,,,,u,u,u,u,u,u,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,d,d,d,d,d,d,f,f,f,f,u,u,u,u,u,u,u,u,r,r,r,r,f,u,u,u,u";
+//char USER_INPUT[118] = ",,,,,,,,,,,,,,,,,,,,,,,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,r,r,r,r,f,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,f,f,f,f,f,f";
+char USER_INPUT[] = 
+"u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,"
+"u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,"
+"    r,r,r,r,r,r,r,r,r,r,r,r,"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,"
+"p,"
+"r,r,r,r,r,"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"l,l,l,l,l,l,l,l"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"su,su,su,su,su,su,su,su,su,su,su,su,su"
+",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
+"sd,sd,sd,sd,sd"
+"r,r,r,r"
+"f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f"
+"f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f"
+"f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f"
+"f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f"
+"f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f"
+",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
+",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
+",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
+"sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd"
+",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
+",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
+",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
+",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
+;
 
 int main(int argc, char **argv)
 {
@@ -70,20 +104,14 @@ int main(int argc, char **argv)
     replay_data.render_input = 0;
     replay_data.render_username = 0;
     replay_data.n_frames = 1;
-    replay_data.n_usernames = 1;
 
-    int in_username = 0;
-    
-    for (int i = 0; i < 118; ++i) {
-        switch (USER_INPUT[i]) {
-               case ',': {
-                            ++replay_data.n_frames;
-                      } break;
-        };
+    for (int i = 0; i < sizeof(USER_INPUT); i++) {                                                                                               
+        if (USER_INPUT[i] == ',') {                                                                                                    
+            replay_data.n_frames++;                                                                                                    
+        }                                                                                                                              
     }
 
     replay_data.frames    = malloc(replay_data.n_frames*sizeof(frame_data_t));
-    replay_data.usernames = malloc(replay_data.n_usernames*sizeof(username_data_t));
 
     for (int f = 0; f < replay_data.n_frames; ++f) {
         for (int i = 0; i < dr_key_COUNT; ++i) {
@@ -91,24 +119,12 @@ int main(int argc, char **argv)
         }
     }
 
-    for (int i = 0; i < replay_data.n_usernames; ++i) {
-        replay_data.usernames[i].len    = 0;
-        replay_data.usernames[i].buf[0] = 0;
-    }
-
     int cur_frame    = 0;
     int cur_username = 0;
-
-    for (int i = 0; i < 118; ++i) {
+    for (int i = 0; i < sizeof(USER_INPUT); ++i) {
         frame_data_t    * frame    = replay_data.frames + cur_frame;
-        username_data_t * username = replay_data.usernames + cur_username;
 
             switch (USER_INPUT[i]) {
-                case '#': {
-                              in_username = 1;
-                              cur_username++;
-                              replay_data.usernames[cur_username].frame_start = cur_frame;
-                          } break;
                 case ',': ++cur_frame;                             break;
                 case 'x': frame->pressed[dr_key_escape]       = 1; break;
                 case 'e': frame->pressed[dr_key_enter]        = 1; break;
