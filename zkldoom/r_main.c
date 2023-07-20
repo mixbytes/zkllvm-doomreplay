@@ -775,6 +775,8 @@ void R_ExecuteSetViewSize (void)
 
 void R_Init (void)
 {
+    return;
+    /*
     R_InitData ();
     printf (".");
     R_InitPointToAngle ();
@@ -793,6 +795,7 @@ void R_Init (void)
     printf (".");
 	
     framecount = 0;
+    */
 }
 
 

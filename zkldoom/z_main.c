@@ -37,7 +37,7 @@
 char USER_INPUT[] = 
 "u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,"
 "u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,"
-"    r,r,r,r,r,r,r,r,r,r,r,r,"
+"r,r,r,r,r,r,r,r,r,r,r,r,"
 "su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
 "su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
 "su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
