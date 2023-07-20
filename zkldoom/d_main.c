@@ -431,8 +431,9 @@ void D_DoomMain (void)
     // DEH_printf("R_Init: Init DOOM refresh daemon - ");
     // R_Init ();
 
-    //DEH_printf("\nP_Init: Init Playloop state.\n");
-    P_Init ();
+    // AAAAAAAAA not-needed in zkllvm version
+    // DEH_printf("\nP_Init: Init Playloop state.\n");
+    // P_Init ();
 
     DEH_printf("D_CheckNetGame: Checking network game status.\n");
     D_CheckNetGame ();
