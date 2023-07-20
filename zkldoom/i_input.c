@@ -319,9 +319,9 @@ void I_GetEvent(void)
             {
                 D_PostEvent(&event);
             }
+            // AAAAAAAAAAA (in replay mode "break" should be disabled)
             // this breaks fire after key release
-            // AAAAAAAAAAAAAAAAA
-            break;
+            //break;
         }
     }
 
