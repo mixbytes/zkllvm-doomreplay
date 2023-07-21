@@ -186,6 +186,7 @@ void D_Display (void)
     
     wipe = false;
     
+    /* AAAAAAAAAAAAAAAAA
     // do buffered drawing
     switch (gamestate)
     {
@@ -254,18 +255,25 @@ void D_Display (void)
 
     // menus go directly to the screen
     M_Drawer ();          // menu is drawn even on top of everything
+    */
+
     NetUpdate ();         // send out any new accumulation
 
     // normal update
     if (!wipe)
     {
+    // AAAAAAAAAA - always executed (wipe == false)
+    // I_FinishUpdate - without it endless loop with new tics
+
 	I_FinishUpdate ();              // page flip or blit buffer
 	return;
     }
     
     // wipe update
+    /* AAAAAAAAAAAAAAA
+    
     wipe_EndScreen(0, 0, SCREENWIDTH, SCREENHEIGHT);
-
+    */
     wipestart = I_GetTime () - 1;
 
     do
@@ -279,11 +287,15 @@ void D_Display (void)
         } while (tics <= 0);
                 
 	wipestart = nowtime;
+
+    /* AAAAAAAAAAAAAAAA
 	done = wipe_ScreenWipe(wipe_Melt
 			       , 0, 0, SCREENWIDTH, SCREENHEIGHT, tics);
 	I_UpdateNoBlit ();
 	M_Drawer ();                            // menu is drawn even on top of wipes
 	I_FinishUpdate ();                      // page flip or blit buffer
+    */
+
     } while (!done);
 }
 
@@ -316,7 +328,7 @@ void D_DoomLoop (void)
 		// Update display, next frame, with current state.
 		if (screenvisible)
 		{
-			D_Display ();
+		    D_Display ();
 		}
     }
 }

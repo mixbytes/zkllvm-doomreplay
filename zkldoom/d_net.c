@@ -221,15 +221,17 @@ void D_CheckNetGame (void)
 {
     net_gamesettings_t settings;
 
-    if (netgame)
-    {
-        autostart = true;
-    }
+    // AAAAAAAAAAAAAA
+    // if (netgame)
+    // {
+    //    autostart = true;
+    // }
 
-    D_RegisterLoopCallbacks(&doom_loop_interface);
+    D_RegisterLoopCallbacks(&doom_loop_interface); // uses functions D_ProcessEvents, G_BuildTiccmd, RunTic, M_Ticker
 
     SaveGameSettings(&settings);
-    D_StartNetGame(&settings, NULL);
+    //__builtin_dump_struct(&settings, &printf);
+    D_StartNetGame(&settings, NULL); //simply fills some settings parameters
     LoadGameSettings(&settings);
 }
 
