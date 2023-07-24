@@ -30,6 +30,8 @@
 #include "doom.h"
 #include "z_main.h"
 
+void D_DoomMain (void);                                                                                                                
+void dg_Create();
 
 //#define USER_INPUT_LENGTH 118
 //char USER_INPUT[118] = ",,,,,,,,,,,,,,,,,,,,,,,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,r,r,r,r,f,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,f,f,f,f,f,f";
@@ -129,7 +131,7 @@ __attribute__((circuit)) int z_main(int n_inputs, int m)
     }
     
     replay_data.n_record = cur_frame;
-    
+
     DR_Init(replay_data);
 
     dg_Create();

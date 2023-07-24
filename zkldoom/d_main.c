@@ -86,6 +86,7 @@
 //  calls I_GetTime, I_StartFrame, and I_StartTic
 //
 void D_DoomLoop (void);
+void D_CheckNetGame (void);
 
 // Location where savegames are stored
 
