@@ -126,6 +126,25 @@ function(add_circuit name)
                       DEPENDS ${name}_link_sources)
     set_target_properties(${name} PROPERTIES OUTPUT_NAME ${name}.${extension})
     
+    
 
+
+
+
+
+
+    add_custom_target(${name}_run_assigner
+                      DEPENDS ${name}_link_sources
+                      COMMAND echo "[{\"int\": \"118\"}, {\"int\": \"42\"}]" > ${name}.inp.json &&
+                      ${ASSIGNER}
+                      -b ${name}.${extension}
+                      -i ${name}.inp.json
+                      -t ${name}.tbl
+                      -c ${name}.crct
+                      -e pallas
+                      --check 
+                      
+                      VERBATIM COMMAND_EXPAND_LISTS
+                      )
 
 endfunction(add_circuit)

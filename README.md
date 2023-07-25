@@ -27,6 +27,16 @@ cd zkldoom
 make -f Makefile.zkld && ./zkldoom
 ```
 
+#Run assigner
+[TEMP] - Creates empty ```z_main.inp.json``` and tries to run assinger using these inputs. Should generate ```.tbl``` file with intermediate signals
+```
+mkipr -p build
+cd build
+cmake .. 
+make zkldoom_run_assinger
+```
+
+
 
 ## helper script to hardcode .wad files
 

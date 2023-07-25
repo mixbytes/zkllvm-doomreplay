@@ -35,6 +35,7 @@ void dg_Create();
 //#define USER_INPUT_LENGTH 118
 //char USER_INPUT[118] = ",,,,,,,,,,,,,,,,,,,,,,,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,r,r,r,r,f,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,f,f,f,f,f,f";
 
+// size of input = 1166
 char USER_INPUT[] = 
 "u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,"
 "u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,"
@@ -130,13 +131,14 @@ __attribute__((circuit)) int z_main(int n_inputs, int m)
     }
     
     replay_data.n_record = cur_frame;
+    return cur_frame;
 
-    DR_Init(replay_data);
+    //DR_Init(replay_data);
 
-    dg_Create();
+    //dg_Create();
 
-	D_DoomMain ();
-
+	//D_DoomMain ();
+    
 }
 
 
