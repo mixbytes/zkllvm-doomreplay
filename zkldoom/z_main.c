@@ -28,7 +28,6 @@
 #include "doomgeneric.h"
 
 #include "doom.h"
-#include "z_main.h"
 
 void D_DoomMain (void);                                                                                                                
 void dg_Create();
