@@ -8,7 +8,7 @@
 
 #include <time.h>
 #include <stdio.h>
-#include <unistd.h>
+// #include <unistd.h>
 #include <string.h>
 
 #include <stdbool.h>
@@ -96,6 +96,8 @@ void DR_Init(replay_data_t replay_data) {
         g_pressed_last[i] = 0;
     }
 
+   
+#ifndef __ZKLLVM__        
     printf("\n\n======= DOOM REPLAY ===========\n");
     printf("Frames to simulate: %6d (%g seconds)\n", g_replay_data.n_frames, (float)(g_replay_data.n_frames)/TICRATE);
     printf("Start frame:        %6d (%g seconds)\n", g_replay_data.n_start,  (float)(g_replay_data.n_start)/TICRATE);
@@ -105,6 +107,7 @@ void DR_Init(replay_data_t replay_data) {
     printf("Render input:       %6d\n", g_replay_data.render_input);
     printf("Render username:    %6d\n", g_replay_data.render_username);
     printf("===============================\n");
+#endif
 }
 
 void DR_ProcessInput() {
@@ -145,13 +148,17 @@ void DG_DrawFrame() {
     g_frame_id++;
 
     if (g_frame_id >= g_replay_data.n_start + g_replay_data.n_record || g_frame_id >= g_replay_data.n_frames) {
+#ifndef __ZKLLVM__        
         printf("Terminating ..\n");
+#endif
         exit(0);
     }
     
     const int n_frames_stats = 1000;
     if (g_frame_id % n_frames_stats == 0) {
+#ifndef __ZKLLVM__        
         printf("frame = %d, speed = %.2f frames/sec\n", g_frame_id, n_frames_stats/(((double)(clock() - g_t_start))/CLOCKS_PER_SEC));
+#endif
         g_t_start = clock();
     }
 }

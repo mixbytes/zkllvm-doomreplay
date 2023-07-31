@@ -100,7 +100,7 @@ function(add_circuit name)
                         -target assigner 
                         -Xclang -no-opaque-pointers
                         -Xclang -fpreserve-vec3-type
-                        -std=c99
+                        -std=c17
                         -D__ZKLLVM__
                         ${INCLUDE_DIRS_LIST}
                         -emit-llvm -O1 
@@ -132,10 +132,10 @@ function(add_circuit name)
 
 
 
-
+    
     add_custom_target(${name}_run_assigner
                       DEPENDS ${name}_link_sources
-                      COMMAND echo "[{\"int\": \"118\"}, {\"int\": \"42\"}]" > ${name}.inp.json &&
+                      COMMAND echo "[{\"int\": \"1\"}, {\"int\": \"7\"}]" > ${name}.inp.json &&
                       ${ASSIGNER}
                       -b ${name}.${extension}
                       -i ${name}.inp.json
@@ -146,5 +146,8 @@ function(add_circuit name)
                       
                       VERBATIM COMMAND_EXPAND_LISTS
                       )
+
+
+
 
 endfunction(add_circuit)

@@ -33,7 +33,7 @@ make -f Makefile.zkld && ./zkldoom
 mkipr -p build
 cd build
 cmake .. 
-make zkldoom_run_assinger
+make zkldoom_run_assigner
 ```
 
 
