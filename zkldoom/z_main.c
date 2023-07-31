@@ -220,12 +220,12 @@ __attribute__((circuit)) unsigned int Dijkstra(unsigned int st, unsigned int end
     // #define VVV 8
     for(int i = 0; i < VVV; i++) {
         for (int j = i; j < VVV; j++) {
-            //randstate = 1664525 * randstate + 1013904223; // common values used in linear congruential generators
-            randstate = 3 * randstate + 5; // test
+            randstate = 1664525 * randstate + 1013904223; // common values used in linear congruential generators
+            // randstate = 3 * randstate + 5; // test
             if (i==j) {
                 GR[i][j] = 0;
             } else {
-                GR[i][j] = randstate;
+                GR[i][j] = randstate % 99;
                 GR[j][i] = GR[i][j];
             }
         }
