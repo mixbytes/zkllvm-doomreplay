@@ -17,7 +17,6 @@
 //
 
 
-/*
 //#include "config.h"
 
 #include "doomtype.h"
@@ -189,7 +188,10 @@ int main(int argc, char **argv) {
 }
 
 
-*/
+
+
+
+/*
 
 
 
@@ -204,14 +206,14 @@ const unsigned int INT_MAX=0xffffffff;
 
 __attribute__((circuit)) unsigned int Dijkstra(unsigned int st, unsigned int end) {
 
-     /*int GR[VVV][VVV] = {
-        {0, 1, 4, 0, 2, 0},
-        {0, 0, 0, 9, 0, 0},
-        {4, 0, 0, 7, 0, 0},
-        {0, 9, 7, 0, 0, 2},
-        {0, 0, 0, 0, 0, 8},
-        {0, 0, 0, 0, 0, 0}
-    };*/
+     //int GR[VVV][VVV] = {
+     //   {0, 1, 4, 0, 2, 0},
+     //   {0, 0, 0, 9, 0, 0},
+     //   {4, 0, 0, 7, 0, 0},
+     //   {0, 9, 7, 0, 0, 2},
+     //   {0, 0, 0, 0, 0, 8},
+     //   {0, 0, 0, 0, 0, 0}
+     //};
 
     // fill graph with values
     unsigned int GR[VVV][VVV];
@@ -291,4 +293,5 @@ int main(int argc, char **argv) {
 }
 
 
+*/
 
