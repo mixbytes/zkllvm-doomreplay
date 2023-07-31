@@ -81,6 +81,7 @@ function(add_circuit name)
     set(CLANG ${CMAKE_SOURCE_DIR}/../zkllvm/build/libs/circifier/llvm/bin/clang)
     set(LINKER ${CMAKE_SOURCE_DIR}/../zkllvm/build/libs/circifier/llvm/bin/llvm-link)
     set(ASSIGNER ${CMAKE_SOURCE_DIR}/../zkllvm/build/bin/assigner/assigner)
+    set(STATEMENT_PREPARE ${CMAKE_SOURCE_DIR}/../proof-market-toolchain/scripts/prepare_statement.py)
     
     #if (ZKLLVM_DEV_ENVIRONMENT)
     #    set(CLANG $<TARGET_FILE:clang>)
@@ -143,6 +144,18 @@ function(add_circuit name)
                       -c ${name}.crct
                       -e pallas
                       --check 
+                      
+                      VERBATIM COMMAND_EXPAND_LISTS
+                      )
+    
+    add_custom_target(${name}_run_prepare_statement
+                      DEPENDS ${name}_run_assigner
+                      COMMAND 
+                      python3 ${STATEMENT_PREPARE} 
+                      -c ${name}.${extension}
+                      -o ${name}.json
+                      -n ${name}
+                      -t placeholder-zkllvm
                       
                       VERBATIM COMMAND_EXPAND_LISTS
                       )

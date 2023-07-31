@@ -36,6 +36,16 @@ cmake ..
 make zkldoom_run_assigner
 ```
 
+#Run prepare statement (runs compilation, assignment, preparation of statement (.json file) for proving
+[TEMP] Generates ```.json``` file with proving statement
+```
+mkipr -p build
+cd build
+cmake .. 
+make zkldoom_run_prepare_statement
+```
+
+
 
 
 ## helper script to hardcode .wad files
