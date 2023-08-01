@@ -164,3 +164,18 @@ function(add_circuit name)
 
 
 endfunction(add_circuit)
+
+function(add_circuit_assignable)
+    list(POP_FRONT ARGV circuit_name)
+    list(PREPEND ARGV ${circuit_name}_no_stdlib)
+    add_circuit(${ARGV})
+
+    set(LINKER ${CMAKE_SOURCE_DIR}/../zkllvm/build/libs/circifier/llvm/bin/llvm-link)
+    set(link_options "-opaque-pointers=0;-S")
+    set(libc_stdlib ${CMAKE_SOURCE_DIR}/../zkllvm/build/libs/stdlib/libc/zkllvm-libc.ll)
+
+    add_custom_target(${circuit_name}
+                      COMMAND ${LINKER} ${link_options} -o ${circuit_name}.ll ${circuit_name}_no_stdlib.ll ${libc_stdlib}
+                      DEPENDS ${circuit_name}_no_stdlib
+                      VERBATIM COMMAND_EXPAND_LISTS)
+endfunction()

@@ -8,7 +8,7 @@ function(compile_circuit example_target)
                         "${singleValues}"
                         "${multiValues}"
                         ${ARGN})
-    add_circuit(${example_target}
+    add_circuit_assignable(${example_target}
                 SOURCES ${ARG_SOURCES}
 
                 LINK_LIBRARIES
