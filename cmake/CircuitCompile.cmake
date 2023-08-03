@@ -79,6 +79,7 @@ function(add_circuit name)
     
     # TEMP (to use different self-compiled parts of zkllvm)
     set(CLANG ${CMAKE_SOURCE_DIR}/../zkllvm/build/libs/circifier/llvm/bin/clang)
+    set(LIBC_STDLIB_LL ${CMAKE_SOURCE_DIR}/../zkllvm/build/libs/stdlib/libc/zkllvm-libc.ll)
     set(LINKER ${CMAKE_SOURCE_DIR}/../zkllvm/build/libs/circifier/llvm/bin/llvm-link)
     set(ASSIGNER ${CMAKE_SOURCE_DIR}/../zkllvm/build/bin/assigner/assigner)
     set(STATEMENT_PREPARE ${CMAKE_SOURCE_DIR}/../proof-market-toolchain/scripts/prepare_statement.py)
@@ -117,21 +118,18 @@ function(add_circuit name)
     endforeach()
 
     # Link sources
+
+    # [NOTE] we include pre-compiled ${LIBC_STDLIB_LL} to avoid duplicate
+    # stdlib functions in multiple .ll files
+
     add_custom_target(${name}_link_sources
-                      COMMAND ${LINKER} ${link_options} -o ${name}.${extension} ${compiler_outputs}
                       DEPENDS ${name}_compile_sources
+                      COMMAND ${LINKER}
+                      ${link_options}
+                      -o ${name}.ll
+                      ${compiler_outputs}
+                      ${LIBC_STDLIB_LL}
                       VERBATIM COMMAND_EXPAND_LISTS)
-    
-    # Final target target
-    add_custom_target(${name}
-                      DEPENDS ${name}_link_sources)
-    set_target_properties(${name} PROPERTIES OUTPUT_NAME ${name}.${extension})
-    
-    
-
-
-
-
 
     
     add_custom_target(${name}_run_assigner
@@ -165,17 +163,17 @@ function(add_circuit name)
 
 endfunction(add_circuit)
 
-function(add_circuit_assignable)
-    list(POP_FRONT ARGV circuit_name)
-    list(PREPEND ARGV ${circuit_name}_no_stdlib)
-    add_circuit(${ARGV})
-
-    set(LINKER ${CMAKE_SOURCE_DIR}/../zkllvm/build/libs/circifier/llvm/bin/llvm-link)
-    set(link_options "-opaque-pointers=0;-S")
-    set(libc_stdlib ${CMAKE_SOURCE_DIR}/../zkllvm/build/libs/stdlib/libc/zkllvm-libc.ll)
-
-    add_custom_target(${circuit_name}
-                      COMMAND ${LINKER} ${link_options} -o ${circuit_name}.ll ${circuit_name}_no_stdlib.ll ${libc_stdlib}
-                      DEPENDS ${circuit_name}_no_stdlib
-                      VERBATIM COMMAND_EXPAND_LISTS)
-endfunction()
+#function(add_circuit_assignable)
+#    #list(POP_FRONT ARGV circuit_name)
+#    #list(PREPEND ARGV ${circuit_name}_no_stdlib)
+#    add_circuit(${ARGV})
+#
+#    set(LINKER ${CMAKE_SOURCE_DIR}/../zkllvm/build/libs/circifier/llvm/bin/llvm-link)
+#    set(link_options "-opaque-pointers=0;-S")
+#    set(libc_stdlib ${CMAKE_SOURCE_DIR}/../zkllvm/build/libs/stdlib/libc/zkllvm-libc.ll)
+#
+#    add_custom_target(${circuit_name}
+#                      COMMAND ${LINKER} ${link_options} -o ${circuit_name}.ll ${circuit_name}_no_stdlib.ll ${libc_stdlib}
+#                      DEPENDS ${circuit_name}_no_stdlib
+#                      VERBATIM COMMAND_EXPAND_LISTS)
+#endfunction()

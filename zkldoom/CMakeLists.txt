@@ -1,4 +1,4 @@
-function(compile_circuit example_target)
+function(process_circuit example_target)
     set(prefix ARG)
     set(noValues "")
     set(singleValues INPUT)
@@ -8,7 +8,7 @@ function(compile_circuit example_target)
                         "${singleValues}"
                         "${multiValues}"
                         ${ARGN})
-    add_circuit_assignable(${example_target}
+    add_circuit(${example_target}
                 SOURCES ${ARG_SOURCES}
 
                 LINK_LIBRARIES
@@ -39,4 +39,4 @@ function(compile_circuit example_target)
                 ${Boost_LIBRARIES})
 endfunction()
 
-compile_circuit(zkldoom SOURCES z_main.c doomgeneric_dr.c INPUT main.inp.json)
+process_circuit(zkldoom SOURCES z_main.c doomgeneric_dr.c INPUT main.inp.json)
