@@ -86,3 +86,37 @@ n   - no
 0-9 - weapons
 ```
 
+Example inputs ([TEMP] hardcoded)
+```
+char USER_INPUT[] =
+"u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,"
+"u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,"
+"r,r,r,r,r,r,r,r,r,r,r,r,"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,"
+"p,"
+"r,r,r,r,r,"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"l,l,l,l,l,l,l,l"
+"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
+"su,su,su,su,su,su,su,su,su,su,su,su,su"
+",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
+"sd,sd,sd,sd,sd"
+"r,r,r,r"
+"f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f"
+"f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f"
+"f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f"
+"f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f"
+"f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f"
+",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
+",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
+",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
+"sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd"
+;
+```
