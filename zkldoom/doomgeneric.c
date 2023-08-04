@@ -1,6 +1,6 @@
 #include "doomgeneric.h"
 
-uint32_t* DG_ScreenBuffer = 0;
+static uint32_t* DG_ScreenBuffer = 0;
 
 
 void dg_Create()

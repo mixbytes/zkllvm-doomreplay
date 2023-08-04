@@ -133,11 +133,11 @@ __attribute__((circuit)) int z_main(int n_inputs, int m)
     replay_data.n_record = cur_frame;
 
     DR_Init(replay_data);
-    return cur_frame;
 
-    //dg_Create();
-
+    dg_Create();
+    
 	//D_DoomMain ();
+    return cur_frame;
 
 }
 

@@ -39,4 +39,4 @@ function(process_circuit example_target)
                 ${Boost_LIBRARIES})
 endfunction()
 
-process_circuit(zkldoom SOURCES z_main.c doomgeneric_dr.c INPUT main.inp.json)
+process_circuit(zkldoom SOURCES z_main.c doomgeneric_dr.c doomgeneric.c INPUT main.inp.json)
