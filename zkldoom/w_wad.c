@@ -74,7 +74,7 @@ unsigned int W_LumpNameHash(const char *s)
 
     unsigned int result = 5381;
     unsigned int i;
-
+    
     for (i=0; i < 8 && s[i] != '\0'; ++i)
     {
         result = ((result << 5) ^ result ) ^ toupper((int)s[i]);
@@ -151,10 +151,9 @@ wad_file_t *W_AddFile (char *filename)
     // open the file and add to directory
 
     newnumlumps = numlumps;
-
+    
     // AAAAAAAAAAAAAAAA
     wad_file = NULL;
-
 
     // WAD file
     W_Read(wad_file, 0, &header, sizeof(header));
@@ -227,7 +226,6 @@ int W_CheckNumForName (char* name)
 {
     lumpinfo_t *lump_p;
     int i;
-
     // Do we have a hash table yet?
 
     if (lumphash != NULL)
@@ -277,7 +275,6 @@ int W_GetNumForName (char* name)
     int	i;
 
     i = W_CheckNumForName (name);
-
     if (i < 0)
     {
         I_Error ("W_GetNumForName: %s not found!", name);
@@ -344,7 +341,7 @@ void W_ReadLump(unsigned int lump, void *dest)
 // Load a lump into memory and return a pointer to a buffer containing
 // the lump data.
 //
-// 'tag' is the type of zone memory buffer to allocate for the lump
+// 'tag' is thdqq type of zone memory buffer to allocate for the lump
 // (usually PU_STATIC or PU_CACHE).  If the lump is loaded as 
 // PU_STATIC, it should be released back using W_ReleaseLumpNum
 // when no longer needed (do not use Z_ChangeTag).

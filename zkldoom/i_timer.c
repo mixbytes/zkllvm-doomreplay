@@ -61,7 +61,6 @@ int  I_GetTime (void)
 int I_GetTimeMS(void)
 {
     uint32_t ticks;
-
     ticks = I_GetTicks();
 
     if (basetime == 0)

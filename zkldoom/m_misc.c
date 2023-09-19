@@ -334,7 +334,7 @@ char *M_StringReplace(const char *haystack, const char *needle,
     }
 
     // Construct new string.
-
+    
     result = malloc(result_len);
     if (result == NULL)
     {

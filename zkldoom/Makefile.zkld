@@ -11,10 +11,13 @@ else
 	VB=@
 endif
 
-CC=clang  # gcc or g++
+CC=clang-12  # gcc or g++
+
+# CFLAGS+=-fprofile-instr-generate -fcoverage-mapping
 CFLAGS+=-O3 $(INCLUDES)
+CFLAGS+=-Wall -DNORMALUNIX -DLINUX -DSNDSERV # -DUSEASM
+
 LDFLAGS+=-Wl,-dead_strip
-CFLAGS+=-O3 -Wall -DNORMALUNIX -DLINUX -DSNDSERV # -DUSEASM
 LIBS+=-lm -lc
 
 # subdirectory for objects

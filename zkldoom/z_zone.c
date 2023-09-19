@@ -21,7 +21,6 @@
 #include "i_system.h"
 #include "doomtype.h"
 
-
 //
 // ZONE MEMORY ALLOCATION
 //
@@ -60,36 +59,7 @@ typedef struct
 } memzone_t;
 
 
-
-memzone_t*	mainzone;
-
-
-
-//
-// Z_ClearZone
-//
-void Z_ClearZone (memzone_t* zone)
-{
-    memblock_t*		block;
-	
-    // set the entire zone to one free block
-    zone->blocklist.next =
-	zone->blocklist.prev =
-	block = (memblock_t *)( (byte *)zone + sizeof(memzone_t) );
-    
-    zone->blocklist.user = (void *)zone;
-    zone->blocklist.tag = PU_STATIC;
-    zone->rover = block;
-	
-    block->prev = block->next = &zone->blocklist;
-    
-    // a free block.
-    block->tag = PU_FREE;
-
-    block->size = zone->size - sizeof(memzone_t);
-}
-
-
+static memzone_t*	mainzone;
 
 //
 // Z_Init
@@ -98,7 +68,7 @@ void Z_Init (void)
 {
     memblock_t*	block;
     int		size;
-
+    
     mainzone = (memzone_t *)I_ZoneBase (&size);
     mainzone->size = size;
 

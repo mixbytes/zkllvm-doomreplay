@@ -65,7 +65,6 @@ function(add_circuit name)
 
     
 
-    set(link_options "-opaque-pointers=0")
     set(CIRCUIT_ASSEMBLY_OUTPUT 1)
     if(CIRCUIT_ASSEMBLY_OUTPUT)
         set(extension ll)
@@ -83,6 +82,7 @@ function(add_circuit name)
     set(LINKER ${CMAKE_SOURCE_DIR}/../zkllvm/build/libs/circifier/llvm/bin/llvm-link)
     set(ASSIGNER ${CMAKE_SOURCE_DIR}/../zkllvm/build/bin/assigner/assigner)
     set(STATEMENT_PREPARE ${CMAKE_SOURCE_DIR}/../proof-market-toolchain/scripts/prepare_statement.py)
+    set(PROVER ${CMAKE_SOURCE_DIR}/../proof-market-toolchain/build/bin/proof-generator/proof-generator)
     
     #if (ZKLLVM_DEV_ENVIRONMENT)
     #    set(CLANG $<TARGET_FILE:clang>)
@@ -100,7 +100,6 @@ function(add_circuit name)
         add_custom_target(${name}_${source_base_name}_${extension}
                         COMMAND ${CLANG} 
                         -target assigner 
-                        -Xclang -no-opaque-pointers
                         -Xclang -fpreserve-vec3-type
                         -std=c17
                         -D__ZKLLVM__
@@ -134,10 +133,10 @@ function(add_circuit name)
     
     add_custom_target(${name}_run_assigner
                       DEPENDS ${name}_link_sources
-                      COMMAND echo "[{\"int\": \"1\"}, {\"int\": \"7\"}]" > ${name}.inp.json &&
+                      COMMAND echo "[{\"int\": \"1\"}, {\"int\": \"7\"}]" > ${name}-input.json &&
                       ${ASSIGNER}
                       -b ${name}.${extension}
-                      -i ${name}.inp.json
+                      -i ${name}-input.json
                       -t ${name}.tbl
                       -c ${name}.crct
                       -e pallas
@@ -151,10 +150,21 @@ function(add_circuit name)
                       COMMAND 
                       python3 ${STATEMENT_PREPARE} 
                       -c ${name}.${extension}
-                      -o ${name}.json
+                      -o ${name}-statement.json
                       -n ${name}
                       -t placeholder-zkllvm
+                      --public
                       
+                      VERBATIM COMMAND_EXPAND_LISTS
+                      )
+
+    add_custom_target(${name}_run_prover
+                      DEPENDS ${name}_run_prepare_statement
+                      COMMAND 
+                      ${PROVER}
+                      --circuit_input=${name}-statement.json
+                      --public_input=${name}-input.json
+                      --proof_out=${name}-proof.bin
                       VERBATIM COMMAND_EXPAND_LISTS
                       )
 

@@ -343,7 +343,7 @@ static void TicdupSquash(ticcmd_set_t *set)
 {
     ticcmd_t *cmd;
     unsigned int i;
-
+    
     for (i = 0; i < NET_MAXPLAYERS ; ++i)
     {
         cmd = &set->cmds[i];
@@ -433,11 +433,9 @@ void TryRunTics (void)
 	counts = 1;
     
     // wait for new tics if needed
-
     while (lowtic < gametic/ticdup + counts)
     {
-	NetUpdate ();
-
+	    NetUpdate ();
         // AAAAAAAAAAAAAAAa
         DR_UpdateTime();
         lowtic = GetLowTic();
@@ -453,11 +451,9 @@ void TryRunTics (void)
         // AAAAAAAAAAAAAAAAAAAAAAAAAAA
         // I don't think there is any point to return here.
         // Instead - continue and exit the loop
-         
         continue;
         // return;
 	}
-
         I_Sleep(1);
     }
     
@@ -477,7 +473,6 @@ void TryRunTics (void)
             I_Error ("gametic>lowtic");
 
         memcpy(local_playeringame, set->ingame, sizeof(local_playeringame));
-
         loop_interface->RunTic(set->cmds, set->ingame);
         gametic++;
 

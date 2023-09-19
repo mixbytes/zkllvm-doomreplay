@@ -21,14 +21,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <stdarg.h>
-
-#ifdef _WIN32
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#else
-#include <unistd.h>
-#endif
+//#include <unistd.h>
 
 #ifdef ORIGCODE
 #include "SDL.h"
@@ -69,6 +62,10 @@ struct atexit_listentry_s
 };
 
 static atexit_listentry_t *exit_funcs = NULL;
+
+
+#ifndef __ZKLLVM__
+
 
 void I_AtExit(atexit_func_t func, boolean run_on_error)
 {
@@ -136,27 +133,11 @@ byte *I_ZoneBase (int *size)
     int min_ram, default_ram;
     int p;
 
-    //!
-    // @arg <mb>
-    //
-    // Specify the heap size, in MiB (default 16).
-    //
-
-    p = M_CheckParmWithArgs("-mb", 1);
-
-    if (p > 0)
-    {
-        default_ram = atoi(myargv[p+1]);
-        min_ram = default_ram;
-    }
-    else
-    {
-        default_ram = DEFAULT_RAM;
-        min_ram = MIN_RAM;
-    }
+    default_ram = DEFAULT_RAM;
+    min_ram = MIN_RAM;
 
     zonemem = AutoAllocMemory(size, default_ram, min_ram);
-
+    
     printf("zone memory: %p, %x allocated for zone\n", 
            zonemem, *size);
 
@@ -506,50 +487,6 @@ boolean I_GetMemoryValue(unsigned int offset, void *value, int size)
 
         firsttime = false;
         i = 0;
-
-        //!
-        // @category compat
-        // @arg <version>
-        //
-        // Specify DOS version to emulate for NULL pointer dereference
-        // emulation.  Supported versions are: dos622, dos71, dosbox.
-        // The default is to emulate DOS 7.1 (Windows 98).
-        //
-
-        p = M_CheckParmWithArgs("-setmem", 1);
-
-        if (p > 0)
-        {
-            if (!strcasecmp(myargv[p + 1], "dos622"))
-            {
-                dos_mem_dump = mem_dump_dos622;
-            }
-            if (!strcasecmp(myargv[p + 1], "dos71"))
-            {
-                dos_mem_dump = mem_dump_win98;
-            }
-            else if (!strcasecmp(myargv[p + 1], "dosbox"))
-            {
-                dos_mem_dump = mem_dump_dosbox;
-            }
-            else
-            {
-                for (i = 0; i < DOS_MEM_DUMP_SIZE; ++i)
-                {
-                    ++p;
-
-                    if (p >= myargc || myargv[p][0] == '-')
-                    {
-                        break;
-                    }
-
-                    M_StrToInt(myargv[p], &val);
-                    mem_dump_custom[i++] = (unsigned char) val;
-                }
-
-                dos_mem_dump = mem_dump_custom;
-            }
-        }
     }
 
     switch (size)
@@ -571,4 +508,95 @@ boolean I_GetMemoryValue(unsigned int offset, void *value, int size)
 
     return false;
 }
+
+
+
+#else
+// __ZKLLVM__ part of code
+// ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM
+// ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM
+
+
+
+// Zone memory auto-allocation function that allocates the zone size
+// by trying progressively smaller zone sizes until one is found that
+// works.
+
+static byte *AutoAllocMemory(int *size, int default_ram, int min_ram)
+{
+    byte *zonemem;
+
+    // Allocate the zone memory.  This loop tries progressively smaller
+    // zone sizes until a size is found that can be allocated.
+    // If we used the -mb command line parameter, only the parameter
+    // provided is accepted.
+
+    zonemem = NULL;
+
+    while (zonemem == NULL)
+    {
+        // We need a reasonable minimum amount of RAM to start.
+
+        if (default_ram < min_ram)
+        {
+            I_Error("Unable to allocate %i MiB of RAM for zone", default_ram);
+        }
+
+        // Try to allocate the zone memory.
+
+        *size = default_ram * 1024 * 1024;
+
+        zonemem = malloc(*size);
+
+        // Failed to allocate?  Reduce zone size until we reach a size
+        // that is acceptable.
+
+        if (zonemem == NULL)
+        {
+            default_ram -= 1;
+        }
+    }
+
+    return zonemem;
+}
+
+
+
+byte *I_ZoneBase (int *size)
+{
+    *size = DEFAULT_RAM * 1024 * 1024;
+    return malloc(*size);
+    
+    /*
+    byte *zonemem;
+    int min_ram, default_ram;
+    int p;
+    
+    default_ram = DEFAULT_RAM;
+    min_ram = MIN_RAM;
+    zonemem = AutoAllocMemory(size, default_ram, min_ram);
+    
+    printf("zone memory: %p, %x allocated for zone\n", 
+           zonemem, *size);
+
+    return zonemem;
+    */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#endif
 

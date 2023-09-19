@@ -20,7 +20,7 @@
 //
 
 
-#include <ctype.h>
+//#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -76,6 +76,7 @@
 
 #include "doomreplay.h"
 
+#ifndef __ZKLLVM__
 //
 // D-DoomLoop()
 // Not a globally visible function,
@@ -129,6 +130,7 @@ char		wadfile[1024];		// primary wad file
 char		mapdir[1024];           // directory of development maps
 
 int             show_endoom = 1;
+
 
 
 
@@ -404,11 +406,15 @@ static void D_Endoom(void)
 	//exit(0);
 }
 
+
+
+
 //
 // D_DoomMain
 //
 void D_DoomMain (void)
 {
+
     DEH_printf("Z_Init: Init zone memory allocation daemon. \n");
     Z_Init ();
 
@@ -419,9 +425,8 @@ void D_DoomMain (void)
 	deathmatch = 0;
     
     modifiedgame = false;
-
-    D_AddFile("../doom1.wad");
     
+    D_AddFile("../doom1.wad");
     // Generate the WAD hash table.  Speed things up a bit.
     // HZ CCCCCCCCCCC check
     //W_GenerateHashTable();
@@ -439,7 +444,7 @@ void D_DoomMain (void)
 
     // Not loading a game
     startloadgame = -1;
-
+    
     // AAAAAAAAA not-needed in zkllvm version
     // DEH_printf("R_Init: Init DOOM refresh daemon - ");
     // R_Init ();
@@ -459,5 +464,24 @@ void D_DoomMain (void)
     G_InitNew (startskill, startepisode, startmap);
 
     D_DoomLoop ();  // never returns
+
 }
 
+
+#else
+// __ZKLLVM__ version of stripped code
+// ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM                                                 
+// ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM 
+
+#include "z_zone.h"
+
+void D_DoomMain (void)
+{    
+    //DEH_printf("Z_Init: Init zone memory allocation daemon. \n");
+    Z_Init ();
+
+
+    return;
+}
+
+#endif
