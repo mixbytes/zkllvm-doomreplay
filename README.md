@@ -21,13 +21,20 @@ cd doomgeneric
 make -f Makefile.dr && ./doomgeneric -iwad ../doom1.wad -output test1.mp4
 ```
 
-## Zkldoom run (super stripped version for zk proving and check consistencey with original "doomreplay")
+## [TEMP] Zkldoom run (super stripped version for zk proving and check consistencey with original "doomreplay")
 ```
-cd zkldoom
-make -f Makefile.zkld && ./zkldoom
+cd ~/zkllvm-doomreplay/zkldoom/ && make -f Makefile.zkld && ./zkldoom
 ```
 
-#Run assigner
+## [TEMP] Run all compile-link-asssign-prove (run full zk-cycle)
+```
+cd ~/zkllvm-doomreplay/build/ && cmake .. && make zkldoom_run_prover
+```
+
+
+
+
+### Run assigner
 [TEMP] - Creates empty ```z_main.inp.json``` and tries to run assinger using these inputs. Should generate ```.tbl``` file with intermediate signals
 ```
 mkipr -p build
