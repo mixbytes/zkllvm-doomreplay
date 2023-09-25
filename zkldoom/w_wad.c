@@ -20,7 +20,7 @@
 
 
 #include <ctype.h>
-#include <stdio.h>
+//#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -216,6 +216,17 @@ int W_NumLumps (void)
 }
 
 
+int own_strcmp (const char *s1, const char *s2, int n)
+{
+  //return strncasecmp(s1,s2,n);
+  // FUCK, check "my" implementaion
+  for (int i=0; i < n && *(s1 + i) != 0; i++) { 
+    if (*(s1+i) != *(s2+i)) {
+        return 1;
+    }
+  }
+  return 0;
+}
 
 //
 // W_CheckNumForName
@@ -238,7 +249,7 @@ int W_CheckNumForName (char* name)
         
         for (lump_p = lumphash[hash]; lump_p != NULL; lump_p = lump_p->next)
         {
-            if (!strncasecmp(lump_p->name, name, 8))
+            if (!own_strcmp(lump_p->name, name, 8))
             {
                 return lump_p - lumpinfo;
             }
@@ -252,7 +263,7 @@ int W_CheckNumForName (char* name)
 
         for (i=numlumps-1; i >= 0; --i)
         {
-            if (!strncasecmp(lumpinfo[i].name, name, 8))
+            if (!own_strcmp(lumpinfo[i].name, name, 8))
             {
                 return i;
             }
@@ -328,7 +339,8 @@ void W_ReadLump(unsigned int lump, void *dest)
     }
 
 #ifndef DOOMREPLAY
-    I_EndRead ();
+    // AAAAA - don't need
+    //I_EndRead ();
 #endif
 }
 

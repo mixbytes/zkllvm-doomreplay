@@ -90,8 +90,23 @@ void DR_Init(replay_data_t replay_data) {
     g_key_map[dr_key_8           ] = '8';
     g_key_map[dr_key_9           ] = '9';
 
-    g_replay_data = replay_data;
+    //g_replay_data = replay_data;
 
+    g_replay_data.n_frames = replay_data.n_frames;
+    g_replay_data.n_usernames = replay_data.n_usernames;
+    g_replay_data.n_start = replay_data.n_start;
+    g_replay_data.n_record = replay_data.n_record;
+    g_replay_data.n_freeze = replay_data.n_freeze;
+    g_replay_data.framerate = replay_data.framerate;
+    g_replay_data.render_frame = replay_data.render_frame;
+    g_replay_data.render_input = replay_data.render_input;
+    g_replay_data.render_username = replay_data.render_username;
+                                                                                                                                               
+    g_replay_data.frames = replay_data.frames;
+    g_replay_data.usernames = replay_data.usernames;
+                                                                                                                                               
+    g_replay_data.fname_output = replay_data.fname_output;
+    
     for (int i = 0; i < dr_key_COUNT; ++i) {
         g_pressed_last[i] = 0;
     }

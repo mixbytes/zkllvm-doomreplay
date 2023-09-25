@@ -76,6 +76,7 @@
 
 #include "doomreplay.h"
 
+
 #ifndef __ZKLLVM__
 //
 // D-DoomLoop()
@@ -130,6 +131,7 @@ char		wadfile[1024];		// primary wad file
 char		mapdir[1024];           // directory of development maps
 
 int             show_endoom = 1;
+
 
 
 
@@ -447,7 +449,7 @@ void D_DoomMain (void)
     
     // AAAAAAAAA not-needed in zkllvm version
     // DEH_printf("R_Init: Init DOOM refresh daemon - ");
-    // R_Init ();
+    // R_Init a();
 
     // AAAAAAAAA not-needed in zkllvm version
     // DEH_printf("\nP_Init: Init Playloop state.\n");
@@ -475,12 +477,57 @@ void D_DoomMain (void)
 
 #include "z_zone.h"
 
+
+
+boolean		devparm;	// started game with -devparm
+boolean         nomonsters;	// checkparm of -nomonsters
+boolean         respawnparm;	// checkparm of -respawn
+boolean         fastparm;	// checkparm of -fast
+
+extern  boolean	inhelpscreens;
+
+skill_t		startskill;
+int             startepisode;
+int		startmap;
+boolean		autostart;
+int             startloadgame;
+
+boolean		advancedemo;
+
+// Store demo, do not accept any inputs
+boolean         storedemo;
+
+// "BFG Edition" version of doom2.wad does not include TITLEPIC.
+boolean         bfgedition;
+
+// If true, the main game loop has started.
+boolean         main_loop_started = false;
+
+char		wadfile[1024];		// primary wad file
+char		mapdir[1024];           // directory of development maps
+
+int             show_endoom = 1;
+
+//typedef int bool;
+
 void D_DoomMain (void)
 {    
     //DEH_printf("Z_Init: Init zone memory allocation daemon. \n");
     Z_Init ();
 
+    nomonsters = 0;
+    respawnparm = 0;
+    fastparm = 0;
+    //devparm = 0;
+	//deathmatch = 0;
+    
+    //modifiedgame = false;
+    
+    // D_AddFile("../doom1.wad");
+    //wad_file_t *handle;
+    //handle = W_AddFile("not_needed");
 
+  
     return;
 }
 
