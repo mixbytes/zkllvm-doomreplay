@@ -81,6 +81,7 @@ function(add_circuit name)
     set(LIBC_STDLIB_LL ${CMAKE_SOURCE_DIR}/../zkllvm/build/libs/stdlib/libc/zkllvm-libc.ll)
     set(LINKER ${CMAKE_SOURCE_DIR}/../zkllvm/build/libs/circifier/llvm/bin/llvm-link)
     set(ASSIGNER ${CMAKE_SOURCE_DIR}/../zkllvm/build/bin/assigner/assigner)
+    set(TEST_INPUT_JSON ${CMAKE_SOURCE_DIR}/zkldoom/test-input.json)
     set(STATEMENT_PREPARE ${CMAKE_SOURCE_DIR}/../proof-market-toolchain/scripts/prepare_statement.py)
     set(PROVER ${CMAKE_SOURCE_DIR}/../proof-market-toolchain/build/bin/proof-generator/proof-generator)
     
@@ -133,10 +134,10 @@ function(add_circuit name)
     
     add_custom_target(${name}_run_assigner
                       DEPENDS ${name}_link_sources
-                      COMMAND echo "[{\"int\": \"1\"}, {\"int\": \"7\"}]" > ${name}-input.json &&
+                      COMMAND
                       ${ASSIGNER}
                       -b ${name}.${extension}
-                      -i ${name}-input.json
+                      -i ${TEST_INPUT_JSON}
                       -t ${name}.tbl
                       -c ${name}.crct
                       -e pallas

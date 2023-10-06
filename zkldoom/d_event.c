@@ -60,4 +60,31 @@ event_t *D_PopEvent(void)
     return result;
 }
 
+// stores event_t struct in 128-bit value, adding tic number
+// in the 32-bit value, containig ev->type. Type takes lower 3 bits,
+// others are used to store tic num
+__uint128_t pack_event(event_t* ev, unsigned int gametic) {
+    __uint128_t packedValue = 0;
+    unsigned int type_and_ticnum = (unsigned int)ev->type;
+    type_and_ticnum |= (unsigned int)gametic << 3;
+    packedValue |= (__uint128_t)(unsigned int)type_and_ticnum << 96;
+    packedValue |= (__uint128_t)(unsigned int)ev->data1 << 64;
+    packedValue |= (__uint128_t)(unsigned int)ev->data2 << 32;
+    packedValue |= (__uint128_t)(unsigned int)ev->data3;
+    return packedValue; 
+}
+
+// fills "event_t" struct and returns ticnum for event, exatracted from 
+// 32-bit field, containing both ev->type (last 3 bits) and ticnum(in other bits)
+unsigned int unpack_event(__uint128_t packedValue, event_t *evv) {
+    unsigned int tic = packedValue >> 96;
+    evv->type = tic & 7;
+    evv->data1 = packedValue >> 64;
+    evv->data2 = packedValue >> 32;
+    evv->data3 = packedValue;
+
+    // skipped these values to keep single event size=128bit
+    evv->data4 = 0;
+    return tic >> 3; // ticnum
+}
 

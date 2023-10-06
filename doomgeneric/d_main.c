@@ -133,27 +133,96 @@ int             show_endoom = 1;
 
 
 
+__uint128_t mock_inputs[64];
 
-//
-// D_ProcessEvents
-// Send all the events of the given timestamp down the responder chain
-//
-void D_ProcessEvents (void)
+unsigned int lasttic = 0;
+
+void print_tick_packed_input(__uint128_t v) {
+    printf("tics_inputs[%d] = *(__uint128_t*) \"", lasttic++);
+    for (int i=0; i<16; i++) {
+        unsigned char b = (v >> (8*i)) & 0xff;
+        printf("\\x%02x", b);
+    } 
+    printf("\";\n");
+}
+void print_128(__uint128_t v) {
+    printf("*(__uint128_t*) \"");
+    for (int i=0; i<16; i++) {
+        unsigned char b = (v >> (8*i)) & 0xff;
+        printf("\\x%02x", b);
+    } 
+    printf("\";\n");
+}
+
+unsigned int extract_ticnum(__uint128_t v) {
+    unsigned int type_and_ticnum = v >> 96;
+    return type_and_ticnum >> 3;
+}
+
+unsigned int last_event_idx = 0;
+
+void pop_mocked_event_for_tic(unsigned int ticnum, __uint128_t inputs[]) {
+    
+    event_t ev = {{'type',0}, {'data1',0}, {'data2',0}, {'data3',0}, {'data4',0}, {'data5',0} };
+    event_t *evt = &ev;
+
+    int r = 0; // temp restrict
+    unsigned int event_ticnum = 0;
+    while (last_event_idx < 64) {
+        unsigned int event_ticnum = extract_ticnum(inputs[last_event_idx]);
+        
+        if (event_ticnum == ticnum) {
+            unsigned int t = unpack_event(mock_inputs[last_event_idx], evt);
+            printf("Post: Curtic: %d, last_evt_idx: %d, extrtic: %d\n", ticnum, last_event_idx, event_ticnum);
+            D_PostEvent(evt);
+            last_event_idx++;
+            continue;
+        }
+
+        if (event_ticnum < ticnum) {
+            //printf("Less: Curtic: %d, last_evt_idx: %d, extrtic: %d\n", ticnum, last_event_idx, event_ticnum);
+            last_event_idx++;
+            continue;
+        }
+        if (event_ticnum > ticnum) {
+            //printf("More: Curtic: %d, last_evt_idx: %d, extrtic: %d\n", ticnum, last_event_idx, event_ticnum);
+            return;
+        }
+           
+    }
+    
+    return;
+}
+
+
+int REPLAY_EVENTS = 1; // always == 1 in zkldoom
+
+void D_ProcessEvents(void)
 {
-    event_t*	ev;
-    //__builtin_dump_struct(ev, &printf);
-	
+    event_t *ev;
+
     // IF STORE DEMO, DO NOT ACCEPT INPUT
-    if (storedemo)
-        return;
-	
-    while ((ev = D_PopEvent()) != NULL)
-    {
-	if (M_Responder (ev))
-	    continue;               // menu ate the event
-	G_Responder (ev);
+    if (storedemo) return;
+
+    
+    // AAAAAAAAAAAAAAAAAAAA
+    // here we can pop event from our own inputs (packed with "pack_event" array,
+    // where index = current gametic) or capture it from user
+    if (REPLAY_EVENTS > 0) {
+        pop_mocked_event_for_tic(gametic, mock_inputs);
+    }
+    while ((ev = D_PopEvent()) != NULL) {
+
+        if (REPLAY_EVENTS == 0) {
+            __uint128_t v = pack_event(ev, gametic);
+            print_tick_packed_input(v);
+        }
+        
+        if (M_Responder(ev)) continue; // menu ate the event
+        G_Responder(ev);
     }
 }
+
 
 
 
@@ -463,9 +532,13 @@ static void D_Endoom(void)
 //
 // D_DoomMain
 //
-void D_DoomMain (void)
+void D_DoomMain (__uint128_t tics_inputs[64])
 {
-    
+
+    for (int i =0; i< 64; i++) {                                                                                                       
+        mock_inputs[i] = tics_inputs[i];                                                                                               
+    }
+
     DEH_printf("Z_Init: Init zone memory allocation daemon. \n");
     Z_Init ();
 

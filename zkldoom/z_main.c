@@ -29,15 +29,10 @@
 
 #include "doom.h"
 
-void D_DoomMain (void);
+
+void D_DoomMain (__uint128_t tics_inputs[64]);
 void dg_Create();
 
-// char USER_INPUT[] = "u,u,u,u,u,u,u,u,u,d,u,d,f,f,f,f";
-
-
-//#define USER_INPUT_LENGTH 118
-//char USER_INPUT[118] = ",,,,,,,,,,,,,,,,,,,,,,,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,r,r,r,r,f,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,f,f,f,f,f,f";
-// size of input = 1166
 char USER_INPUT[] =
 "u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,"
 "u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,"
@@ -71,10 +66,12 @@ char USER_INPUT[] =
 ;
 
 
-__attribute__((circuit)) int z_main(int n_inputs, int m)
+
+
+__attribute__((circuit)) int z_main(int n_inputs)
 {
     replay_data_t replay_data;
-
+    
     replay_data.framerate = 35;
     replay_data.n_start = 0;
     replay_data.n_freeze = 0;
@@ -82,12 +79,10 @@ __attribute__((circuit)) int z_main(int n_inputs, int m)
     replay_data.render_input = 0;
     replay_data.render_username = 0;
     replay_data.n_frames = 1;
-
-    for (int i = 0; i < n_inputs; i++) {
-        if (USER_INPUT[i] == ',') {
-            replay_data.n_frames++;
-        }
-    }
+    
+    // AAAAAAAAAAAAAAAAAAAAAA
+    n_inputs = 160;
+    replay_data.n_frames = 160;
 
     replay_data.frames    = malloc(replay_data.n_frames*sizeof(frame_data_t));
 
@@ -99,10 +94,12 @@ __attribute__((circuit)) int z_main(int n_inputs, int m)
 
     int cur_frame    = 0;
     int cur_username = 0;
+    
     for (int i = 0; i < n_inputs; ++i) {
         frame_data_t    * frame    = replay_data.frames + cur_frame;
-
-            switch (USER_INPUT[i]) {
+        ++cur_frame;
+            /*
+            switch ((char)user_input[i]) {
                 case ',': ++cur_frame;                             break;
                 case 'x': frame->pressed[dr_key_escape]       = 1; break;
                 case 'e': frame->pressed[dr_key_enter]        = 1; break;
@@ -130,6 +127,7 @@ __attribute__((circuit)) int z_main(int n_inputs, int m)
                 case '8': frame->pressed[dr_key_8]            = 1; break;
                 case '9': frame->pressed[dr_key_9]            = 1; break;
             };
+            */
     }
 
     replay_data.n_record = cur_frame;
@@ -137,59 +135,89 @@ __attribute__((circuit)) int z_main(int n_inputs, int m)
     DR_Init(replay_data);
 
     dg_Create();
-	D_DoomMain ();
+
+    // AAAAAAAAAAAAAAAA
+    __uint128_t tics_inputs[64];
+
+
+/*INP*/ tics_inputs[0] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\x10\x00\x00\x00";
+/*INP*/ tics_inputs[1] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\x10\x00\x00\x00";
+/*INP*/ tics_inputs[2] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\x10\x00\x00\x00";
+/*INP*/ tics_inputs[3] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\x10\x00\x00\x00";
+/*INP*/ tics_inputs[4] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\x10\x00\x00\x00";
+/*INP*/ tics_inputs[5] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\x10\x00\x00\x00";
+/*INP*/ tics_inputs[6] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\x10\x00\x00\x00";
+/*INP*/ tics_inputs[7] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\x10\x00\x00\x00";
+/*INP*/ tics_inputs[8] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\x10\x00\x00\x00";
+/*INP*/ tics_inputs[9] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\x10\x00\x00\x00";
+/*INP*/ tics_inputs[10] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\x10\x00\x00\x00";
+/*INP*/ tics_inputs[11] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\x10\x00\x00\x00";
+/*INP*/ tics_inputs[12] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\x10\x00\x00\x00";
+/*INP*/ tics_inputs[13] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\x10\x00\x00\x00";
+/*INP*/ tics_inputs[14] = *(__uint128_t*) "\x00\x00\x00\x00\x00\x00\x00\x00\xad\x00\x00\x00\x11\x00\x00\x00";
+/*INP*/ tics_inputs[15] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\x10\x00\x00\x00";
+/*INP*/ tics_inputs[16] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\x38\x00\x00\x00";
+/*INP*/ tics_inputs[17] = *(__uint128_t*) "\xac\x00\x00\x00\xac\x00\x00\x00\xac\x00\x00\x00\x40\x00\x00\x00";
+/*INP*/ tics_inputs[18] = *(__uint128_t*) "\xac\x00\x00\x00\xac\x00\x00\x00\xac\x00\x00\x00\x78\x00\x00\x00";
+/*INP*/ tics_inputs[19] = *(__uint128_t*) "\xac\x00\x00\x00\xac\x00\x00\x00\xac\x00\x00\x00\x80\x00\x00\x00";
+/*INP*/ tics_inputs[20] = *(__uint128_t*) "\xac\x00\x00\x00\xac\x00\x00\x00\xac\x00\x00\x00\x88\x00\x00\x00";
+/*INP*/ tics_inputs[21] = *(__uint128_t*) "\x00\x00\x00\x00\x00\x00\x00\x00\xad\x00\x00\x00\x91\x00\x00\x00";
+/*INP*/ tics_inputs[22] = *(__uint128_t*) "\xac\x00\x00\x00\xac\x00\x00\x00\xac\x00\x00\x00\x90\x00\x00\x00";
+/*INP*/ tics_inputs[23] = *(__uint128_t*) "\xac\x00\x00\x00\xac\x00\x00\x00\xac\x00\x00\x00\x98\x00\x00\x00";
+/*INP*/ tics_inputs[24] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\xa0\x00\x00\x00";
+/*INP*/ tics_inputs[25] = *(__uint128_t*) "\x00\x00\x00\x00\x00\x00\x00\x00\xac\x00\x00\x00\xc9\x00\x00\x00";
+/*INP*/ tics_inputs[26] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\xd8\x00\x00\x00";
+/*INP*/ tics_inputs[27] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\xe0\x00\x00\x00";
+/*INP*/ tics_inputs[28] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\xe8\x00\x00\x00";
+/*INP*/ tics_inputs[29] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\xf0\x00\x00\x00";
+/*INP*/ tics_inputs[30] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\xf8\x00\x00\x00";
+/*INP*/ tics_inputs[31] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\x00\x01\x00\x00";
+/*INP*/ tics_inputs[32] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\x08\x01\x00\x00";
+/*INP*/ tics_inputs[33] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\x10\x01\x00\x00";
+/*INP*/ tics_inputs[34] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\x18\x01\x00\x00";
+/*INP*/ tics_inputs[35] = *(__uint128_t*) "\xac\x00\x00\x00\xac\x00\x00\x00\xac\x00\x00\x00\x20\x01\x00\x00";
+/*INP*/ tics_inputs[36] = *(__uint128_t*) "\x00\x00\x00\x00\x00\x00\x00\x00\xac\x00\x00\x00\x49\x01\x00\x00";
+/*INP*/ tics_inputs[37] = *(__uint128_t*) "\xae\x00\x00\x00\xae\x00\x00\x00\xae\x00\x00\x00\x78\x01\x00\x00";
+/*INP*/ tics_inputs[38] = *(__uint128_t*) "\xae\x00\x00\x00\xae\x00\x00\x00\xae\x00\x00\x00\xb0\x01\x00\x00";
+/*INP*/ tics_inputs[39] = *(__uint128_t*) "\x00\x00\x00\x00\x00\x00\x00\x00\xad\x00\x00\x00\xb1\x01\x00\x00";
+/*INP*/ tics_inputs[40] = *(__uint128_t*) "\xae\x00\x00\x00\xae\x00\x00\x00\xae\x00\x00\x00\xb8\x01\x00\x00";
+/*INP*/ tics_inputs[41] = *(__uint128_t*) "\xae\x00\x00\x00\xae\x00\x00\x00\xae\x00\x00\x00\xc0\x01\x00\x00";
+/*INP*/ tics_inputs[42] = *(__uint128_t*) "\xae\x00\x00\x00\xae\x00\x00\x00\xae\x00\x00\x00\xc8\x01\x00\x00";
+/*INP*/ tics_inputs[43] = *(__uint128_t*) "\xae\x00\x00\x00\xae\x00\x00\x00\xae\x00\x00\x00\xd0\x01\x00\x00";
+/*INP*/ tics_inputs[44] = *(__uint128_t*) "\x20\x00\x00\x00\x20\x00\x00\x00\x20\x00\x00\x00\xd8\x01\x00\x00";
+/*INP*/ tics_inputs[45] = *(__uint128_t*) "\x00\x00\x00\x00\x00\x00\x00\x00\x20\x00\x00\x00\xf9\x01\x00\x00";
+/*INP*/ tics_inputs[46] = *(__uint128_t*) "\x20\x00\x00\x00\x20\x00\x00\x00\x20\x00\x00\x00\x28\x02\x00\x00";
+/*INP*/ tics_inputs[47] = *(__uint128_t*) "\x00\x00\x00\x00\x00\x00\x00\x00\xae\x00\x00\x00\x31\x02\x00\x00";
+/*INP*/ tics_inputs[48] = *(__uint128_t*) "\x00\x00\x00\x00\x00\x00\x00\x00\x20\x00\x00\x00\x51\x02\x00\x00";
+/*INP*/ tics_inputs[49] = *(__uint128_t*) "\xac\x00\x00\x00\xac\x00\x00\x00\xac\x00\x00\x00\x68\x02\x00\x00";
+/*INP*/ tics_inputs[50] = *(__uint128_t*) "\x20\x00\x00\x00\x20\x00\x00\x00\x20\x00\x00\x00\x68\x02\x00\x00";
+/*INP*/ tics_inputs[51] = *(__uint128_t*) "\x00\x00\x00\x00\x00\x00\x00\x00\x20\x00\x00\x00\x89\x02\x00\x00";
+/*INP*/ tics_inputs[52] = *(__uint128_t*) "\x20\x00\x00\x00\x20\x00\x00\x00\x20\x00\x00\x00\xa0\x02\x00\x00";
+/*INP*/ tics_inputs[53] = *(__uint128_t*) "\x00\x00\x00\x00\x00\x00\x00\x00\xac\x00\x00\x00\xa9\x02\x00\x00";
+/*INP*/ tics_inputs[54] = *(__uint128_t*) "\x00\x00\x00\x00\x00\x00\x00\x00\x20\x00\x00\x00\xc1\x02\x00\x00";
+/*INP*/ tics_inputs[55] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\xe0\x02\x00\x00";
+/*INP*/ tics_inputs[56] = *(__uint128_t*) "\x20\x00\x00\x00\x20\x00\x00\x00\x20\x00\x00\x00\xe0\x02\x00\x00";
+/*INP*/ tics_inputs[57] = *(__uint128_t*) "\x00\x00\x00\x00\x00\x00\x00\x00\x20\x00\x00\x00\xf1\x02\x00\x00";
+/*INP*/ tics_inputs[58] = *(__uint128_t*) "\xae\x00\x00\x00\xae\x00\x00\x00\xae\x00\x00\x00\x08\x03\x00\x00";
+/*INP*/ tics_inputs[59] = *(__uint128_t*) "\x00\x00\x00\x00\x00\x00\x00\x00\xad\x00\x00\x00\x11\x03\x00\x00";
+/*INP*/ tics_inputs[60] = *(__uint128_t*) "\xae\x00\x00\x00\xae\x00\x00\x00\xae\x00\x00\x00\x38\x03\x00\x00";
+/*INP*/ tics_inputs[61] = *(__uint128_t*) "\xae\x00\x00\x00\xae\x00\x00\x00\xae\x00\x00\x00\x48\x03\x00\x00";
+/*INP*/ tics_inputs[62] = *(__uint128_t*) "\x00\x00\x00\x00\x00\x00\x00\x00\xae\x00\x00\x00\x49\x03\x00\x00";
+/*INP*/ tics_inputs[63] = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\xf8\x03\x00\x00";
+
+
+
+
+
+
+	D_DoomMain (tics_inputs);
     return cur_frame;
 }
 
-
-
-unsigned long prepare_inputs(char * input, unsigned char *input_codes) {
-    // string with inputs like
-    // ",,,,,,,,,,,,,,,,,,,,,,,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,r,r,r,r,f,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,f,f,f,f,f,f";
-    unsigned long n_inputs = sizeof(input);
-    for (int i = 0; i < n_inputs; ++i) {
-            switch (input[i]) {
-                case ',': input_codes[i] = dr_key_SKIP; break;
-                case 'x': input_codes[i] = dr_key_escape; break;
-                case 'e': input_codes[i] = dr_key_enter; break;
-                case 'l': input_codes[i] = dr_key_left; break;
-                case 'r': input_codes[i] = dr_key_right; break;
-                case 'u': input_codes[i] = dr_key_up; break;
-                case 'd': input_codes[i] = dr_key_down; break;
-                case 'a': input_codes[i] = dr_key_alt; break;
-                case 's': input_codes[i] = dr_key_shift; break;
-                case 'p': input_codes[i] = dr_key_use; break;
-                case 'f': input_codes[i] = dr_key_fire; break;
-                case 't': input_codes[i] = dr_key_tab; break;
-                case 'y': input_codes[i] = dr_key_yes; break;
-                case 'n': input_codes[i] = dr_key_no; break;
-                case '<': input_codes[i] = dr_key_strafe_left; break;
-                case '>': input_codes[i] = dr_key_strafe_right; break;
-                case '0': input_codes[i] = dr_key_0; break;
-                case '1': input_codes[i] = dr_key_1; break;
-                case '2': input_codes[i] = dr_key_2; break;
-                case '3': input_codes[i] = dr_key_3; break;
-                case '4': input_codes[i] = dr_key_4; break;
-                case '5': input_codes[i] = dr_key_5; break;
-                case '6': input_codes[i] = dr_key_6; break;
-                case '7': input_codes[i] = dr_key_7; break;
-                case '8': input_codes[i] = dr_key_8; break;
-                case '9': input_codes[i] = dr_key_9; break;
-            };
-    }
-    return n_inputs;
-}
-
-
 int main(int argc, char **argv) {
-    int a = z_main(sizeof(USER_INPUT),11);
+    int a = z_main(120);
     return 0;
 }
-
-
-
-
-
 
 /*
 

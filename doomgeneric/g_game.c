@@ -414,6 +414,8 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
      || mousebuttons[mousebstrafeleft]
      || joystrafemove < 0)
     {
+        // AAAAAAAAAAAAAAAAAAAAAAAAAAA
+        // DONT WORK
         side -= sidemove[speed];
     }
 
@@ -422,6 +424,8 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
      || mousebuttons[mousebstraferight]
      || joystrafemove > 0)
     {
+        // AAAAAAAAAAAAAA
+        // DONT WORK
         side += sidemove[speed]; 
     }
 
