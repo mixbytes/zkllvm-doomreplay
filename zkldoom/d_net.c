@@ -74,12 +74,13 @@ static void RunTic(ticcmd_t *cmds, boolean *ingame)
     G_Ticker ();
 }
 
-static loop_interface_t doom_loop_interface = {
-    D_ProcessEvents,
-    G_BuildTiccmd,
-    RunTic,
-    M_Ticker
-};
+// BBBBBBBBBBBBBBB - remove pointers to functions
+//static loop_interface_t doom_loop_interface = {
+//    D_ProcessEvents,
+//    G_BuildTiccmd,
+//    RunTic,
+//    M_Ticker
+//};
 
 
 // Load game settings from the specified structure and
@@ -227,7 +228,7 @@ void D_CheckNetGame (void)
     //    autostart = true;
     // }
 
-    D_RegisterLoopCallbacks(&doom_loop_interface); // uses functions D_ProcessEvents, G_BuildTiccmd, RunTic, M_Ticker
+    // D_RegisterLoopCallbacks(&doom_loop_interface); // uses functions D_ProcessEvents, G_BuildTiccmd, RunTic, M_Ticker
 
     SaveGameSettings(&settings);
     //__builtin_dump_struct(&settings, &printf);

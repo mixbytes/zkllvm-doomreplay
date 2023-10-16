@@ -44,6 +44,21 @@
 
 // The complete set of data for a particular tic.
 
+// BBBBBBBBBBBBBBBB
+void D_ProcessEvents(void);
+void M_Ticker (void);
+void G_BuildTiccmd (ticcmd_t* cmd, int maketic);
+void G_Ticker (void);
+extern ticcmd_t *netcmds;
+
+// static void RunTic(ticcmd_t *cmds, boolean *ingame); - replaced with
+
+//    { 
+//        netcmds = cmds;                                                                                                                    
+//        G_Ticker ();
+//    }
+//
+
 typedef struct
 {
     ticcmd_t cmds[NET_MAXPLAYERS];
@@ -143,11 +158,14 @@ static boolean BuildNewTic(void)
     gameticdiv = gametic/ticdup;
 
     I_StartTic ();
-    loop_interface->ProcessEvents();
+    
+    // BBBBBBBBBB  loop_interface->ProcessEvents();
+    D_ProcessEvents();
 
     // Always run the menu
 
-    loop_interface->RunMenu();
+    // BBBBBBBBBBBBBBBBB loop_interface->RunMenu();
+    M_Ticker();
 
     if (new_sync)
     {
@@ -170,7 +188,9 @@ static boolean BuildNewTic(void)
     }
 
     memset(&cmd, 0, sizeof(ticcmd_t));
-    loop_interface->BuildTiccmd(&cmd, maketic);
+    
+    // BBBBBBBBBBBBBBBB      loop_interface->BuildTiccmd(&cmd, maketic);
+    G_BuildTiccmd(&cmd, maketic);
 
     ticdata[maketic % BACKUPTICS].cmds[localplayer] = cmd;
     ticdata[maketic % BACKUPTICS].ingame[localplayer] = true;
@@ -477,7 +497,11 @@ void TryRunTics (void)
             I_Error ("gametic>lowtic");
 
         memcpy(local_playeringame, set->ingame, sizeof(local_playeringame));
-        loop_interface->RunTic(set->cmds, set->ingame);
+
+        // BBBBBBBBBBBBBBBBBBB loop_interface->RunTic(set->cmds, set->ingame);
+        netcmds = set->cmds;                                                                                                                    
+        G_Ticker ();
+
         gametic++;
 
         // modify command for duplicated tics
@@ -489,7 +513,7 @@ void TryRunTics (void)
     }
 }
 
-void D_RegisterLoopCallbacks(loop_interface_t *i)
-{
-    loop_interface = i;
-}
+//void D_RegisterLoopCallbacks(loop_interface_t *i)
+//{
+//    loop_interface = i;
+//}
