@@ -34,7 +34,7 @@ void NET_Init(void);
 
 void NET_BindVariables(void);
 
-extern boolean net_client_connected;
+//extern boolean net_client_connected;
 extern boolean net_client_received_wait_data;
 extern net_waitdata_t net_client_wait_data;
 extern boolean net_waiting_for_launch;
@@ -47,6 +47,6 @@ extern sha1_digest_t net_local_wad_sha1sum;
 extern sha1_digest_t net_local_deh_sha1sum;
 extern unsigned int net_local_is_freedoom;
 
-extern boolean drone;
+//extern boolean drone;
 
 #endif /* #ifndef NET_CLIENT_H */

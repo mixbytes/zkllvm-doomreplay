@@ -154,7 +154,8 @@ static boolean BuildNewTic(void)
        // If playing single player, do not allow tics to buffer
        // up very far
 
-       if (!net_client_connected && maketic - gameticdiv > 2)
+       // AAAAAAAAAAAAAAa if (!net_client_connected && maketic - gameticdiv > 2)
+       if (maketic - gameticdiv > 2)
            return false;
 
        // Never go more than ~200ms ahead
@@ -230,14 +231,16 @@ static void D_Disconnected(void)
 {
     // In drone mode, the game cannot continue once disconnected.
 
-    if (drone)
-    {
-        I_Error("Disconnected from server in drone mode.");
-    }
+    // AAAAAAAAAAAAAA
+    //if (drone)
+    //{
+    //    I_Error("Disconnected from server in drone mode.");
+    //}
 
     // disconnected from server
 
-    printf("Disconnected from server.\n");
+    // AAAAAAAAAAAAAAAAAa
+    //printf("Disconnected from server.\n");
 }
 
 //
@@ -259,7 +262,8 @@ void D_ReceiveTic(ticcmd_t *ticcmds, boolean *players_mask)
 
     for (i = 0; i < NET_MAXPLAYERS; ++i)
     {
-        if (!drone && i == localplayer)
+        // AAAAAAAAAAA if (!drone && i == localplayer)
+        if (i == localplayer)
         {
             // This is us.  Don't overwrite it.
         }
