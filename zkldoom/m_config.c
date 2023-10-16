@@ -770,7 +770,7 @@ static default_t extra_defaults_list[] =
     // multiplied by this value.
     //
 
-    CONFIG_VARIABLE_FLOAT(mouse_acceleration),
+    // AAAAAAAAAAA CONFIG_VARIABLE_FLOAT(mouse_acceleration),
 
     //!
     // Mouse acceleration threshold.  When the speed of mouse movement

@@ -40,4 +40,4 @@ function(process_circuit example_target)
 endfunction()
 
 process_circuit(zkldoom SOURCES z_main.c doomgeneric_dr.c doomgeneric.c d_main.c z_zone.c i_system.c
-                d_loop.c i_video.c g_game.c doomstat.c d_net.c INPUT test-input.json)
+                d_loop.c i_video.c g_game.c doomstat.c d_net.c m_controls.c INPUT test-input.json)

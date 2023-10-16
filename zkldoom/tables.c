@@ -2126,6 +2126,9 @@ const angle_t tantoangle[2049] =
 };
 
 // Now where did these came from?
+// AAAAAAAAAAAAAAAA
+
+/*
 const byte gammatable[5][256] =
 {
     {
@@ -2224,4 +2227,5 @@ const byte gammatable[5][256] =
         247,248,248,249,249,250,250,251,251,252,252,253,254,254,255,255
     }
 };
+*/
 

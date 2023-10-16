@@ -107,7 +107,7 @@ boolean screenvisible;
 // the values exceed the value of mouse_threshold, they are multiplied
 // by mouse_acceleration to increase the speed.
 
-float mouse_acceleration = 2.0;
+// AAAAAAAAA float mouse_acceleration = 2.0;
 int mouse_threshold = 10;
 
 // Gamma correction level to use
@@ -333,13 +333,15 @@ void I_SetPalette (byte* palette)
 
     /* performance boost:
      * map to the right pixel format over here! */
-
+    // AAAAAAAAAAAAAAAAAAAAA
+    /*
     for (i=0; i<256; ++i ) {
         colors[i].a = 0;
         colors[i].r = gammatable[usegamma][*palette++];
         colors[i].g = gammatable[usegamma][*palette++];
         colors[i].b = gammatable[usegamma][*palette++];
     }
+    */
 }
 
 // Given an RGB value, find the closest matching palette index.
