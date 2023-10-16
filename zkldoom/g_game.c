@@ -430,7 +430,6 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
  
     if (gamekeydown[key_fire] || mousebuttons[mousebfire] || joybuttons[joybfire]) {
 	    cmd->buttons |= BT_ATTACK; 
-        printf("   AAAA: FIREEE\n");
     }
 
     if (gamekeydown[key_use]

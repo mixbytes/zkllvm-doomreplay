@@ -35,7 +35,9 @@
 // calls all startup code, parses command line options.
 //
 
-void D_DoomMain (__uint128_t tics_inputs[64]);
+// BBBBBBBBBBBBBBBBBBBBB
+// void D_DoomMain (__uint128_t tics_inputs[64]);
+void D_DoomMain (__uint128_t input1, __uint128_t input2);
 
 void M_FindResponseFile(void);
 
@@ -233,8 +235,13 @@ int main(int argc, char **argv)
 /*INP*/ tics_inputs[62] = *(__uint128_t*) "\xaf\x00\x00\x00\xaf\x00\x00\x00\xaf\x00\x00\x00\x88\x06\x00\x00";
 /*INP*/ tics_inputs[63] = *(__uint128_t*) "\xaf\x00\x00\x00\xaf\x00\x00\x00\xaf\x00\x00\x00\x90\x06\x00\x00";
 
+    //D_DoomMain (tics_inputs);
 
-	D_DoomMain (tics_inputs);
+    // BBBBBBBBBBBBBBBBB
+    __uint128_t input1 = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\x78\x01\x00\x00";
+    __uint128_t input2 = *(__uint128_t*) "\x9d\x00\x00\x00\x9d\x00\x00\x00\x9d\x00\x00\x00\xa0\x01\x00\x00";;
+	
+    D_DoomMain (input1, input2);
 
     return 0;
 }

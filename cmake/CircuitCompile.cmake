@@ -141,7 +141,8 @@ function(add_circuit name)
                       -t ${name}.tbl
                       -c ${name}.crct
                       -e pallas
-                      --check 
+                      --check
+                      --verbose
                       
                       VERBATIM COMMAND_EXPAND_LISTS
                       )

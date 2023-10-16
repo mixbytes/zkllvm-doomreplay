@@ -132,6 +132,9 @@ void D_PostEvent (event_t *ev);
 
 event_t *D_PopEvent(void);
 
+// pack-unpack events from 128bi value to (tic number, event_t struct)
+__uint128_t pack_event(event_t* ev, unsigned int gametic);
+unsigned int unpack_event(__uint128_t packedValue, event_t *evv);
 
 #endif
 

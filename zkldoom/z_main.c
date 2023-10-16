@@ -29,46 +29,13 @@
 
 #include "doom.h"
 
-
-void D_DoomMain (__uint128_t tics_inputs[64]);
+// BBBBBBBBBBBBBBBBBBBBBBBBB
+//void D_DoomMain (__uint128_t tics_inputs[64]);
+void D_DoomMain (__uint128_t input1, __uint128_t input2);
 void dg_Create();
 
-char USER_INPUT[] =
-"u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,"
-"u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,"
-"r,r,r,r,r,r,r,r,r,r,r,r,"
-"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
-"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
-"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
-"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
-"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
-"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
-"r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,"
-"p,"
-"r,r,r,r,r,"
-"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
-"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
-"l,l,l,l,l,l,l,l"
-"su,su,su,su,su,su,su,su,su,su,su,su,su,su,su,su"
-"su,su,su,su,su,su,su,su,su,su,su,su,su"
-",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
-"sd,sd,sd,sd,sd"
-"r,r,r,r"
-"f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f"
-"f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f"
-"f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f"
-"f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f"
-"f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f"
-",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
-",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
-",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
-"sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd,sd"
-;
 
-
-
-
-__attribute__((circuit)) int z_main(int n_inputs)
+__attribute__((circuit)) int z_main(__uint128_t input1, __uint128_t input2)
 {
     replay_data_t replay_data;
     
@@ -81,7 +48,7 @@ __attribute__((circuit)) int z_main(int n_inputs)
     replay_data.n_frames = 1;
     
     // AAAAAAAAAAAAAAAAAAAAAA
-    n_inputs = 160;
+    unsigned int n_inputs = 160;
     replay_data.n_frames = 160;
 
     replay_data.frames    = malloc(replay_data.n_frames*sizeof(frame_data_t));
@@ -98,36 +65,6 @@ __attribute__((circuit)) int z_main(int n_inputs)
     for (int i = 0; i < n_inputs; ++i) {
         frame_data_t    * frame    = replay_data.frames + cur_frame;
         ++cur_frame;
-            /*
-            switch ((char)user_input[i]) {
-                case ',': ++cur_frame;                             break;
-                case 'x': frame->pressed[dr_key_escape]       = 1; break;
-                case 'e': frame->pressed[dr_key_enter]        = 1; break;
-                case 'l': frame->pressed[dr_key_left]         = 1; break;
-                case 'r': frame->pressed[dr_key_right]        = 1; break;
-                case 'u': frame->pressed[dr_key_up]           = 1; break;
-                case 'd': frame->pressed[dr_key_down]         = 1; break;
-                case 'a': frame->pressed[dr_key_alt]          = 1; break;
-                case 's': frame->pressed[dr_key_shift]        = 1; break;
-                case 'p': frame->pressed[dr_key_use]          = 1; break;
-                case 'f': frame->pressed[dr_key_fire]         = 1; break;
-                case 't': frame->pressed[dr_key_tab]          = 1; break;
-                case 'y': frame->pressed[dr_key_yes]          = 1; break;
-                case 'n': frame->pressed[dr_key_no]           = 1; break;
-                case '<': frame->pressed[dr_key_strafe_left]  = 1; break;
-                case '>': frame->pressed[dr_key_strafe_right] = 1; break;
-                case '0': frame->pressed[dr_key_0]            = 1; break;
-                case '1': frame->pressed[dr_key_1]            = 1; break;
-                case '2': frame->pressed[dr_key_2]            = 1; break;
-                case '3': frame->pressed[dr_key_3]            = 1; break;
-                case '4': frame->pressed[dr_key_4]            = 1; break;
-                case '5': frame->pressed[dr_key_5]            = 1; break;
-                case '6': frame->pressed[dr_key_6]            = 1; break;
-                case '7': frame->pressed[dr_key_7]            = 1; break;
-                case '8': frame->pressed[dr_key_8]            = 1; break;
-                case '9': frame->pressed[dr_key_9]            = 1; break;
-            };
-            */
     }
 
     replay_data.n_record = cur_frame;
@@ -135,6 +72,43 @@ __attribute__((circuit)) int z_main(int n_inputs)
     DR_Init(replay_data);
 
     dg_Create();
+    
+
+	// D_DoomMain (tics_inputs);
+    // BBBBBBBBBBBBBBBBB
+      
+    D_DoomMain (input1, input2);
+    return cur_frame;
+}
+
+void printInputs(__uint128_t value1, __uint128_t value2) {
+#ifndef __ZKLLVM__
+    printf("[ ");
+    printf("{\"field\": %" PRIu64 "%" PRIu64 "}", (uint64_t)(value1 >> 64), (uint64_t)value1);
+    printf(", {\"field\": %" PRIu64 "%" PRIu64 "}", (uint64_t)(value2 >> 64), (uint64_t)value2);
+    printf(" ]\n");
+#endif
+}
+
+int main(int argc, char **argv) {
+
+    __uint128_t input1 = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\x78\x01\x00\x00";
+    __uint128_t input2 = *(__uint128_t*) "\x9d\x00\x00\x00\x9d\x00\x00\x00\x9d\x00\x00\x00\xa0\x01\x00\x00";
+    //printInputs(input1, input2);
+    //return 0;
+    int a = z_main(input1, input2);
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+void hz() {
 
     // AAAAAAAAAAAAAAAA
     __uint128_t tics_inputs[64];
@@ -205,18 +179,7 @@ __attribute__((circuit)) int z_main(int n_inputs)
 /*INP*/ tics_inputs[63] = *(__uint128_t*) "\xaf\x00\x00\x00\xaf\x00\x00\x00\xaf\x00\x00\x00\x90\x06\x00\x00";
 
 
-
-
-
-	D_DoomMain (tics_inputs);
-    return cur_frame;
 }
-
-int main(int argc, char **argv) {
-    int a = z_main(120);
-    return 0;
-}
-
 /*
 
 

@@ -75,9 +75,9 @@
 #include "d_main.h"
 
 #include "doomreplay.h"
+#include "d_event.h"
 
 
-#ifndef __ZKLLVM__
 //
 // D-DoomLoop()
 // Not a globally visible function,
@@ -132,9 +132,14 @@ char		mapdir[1024];           // directory of development maps
 
 int             show_endoom = 1;
 
+int REPLAY_EVENTS = 1; // always == 1 in zkldoom
 
 
 __uint128_t mock_inputs[64];
+
+// BBBBBBBBBBBBBBBBBBBBBBBBBB
+__uint128_t mock_input1;
+__uint128_t mock_input2;
 
 unsigned int lasttic = 0;
 
@@ -167,6 +172,21 @@ void pop_mocked_event_for_tic(unsigned int ticnum, __uint128_t inputs[]) {
     event_t ev = {{'type',0}, {'data1',0}, {'data2',0}, {'data3',0}, {'data4',0}, {'data5',0} };
     event_t *evt = &ev;
 
+    // BBBBBBBBBBBBBBBBBBBBBBBBBBB
+    if (ticnum > 160) {
+        return;
+    }
+
+    if (ticnum % 40 == 0) {
+        unsigned int t = unpack_event(mock_input2, evt);           
+    } else {
+        unsigned int t = unpack_event(mock_input1, evt);           
+    }
+    D_PostEvent(evt);
+    return;
+    // EEEBBBBBBBBBBBBBBBBBBBBBBBBBBB
+
+    /*
     int r = 0; // temp restrict
     unsigned int event_ticnum = 0;
     while (last_event_idx < 64) {
@@ -191,12 +211,12 @@ void pop_mocked_event_for_tic(unsigned int ticnum, __uint128_t inputs[]) {
         }
            
     }
+    */
     
     return;
 }
 
 
-int REPLAY_EVENTS = 1; // always == 1 in zkldoom
 
 void D_ProcessEvents(void)
 {
@@ -479,13 +499,19 @@ static void D_Endoom(void)
 //
 // D_DoomMain
 //
-void D_DoomMain (__uint128_t tics_inputs[64])
+// BBBBBBBBBBBBBBBBBBBBBBBBBBBb
+//void D_DoomMain (__uint128_t tics_inputs[64])
+void D_DoomMain (__uint128_t input1, __uint128_t input2)
 {
 
-    for (int i =0; i< 64; i++) {                                                                                                       
-        mock_inputs[i] = tics_inputs[i];                                                                                               
-    }
+     // BBBBBBBBBBBBBBBB
+     mock_input1 = input1;
+     mock_input2 = input2;
 
+    //    for (int i =0; i< 64; i++) {                                                                                                       
+    //        mock_inputs[i] = tics_inputs[i];                                                                                               
+    //    }
+    
     DEH_printf("Z_Init: Init zone memory allocation daemon. \n");
     Z_Init ();
 
@@ -496,7 +522,6 @@ void D_DoomMain (__uint128_t tics_inputs[64])
 	deathmatch = 0;
     
     modifiedgame = false;
-    
     D_AddFile("../doom1.wad");
     // Generate the WAD hash table.  Speed things up a bit.
     // HZ CCCCCCCCCCC check
@@ -535,69 +560,5 @@ void D_DoomMain (__uint128_t tics_inputs[64])
     G_InitNew (startskill, startepisode, startmap);
 
     D_DoomLoop ();  // never returns
-
 }
 
-
-#else
-// __ZKLLVM__ version of stripped code
-// ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM                                                 
-// ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM ZKLLVM 
-
-#include "z_zone.h"
-
-
-
-boolean		devparm;	// started game with -devparm
-boolean         nomonsters;	// checkparm of -nomonsters
-boolean         respawnparm;	// checkparm of -respawn
-boolean         fastparm;	// checkparm of -fast
-
-extern  boolean	inhelpscreens;
-
-skill_t		startskill;
-int             startepisode;
-int		startmap;
-boolean		autostart;
-int             startloadgame;
-
-boolean		advancedemo;
-
-// Store demo, do not accept any inputs
-boolean         storedemo;
-
-// "BFG Edition" version of doom2.wad does not include TITLEPIC.
-boolean         bfgedition;
-
-// If true, the main game loop has started.
-boolean         main_loop_started = false;
-
-char		wadfile[1024];		// primary wad file
-char		mapdir[1024];           // directory of development maps
-
-int             show_endoom = 1;
-
-//typedef int bool;
-
-void D_DoomMain (void)
-{    
-    //DEH_printf("Z_Init: Init zone memory allocation daemon. \n");
-    Z_Init ();
-
-    nomonsters = 0;
-    respawnparm = 0;
-    fastparm = 0;
-    //devparm = 0;
-	//deathmatch = 0;
-    
-    //modifiedgame = false;
-    
-    // D_AddFile("../doom1.wad");
-    //wad_file_t *handle;
-    //handle = W_AddFile("not_needed");
-
-  
-    return;
-}
-
-#endif

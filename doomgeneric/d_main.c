@@ -135,6 +135,11 @@ int             show_endoom = 1;
 
 __uint128_t mock_inputs[64];
 
+// BBBBBBBBBBBBBBBBBBB
+__uint128_t mock_input1;
+__uint128_t mock_input2;
+
+
 unsigned int lasttic = 0;
 
 void print_tick_packed_input(__uint128_t v) {
@@ -163,9 +168,26 @@ unsigned int last_event_idx = 0;
 
 void pop_mocked_event_for_tic(unsigned int ticnum, __uint128_t inputs[]) {
     
+    
     event_t ev = {{'type',0}, {'data1',0}, {'data2',0}, {'data3',0}, {'data4',0}, {'data5',0} };
     event_t *evt = &ev;
 
+    // BBBBBBBBBBBBBBBBBBBBBBBBBBB
+    if (ticnum > 160) {
+        return;
+    }
+
+    if (ticnum % 40 == 0) {
+        unsigned int t = unpack_event(mock_input2, evt);           
+        D_PostEvent(evt);
+    } else {
+        unsigned int t = unpack_event(mock_input1, evt);           
+        D_PostEvent(evt);
+    }
+    return;
+    // EEEBBBBBBBBBBBBBBBBBBBBBBBBBBB
+
+    /*
     int r = 0; // temp restrict
     unsigned int event_ticnum = 0;
     while (last_event_idx < 64) {
@@ -190,6 +212,7 @@ void pop_mocked_event_for_tic(unsigned int ticnum, __uint128_t inputs[]) {
         }
            
     }
+    */
     
     return;
 }
@@ -532,12 +555,17 @@ static void D_Endoom(void)
 //
 // D_DoomMain
 //
-void D_DoomMain (__uint128_t tics_inputs[64])
-{
+// void D_DoomMain (__uint128_t tics_inputs[64])
 
-    for (int i =0; i< 64; i++) {                                                                                                       
-        mock_inputs[i] = tics_inputs[i];                                                                                               
-    }
+void D_DoomMain (__uint128_t input1, __uint128_t input2) 
+{
+    // BBBBBBBBBBBBBBBB
+    mock_input1 = input1;
+    mock_input2 = input2;
+
+    //for (int i =0; i< 64; i++) {                                                                                                       
+    //    mock_inputs[i] = tics_inputs[i];                                                                                               
+    //}
 
     DEH_printf("Z_Init: Init zone memory allocation daemon. \n");
     Z_Init ();
