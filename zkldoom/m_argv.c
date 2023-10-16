@@ -16,10 +16,14 @@
 //
 
 
-#include <ctype.h>
+// AAAAAAAAAAAAAAAAAAAAAAA - to remove strcasecmp()
+// #include <ctype.h>
+
+// AAAAAAAAAAAAAAAAAAAAAAA - to remove strrchr()
+//#include <string.h>
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include "doomtype.h"
 #include "i_system.h"
@@ -42,6 +46,9 @@ char**		myargv;
 
 int M_CheckParmWithArgs(char *check, int num_args)
 {
+    // AAAAAAAAAAAAAAAAAAAAA remove any params, remove strcasecmp() as string function
+    return 0;
+    /*
     int i;
 
     for (i = 1; i < myargc - num_args; i++)
@@ -51,6 +58,7 @@ int M_CheckParmWithArgs(char *check, int num_args)
     }
 
     return 0;
+    */
 }
 
 //
@@ -249,6 +257,9 @@ void M_FindResponseFile(void)
 
 char *M_GetExecutableName(void)
 {
+    // AAAAAAAAAAAAAAAAAAAA - to remove strrchr() from string.h
+    return myargv[0];
+    /*
     char *sep;
 
     sep = strrchr(myargv[0], DIR_SEPARATOR);
@@ -261,5 +272,6 @@ char *M_GetExecutableName(void)
     {
         return sep + 1;
     }
+    */
 }
 
