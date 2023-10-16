@@ -44,10 +44,6 @@
 #include "w_wad.h"
 #include "z_zone.h"
 
-#ifdef __MACOSX__
-#include <CoreFoundation/CFUserNotification.h>
-#endif
-
 #define DEFAULT_RAM 6 /* MiB */
 #define MIN_RAM     6  /* MiB */
 
@@ -582,7 +578,6 @@ byte *I_ZoneBase (int *size)
     return zonemem;
     */
 }
-
 
 
 
