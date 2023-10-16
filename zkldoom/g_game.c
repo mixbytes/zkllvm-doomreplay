@@ -157,15 +157,17 @@ fixed_t         forwardmove[2] = {0x19, 0x32};
 fixed_t         sidemove[2] = {0x18, 0x28}; 
 fixed_t         angleturn[3] = {640, 1280, 320};    // + slow turn 
 
-static int *weapon_keys[] = {
-    &key_weapon1,
-    &key_weapon2,
-    &key_weapon3,
-    &key_weapon4,
-    &key_weapon5,
-    &key_weapon6,
-    &key_weapon7,
-    &key_weapon8
+
+// AAAAAAAAAAAA
+static int weapon_keys[] = {
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8'
 };
 
 // Set to -1 or +1 to switch to the previous or next weapon.
@@ -457,7 +459,7 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
 
         for (i=0; i<arrlen(weapon_keys); ++i)
         {
-            int key = *weapon_keys[i];
+            int key = weapon_keys[i];
 
             if (gamekeydown[key])
             {

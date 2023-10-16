@@ -136,14 +136,6 @@ int key_multi_msgplayer[8];
 
 // Weapon selection keys:
 
-int key_weapon1 = '1';
-int key_weapon2 = '2';
-int key_weapon3 = '3';
-int key_weapon4 = '4';
-int key_weapon5 = '5';
-int key_weapon6 = '6';
-int key_weapon7 = '7';
-int key_weapon8 = '8';
 int key_prevweapon = 0;
 int key_nextweapon = 0;
 
@@ -323,15 +315,6 @@ void M_BindStrifeControls(void)
 
 void M_BindWeaponControls(void)
 {
-    M_BindVariable("key_weapon1",        &key_weapon1);
-    M_BindVariable("key_weapon2",        &key_weapon2);
-    M_BindVariable("key_weapon3",        &key_weapon3);
-    M_BindVariable("key_weapon4",        &key_weapon4);
-    M_BindVariable("key_weapon5",        &key_weapon5);
-    M_BindVariable("key_weapon6",        &key_weapon6);
-    M_BindVariable("key_weapon7",        &key_weapon7);
-    M_BindVariable("key_weapon8",        &key_weapon8);
-
     M_BindVariable("key_prevweapon",     &key_prevweapon);
     M_BindVariable("key_nextweapon",     &key_nextweapon);
 

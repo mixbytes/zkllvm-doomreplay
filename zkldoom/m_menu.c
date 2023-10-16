@@ -19,7 +19,9 @@
 
 
 #include <stdlib.h>
-#include <ctype.h>
+
+// AAAAAAAAAAAAAAAAAAAA (remove toupper() function)
+// #include <ctype.h>
 
 
 #include "doomdef.h"
@@ -1320,7 +1322,9 @@ int M_StringWidth(char* string)
 	
     for (i = 0;i < strlen(string);i++)
     {
-	c = toupper(string[i]) - HU_FONTSTART;
+	// AAAAAAAAAAAAA to remove ctype.h
+    //c = toupper(string[i]) - HU_FONTSTART;
+    c = string[i] - HU_FONTSTART;
 	if (c < 0 || c >= HU_FONTSIZE)
 	    w += 4;
 	else
@@ -1381,8 +1385,10 @@ M_WriteText
 	    cy += 12;
 	    continue;
 	}
-		
-	c = toupper(c) - HU_FONTSTART;
+	
+    // AAAAAAAAAAAAA - to remove ctype.h
+	// c = toupper(c) - HU_FONTSTART;
+	c = c - HU_FONTSTART;
 	if (c < 0 || c>= HU_FONTSIZE)
 	{
 	    cx += 4;
@@ -1600,7 +1606,8 @@ boolean M_Responder (event_t* ev)
                 ch = key;
             }
 
-            ch = toupper(ch);
+            // AAAAAAAAA - to remove ctype.h
+            // ch = toupper(ch);
 
             if (ch != ' '
              && (ch - HU_FONTSTART < 0 || ch - HU_FONTSTART >= HU_FONTSIZE))
