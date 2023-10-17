@@ -467,7 +467,6 @@ static void D_AddFile(char *filename)
 {
     wad_file_t *handle;
 
-    printf(" adding %s\n", filename);
     handle = W_AddFile(filename);
 
     return;
@@ -512,7 +511,6 @@ void D_DoomMain (__uint128_t input1, __uint128_t input2)
     //        mock_inputs[i] = tics_inputs[i];                                                                                               
     //    }
     
-    DEH_printf("Z_Init: Init zone memory allocation daemon. \n");
     Z_Init ();
 
     nomonsters = 0;
@@ -527,7 +525,6 @@ void D_DoomMain (__uint128_t input1, __uint128_t input2)
     // HZ CCCCCCCCCCC check
     //W_GenerateHashTable();
 
-    DEH_printf("I_Init: Setting up machine state.\n");
     I_InitTimer();
 
     // get skill / episode / map from parms
@@ -542,17 +539,13 @@ void D_DoomMain (__uint128_t input1, __uint128_t input2)
     startloadgame = -1;
     
     // AAAAAAAAA not-needed in zkllvm version
-    // DEH_printf("R_Init: Init DOOM refresh daemon - ");
     // R_Init a();
 
     // AAAAAAAAA not-needed in zkllvm version
-    // DEH_printf("\nP_Init: Init Playloop state.\n");
     // P_Init ();
 
-    DEH_printf("D_CheckNetGame: Checking network game status.\n");
     D_CheckNetGame ();
 
-    //DEH_printf("ST_Init: Init status bar.\n");
     ST_Init ();
 
     // [AAAA] autostart

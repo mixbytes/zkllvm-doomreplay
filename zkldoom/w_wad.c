@@ -19,10 +19,8 @@
 
 
 
-#include <ctype.h>
-//#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+//#include <string.h>
 
 #include "doomtype.h"
 
@@ -77,7 +75,9 @@ unsigned int W_LumpNameHash(const char *s)
     
     for (i=0; i < 8 && s[i] != '\0'; ++i)
     {
-        result = ((result << 5) ^ result ) ^ toupper((int)s[i]);
+        result = ((result << 5) ^ result ) ^ (int)s[i];
+        // AAAAAAAAAAAAAA - to remove ctype.h
+        //result = ((result << 5) ^ result ) ^ toupper((int)s[i]);
     }
 
     return result;

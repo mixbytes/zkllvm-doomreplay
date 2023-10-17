@@ -29,8 +29,6 @@
  *  8498 3E44 1C3B D26E BAAE  4AA1 F951 29E5 E546 70F1
  */
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <assert.h>
 
@@ -195,7 +193,7 @@ static void Transform(sha1_context_t *hd, byte *data)
 /* Update the message digest with the contents
  * of INBUF with length INLEN.
  */
-void SHA1_Update(sha1_context_t *hd, byte *inbuf, size_t inlen)
+void SHA1_Update(sha1_context_t *hd, byte *inbuf, unsigned int inlen)
 {
     if (hd->count == 64)
     {

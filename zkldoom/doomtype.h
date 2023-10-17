@@ -65,7 +65,7 @@
 // which breaks compilation in 'inittypes.h'
 #undef __THROW
 #define __THROW
-#define __GNUC_PREREQ(...) 0
+//#define __GNUC_PREREQ(...) 0
 
 #include <inttypes.h>
 

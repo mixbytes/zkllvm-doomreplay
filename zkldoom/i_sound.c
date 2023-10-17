@@ -15,20 +15,12 @@
 // DESCRIPTION:  none
 //
 
-#include <stdio.h>
 #include <stdlib.h>
-
-#ifdef ORIGCODE
-#include "SDL_mixer.h"
-#endif
 
 #include "config.h"
 #include "doomfeatures.h"
 #include "doomtype.h"
 
-#ifdef ORIGCODE
-#include "gusconf.h"
-#endif
 #include "i_sound.h"
 #include "i_video.h"
 #include "m_argv.h"

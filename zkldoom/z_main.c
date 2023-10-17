@@ -18,12 +18,15 @@
 
 //#include "config.h"
 
+#ifndef __ZKLLVM__
+#include <stdio.h>
+#include <stdlib.h>
+#endif
+
+
 #include "doomtype.h"
-//#include <stdio.h>
 #include "m_argv.h"
 
-
-#include <stdlib.h>
 #include "doomreplay.h"
 #include "doomgeneric.h"
 
@@ -60,10 +63,7 @@ __attribute__((circuit)) int z_main(__uint128_t input1, __uint128_t input2)
     }
 
     int cur_frame    = 0;
-    int cur_username = 0;
-    
     for (int i = 0; i < n_inputs; ++i) {
-        frame_data_t    * frame    = replay_data.frames + cur_frame;
         ++cur_frame;
     }
 
@@ -98,6 +98,9 @@ int main(int argc, char **argv) {
     //printInputs(input1, input2);
     //return 0;
     int a = z_main(input1, input2);
+#ifndef __ZKLLVM__
+    printf("z_main out: %d\n", a);
+#endif
     return 0;
 }
 

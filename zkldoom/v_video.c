@@ -19,7 +19,6 @@
 //	Functions to blit a block to the screen.
 //
 
-#include <stdio.h>
 #include <string.h>
 #include <math.h>
 
@@ -847,10 +846,6 @@ void V_DrawMouseSpeedBox(int speed)
 {
     extern int usemouse;
     int bgcolor, bordercolor, red, black, white, yellow;
-    int box_x, box_y;
-    int original_speed;
-    int redline_x;
-    int linelen;
 
     // Get palette indices for colors for widget. These depend on the
     // palette of the game being played.

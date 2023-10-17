@@ -16,13 +16,6 @@
 //
 
 
-// AAAAAAAAAAAAAAAAAAAAAAA - to remove strcasecmp()
-// #include <ctype.h>
-
-// AAAAAAAAAAAAAAAAAAAAAAA - to remove strrchr()
-//#include <string.h>
-
-#include <stdio.h>
 #include <stdlib.h>
 
 #include "doomtype.h"

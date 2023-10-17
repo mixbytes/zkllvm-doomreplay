@@ -18,10 +18,8 @@
 
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 
-//#include <unistd.h>
 
 #ifdef ORIGCODE
 #include "SDL.h"
@@ -127,16 +125,12 @@ byte *I_ZoneBase (int *size)
 {
     byte *zonemem;
     int min_ram, default_ram;
-    int p;
 
     default_ram = DEFAULT_RAM;
     min_ram = MIN_RAM;
 
     zonemem = AutoAllocMemory(size, default_ram, min_ram);
     
-    printf("zone memory: %p, %x allocated for zone\n", 
-           zonemem, *size);
-
     return zonemem;
 }
 
@@ -342,7 +336,7 @@ void I_Error (char *error, ...)
 
     if (already_quitting)
     {
-        fprintf(stderr, "Warning: recursive call to I_Error detected.\n");
+        //fprintf(stderr, "Warning: recursive call to I_Error detected.\n");
 #if ORIGCODE
         exit(-1);
 #endif
@@ -352,13 +346,14 @@ void I_Error (char *error, ...)
         already_quitting = true;
     }
 
+    // AAAAAAAAAAAAAAA
     // Message first.
     va_start(argptr, error);
     //fprintf(stderr, "\nError: ");
-    vfprintf(stderr, error, argptr);
-    fprintf(stderr, "\n\n");
+    //vfprintf(stderr, error, argptr);
+    //fprintf(stderr, "\n\n");
     va_end(argptr);
-    fflush(stderr);
+    //fflush(stderr);
 
     // Write a copy of the message into buffer.
     va_start(argptr, error);
@@ -465,11 +460,6 @@ void I_Error (char *error, ...)
 
 static const unsigned char mem_dump_dos622[DOS_MEM_DUMP_SIZE] = {
   0x57, 0x92, 0x19, 0x00, 0xF4, 0x06, 0x70, 0x00, 0x16, 0x00};
-static const unsigned char mem_dump_win98[DOS_MEM_DUMP_SIZE] = {
-  0x9E, 0x0F, 0xC9, 0x00, 0x65, 0x04, 0x70, 0x00, 0x16, 0x00};
-static const unsigned char mem_dump_dosbox[DOS_MEM_DUMP_SIZE] = {
-  0x00, 0x00, 0x00, 0xF1, 0x00, 0x00, 0x00, 0x00, 0x07, 0x00};
-static unsigned char mem_dump_custom[DOS_MEM_DUMP_SIZE];
 
 static const unsigned char *dos_mem_dump = mem_dump_dos622;
 
@@ -479,7 +469,7 @@ boolean I_GetMemoryValue(unsigned int offset, void *value, int size)
 
     if (firsttime)
     {
-        int p, i, val;
+        int i;
 
         firsttime = false;
         i = 0;

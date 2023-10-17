@@ -12,12 +12,10 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
-// Emulates the IO functions in C stdio.h reading and writing to 
+// Emulates the IO functions in C stdi o.h reading and writing to 
 // memory.
 //
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 #include "memio.h"

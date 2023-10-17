@@ -7,9 +7,6 @@
 #include "i_timer.h"
 
 #include <time.h>
-#include <stdio.h>
-// #include <unistd.h>
-#include <string.h>
 
 #include <stdbool.h>
 
@@ -19,7 +16,7 @@ static unsigned short s_KeyQueue[KEYQUEUE_SIZE];
 static unsigned int   s_KeyQueueWriteIndex = 0;
 static unsigned int   s_KeyQueueReadIndex  = 0;
 
-static FILE * g_fp = NULL;
+// static FILE * g_fp = NULL;
 
 static clock_t g_t_start = 0;
 
@@ -35,22 +32,6 @@ static dr_keys_t g_key_map;
 static replay_data_t g_replay_data;
 
 static void renderText(uint32_t * screen, const char * text, int xoffs, int yoffs, int ecol) {
-    int n = strlen(text);
-    if (n) {
-        uint32_t col = 0x0000FF00;
-        for (int i = 0; i < n; ++i) {
-            for (int y = 0; y < FONT_SIZE_Y; ++y) {
-                for (int x = 0; x < FONT_SIZE_X; ++x) {
-                    col = kFontRaster[(int)text[i]][y*FONT_SIZE_X + x];
-                    if (col) {
-                        if (ecol == 0) col = col << 8; // green
-                        if (ecol == 1) col = (((29*col)/255) << 16) | (((161*col)/255) << 8) | ((242*col)/255); // blue
-                        screen[(yoffs + y)*DOOMGENERIC_RESX + (i*FONT_SIZE_X + xoffs + x)] = col;
-                    }
-                }
-            }
-        }
-    }
 }
 
 static void addConvertedKeyToQueue(int pressed, unsigned char key) {
@@ -110,22 +91,10 @@ void DR_Init(replay_data_t replay_data) {
     for (int i = 0; i < dr_key_COUNT; ++i) {
         g_pressed_last[i] = 0;
     }
-
-   
-#ifndef __ZKLLVM__        
-    printf("\n\n======= DOOM REPLAY ===========\n");
-    printf("Frames to simulate: %6d (%g seconds)\n", g_replay_data.n_frames, (float)(g_replay_data.n_frames)/TICRATE);
-    printf("Start frame:        %6d (%g seconds)\n", g_replay_data.n_start,  (float)(g_replay_data.n_start)/TICRATE);
-    printf("Frames to record:   %6d (%g seconds)\n", g_replay_data.n_record, (float)(g_replay_data.n_record)/TICRATE);
-    printf("Framerate:          %6d\n", g_replay_data.framerate);
-    printf("Render frame idx:   %6d\n", g_replay_data.render_frame);
-    printf("Render input:       %6d\n", g_replay_data.render_input);
-    printf("Render username:    %6d\n", g_replay_data.render_username);
-    printf("===============================\n");
-#endif
 }
 
 void DR_ProcessInput() {
+/*
     if (g_frame_id < g_replay_data.n_start + g_replay_data.n_record && g_frame_id < g_replay_data.n_frames) {
         for (int i = 0; i < dr_key_COUNT; ++i) {
            
@@ -140,6 +109,7 @@ void DR_ProcessInput() {
 
         memcpy(g_pressed_last, g_replay_data.frames[g_frame_id].pressed, sizeof(dr_keys_t));
     }
+*/
 }
 
 int DR_NeedRender(int f) {

@@ -17,8 +17,6 @@
 //
 
 
-#include <stdio.h>
-
 #include "z_zone.h"
 
 #include "m_misc.h"
