@@ -650,9 +650,9 @@ void P_HitSlideLine (line_t* ld)
     deltaangle >>= ANGLETOFINESHIFT;
 	
     movelen = P_AproxDistance (tmxmove, tmymove);
-    newlen = FixedMul (movelen, finecosine[deltaangle]);
+    newlen = FixedMul (movelen, finesine[FINEANGLES/4 + deltaangle]);
 
-    tmxmove = FixedMul (newlen, finecosine[lineangle]);	
+    tmxmove = FixedMul (newlen, finesine[FINEANGLES/4 + lineangle]);	
     tmymove = FixedMul (newlen, finesine[lineangle]);	
 }
 
@@ -1078,7 +1078,7 @@ P_AimLineAttack
     angle >>= ANGLETOFINESHIFT;
     shootthing = t1;
     
-    x2 = t1->x + (distance>>FRACBITS)*finecosine[angle];
+    x2 = t1->x + (distance>>FRACBITS)*finesine[FINEANGLES/4 + angle];
     y2 = t1->y + (distance>>FRACBITS)*finesine[angle];
     shootz = t1->z + (t1->height>>1) + 8*FRACUNIT;
 
@@ -1120,7 +1120,7 @@ P_LineAttack
     angle >>= ANGLETOFINESHIFT;
     shootthing = t1;
     la_damage = damage;
-    x2 = t1->x + (distance>>FRACBITS)*finecosine[angle];
+    x2 = t1->x + (distance>>FRACBITS)*finesine[FINEANGLES/4 + angle];
     y2 = t1->y + (distance>>FRACBITS)*finesine[angle];
     shootz = t1->z + (t1->height>>1) + 8*FRACUNIT;
     attackrange = distance;
@@ -1188,7 +1188,7 @@ void P_UseLines (player_t*	player)
 
     x1 = player->mo->x;
     y1 = player->mo->y;
-    x2 = x1 + (USERANGE>>FRACBITS)*finecosine[angle];
+    x2 = x1 + (USERANGE>>FRACBITS)*finesine[FINEANGLES/4 + angle];
     y2 = y1 + (USERANGE>>FRACBITS)*finesine[angle];
 	
     P_PathTraverse ( x1, y1, x2, y2, PT_ADDLINES, PTR_UseTraverse );

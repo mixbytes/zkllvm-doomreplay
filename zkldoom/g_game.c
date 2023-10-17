@@ -1113,7 +1113,7 @@ G_CheckSpot
     //
     //    an = ( ANG45 * (((unsigned int) mthing->angle)/45) )
     //         >> ANGLETOFINESHIFT;
-    //    mo = P_SpawnMobj (x+20*finecosine[an], y+20*finesine[an]
+    //    mo = P_SpawnMobj (x+20*finesine[FINEANGLES/4 + an], y+20*finesine[an]
     //                     , ss->sector->floorheight
     //                     , MT_TFOG);
     //
@@ -1137,26 +1137,26 @@ G_CheckSpot
         switch (an)
         {
             case 4096:  // -4096:
-                xa = finetangent[2048];    // finecosine[-4096]
+                xa = finetangent[2048];    // finesine[FINEANGLES/4 + -4096]
                 ya = finetangent[0];       // finesine[-4096]
                 break;
             case 5120:  // -3072:
-                xa = finetangent[3072];    // finecosine[-3072]
+                xa = finetangent[3072];    // finesine[FINEANGLES/4 + -3072]
                 ya = finetangent[1024];    // finesine[-3072]
                 break;
             case 6144:  // -2048:
-                xa = finesine[0];          // finecosine[-2048]
+                xa = finesine[0];          // finesine[FINEANGLES/4 + -2048]
                 ya = finetangent[2048];    // finesine[-2048]
                 break;
             case 7168:  // -1024:
-                xa = finesine[1024];       // finecosine[-1024]
+                xa = finesine[1024];       // finesine[FINEANGLES/4 + -1024]
                 ya = finetangent[3072];    // finesine[-1024]
                 break;
             case 0:
             case 1024:
             case 2048:
             case 3072:
-                xa = finecosine[an];
+                xa = finesine[FINEANGLES/4 + an];
                 ya = finesine[an];
                 break;
             default:

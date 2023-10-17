@@ -466,7 +466,7 @@ fixed_t R_ScaleFromGlobalAngle (angle_t visangle)
 	
     sinv = finesine[(visangle-rw_normalangle)>>ANGLETOFINESHIFT];	
     dist = FixedDiv (rw_distance, sinv);
-    cosv = finecosine[(viewangle-visangle)>>ANGLETOFINESHIFT];
+    cosv = finesine[FINEANGLES/4 + (viewangle-visangle)>>ANGLETOFINESHIFT];
     z = abs(FixedMul (dist, cosv));
     scale = FixedDiv(projection, z);
     return scale;
@@ -740,7 +740,7 @@ void R_ExecuteSetViewSize (void)
 	
     for (i=0 ; i<viewwidth ; i++)
     {
-	cosadj = abs(finecosine[xtoviewangle[i]>>ANGLETOFINESHIFT]);
+	cosadj = abs(finesine[FINEANGLES/4 + xtoviewangle[i]>>ANGLETOFINESHIFT]);
 	distscale[i] = FixedDiv (FRACUNIT,cosadj);
     }
     
@@ -846,7 +846,7 @@ void R_SetupFrame (player_t* player)
     viewz = player->viewz;
     
     viewsin = finesine[viewangle>>ANGLETOFINESHIFT];
-    viewcos = finecosine[viewangle>>ANGLETOFINESHIFT];
+    viewcos = finesine[FINEANGLES/4 + viewangle>>ANGLETOFINESHIFT];
 	
     sscount = 0;
 	
