@@ -102,12 +102,6 @@ static void LoadGameSettings(net_gamesettings_t *settings)
     timelimit = settings->timelimit;
     consoleplayer = settings->consoleplayer;
 
-    if (lowres_turn)
-    {
-        printf("NOTE: Turning resolution is reduced; this is probably "
-               "because there is a client recording a Vanilla demo.\n");
-    }
-
     for (i = 0; i < MAXPLAYERS; ++i)
     {
         playeringame[i] = i < settings->num_players;

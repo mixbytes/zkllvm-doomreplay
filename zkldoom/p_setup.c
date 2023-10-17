@@ -20,6 +20,7 @@
 
 
 #include <math.h>
+#include <string.h>
 
 #include "z_zone.h"
 
@@ -285,7 +286,7 @@ void P_LoadSectors (int lump)
 	ss->lightlevel = SHORT(ms->lightlevel);
 	ss->special = SHORT(ms->special);
 	ss->tag = SHORT(ms->tag);
-	ss->thinglist = NULL;
+	ss->thinglist = 0;
     }
 	
     W_ReleaseLumpNum(lump);
@@ -510,7 +511,7 @@ void P_LoadBlockMap (int lump)
     lumplen = W_LumpLength(lump);
     count = lumplen / 2;
 	
-    blockmaplump = Z_Malloc(lumplen, PU_LEVEL, NULL);
+    blockmaplump = Z_Malloc(lumplen, PU_LEVEL, 0);
     W_ReadLump(lump, blockmaplump);
     blockmap = blockmaplump + 4;
 
@@ -599,7 +600,7 @@ void P_GroupLines (void)
     { 
         li = &lines[i];
 
-        if (li->frontsector != NULL)
+        if (li->frontsector != 0)
         {
             sector = li->frontsector;
 
@@ -607,7 +608,7 @@ void P_GroupLines (void)
             ++sector->linecount;
         }
 
-        if (li->backsector != NULL && li->frontsector != li->backsector)
+        if (li->backsector != 0 && li->frontsector != li->backsector)
         {
             sector = li->backsector;
 
@@ -772,9 +773,10 @@ P_SetupLevel
     P_InitThinkers ();
 	   
     // find map name
+    
     if ( gamemode == commercial)
     {
-	if (map<10)
+    if (map < 9)
 	    DEH_snprintf(lumpname, 9, "map0%i", map);
 	else
 	    DEH_snprintf(lumpname, 9, "map%i", map);
@@ -787,7 +789,6 @@ P_SetupLevel
 	lumpname[3] = '0' + map;
 	lumpname[4] = 0;
     }
-
     lumpnum = W_GetNumForName (lumpname);
 	
     leveltime = 0;
@@ -816,7 +817,7 @@ P_SetupLevel
 	for (i=0 ; i<MAXPLAYERS ; i++)
 	    if (playeringame[i])
 	    {
-		players[i].mo = NULL;
+		players[i].mo = 0;
 		G_DeathMatchSpawnPlayer (i);
 	    }
 			

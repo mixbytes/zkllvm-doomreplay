@@ -142,20 +142,24 @@ __uint128_t mock_input2;
 unsigned int lasttic = 0;
 
 void print_tick_packed_input(__uint128_t v) {
+#ifndef __ZKLLVM__
     printf("tics_inputs[%d] = *(__uint128_t*) \"", lasttic++);
     for (int i=0; i<16; i++) {
         unsigned char b = (v >> (8*i)) & 0xff;
         printf("\\x%02x", b);
     } 
     printf("\";\n");
+#endif
 }
 void print_128(__uint128_t v) {
+#ifndef __ZKLLVM__
     printf("*(__uint128_t*) \"");
     for (int i=0; i<16; i++) {
         unsigned char b = (v >> (8*i)) & 0xff;
         printf("\\x%02x", b);
     } 
     printf("\";\n");
+#endif
 }
 
 unsigned int extract_ticnum(__uint128_t v) {

@@ -230,7 +230,8 @@ void I_FinishUpdate (void)
 //
 void I_ReadScreen (byte* scr)
 {
-    memcpy (scr, I_VideoBuffer, SCREENWIDTH * SCREENHEIGHT);
+    
+    //memcpy (scr, I_VideoBuffer, SCREENWIDTH * SCREENHEIGHT);
 }
 
 //
@@ -253,8 +254,6 @@ int I_GetPaletteIndex (int r, int g, int b)
     int best, best_diff, diff;
     int i;
     col_t color;
-
-    printf("I_GetPaletteIndex\n");
 
     best = 0;
     best_diff = INT_MAX;

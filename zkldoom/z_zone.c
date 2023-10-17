@@ -298,35 +298,33 @@ Z_DumpHeap
 ( int		lowtag,
   int		hightag )
 {
+    // AAAAAAAAAAAAAAAAAA
+    /*
     memblock_t*	block;
-	
-    printf ("zone size: %i  location: %p\n",
-	    mainzone->size,mainzone);
-    
-    printf ("tag range: %i to %i\n",
-	    lowtag, hightag);
 	
     for (block = mainzone->blocklist.next ; ; block = block->next)
     {
-	if (block->tag >= lowtag && block->tag <= hightag)
-	    printf ("block:%p    size:%7i    user:%p    tag:%3i\n",
-		    block, block->size, block->user, block->tag);
-		
-	if (block->next == &mainzone->blocklist)
-	{
-	    // all blocks have been hit
-	    break;
-	}
-	
-	if ( (byte *)block + block->size != (byte *)block->next)
-	    printf ("ERROR: block size does not touch the next block\n");
+        if (block->tag >= lowtag && block->tag <= hightag)
+            printf ("block:%p    size:%7i    user:%p    tag:%3i\n",
+        	    block, block->size, block->user, block->tag);
+            
+        if (block->next == &mainzone->blocklist)
+        {
+            // all blocks have been hit
+            break;
+        }
+        
+        if ( (byte *)block + block->size != (byte *)block->next)
+            printf ("ERROR: block size does not touch the next block\n");
 
-	if ( block->next->prev != block)
-	    printf ("ERROR: next block doesn't have proper back link\n");
+        if ( block->next->prev != block)
+            printf ("ERROR: next block doesn't have proper back link\n");
 
-	if (block->tag == PU_FREE && block->next->tag == PU_FREE)
-	    printf ("ERROR: two consecutive free blocks\n");
+        if (block->tag == PU_FREE && block->next->tag == PU_FREE)
+            printf ("ERROR: two consecutive free blocks\n");
+    
     }
+    */
 }
 
 
