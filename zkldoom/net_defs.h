@@ -50,8 +50,8 @@ typedef struct _net_context_s net_context_t;
 struct _net_packet_s
 {
     byte *data;
-    size_t len;
-    size_t alloced;
+    unsigned int len;
+    unsigned int alloced;
     unsigned int pos;
 };
 

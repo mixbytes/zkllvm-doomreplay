@@ -51,8 +51,8 @@ __attribute__((circuit)) int z_main(__uint128_t input1, __uint128_t input2)
     replay_data.n_frames = 1;
     
     // AAAAAAAAAAAAAAAAAAAAAA
-    unsigned int n_inputs = 6;
-    replay_data.n_frames = 6;
+    unsigned int n_inputs = 160;
+    replay_data.n_frames = 160;
 
     replay_data.frames    = malloc(replay_data.n_frames*sizeof(frame_data_t));
 
@@ -187,7 +187,6 @@ void hz() {
 /*
 
 
-#include <stdio.h>
 const unsigned int INT_MAX=0xffffffff;
 #define VVV 42
 

@@ -17,7 +17,7 @@
 //	generation of lookups, caching, retrieval by name.
 //
 
-#include <stdio.h>
+#include <string.h>
 
 #include "deh_main.h"
 #include "i_swap.h"
@@ -441,14 +441,14 @@ static void GenerateTextureHashTable(void)
 
         rover = &textures_hashtable[key];
 
-        while (*rover != NULL)
+        while (*rover != 0)
         {
             rover = &(*rover)->next;
         }
 
         // Hook into hash table
 
-        textures[i]->next = NULL;
+        textures[i]->next = 0;
         *rover = textures[i];
     }
 }
@@ -500,7 +500,7 @@ void R_InitTextures (void)
     names = W_CacheLumpName (DEH_String("PNAMES"), PU_STATIC);
     nummappatches = LONG ( *((int *)names) );
     name_p = names + 4;
-    patchlookup = Z_Malloc(nummappatches*sizeof(*patchlookup), PU_STATIC, NULL);
+    patchlookup = Z_Malloc(nummappatches*sizeof(*patchlookup), PU_STATIC, 0);
 
     for (i = 0; i < nummappatches; i++)
     {
@@ -525,7 +525,7 @@ void R_InitTextures (void)
     }
     else
     {
-	maptex2 = NULL;
+	maptex2 = 0;
 	numtextures2 = 0;
 	maxoff2 = 0;
     }
@@ -667,8 +667,6 @@ void R_InitFlats (void)
 void R_InitSpriteLumps (void)
 {
     // TODO
-    int		i;
-    patch_t	*patch;
 	
     firstspritelump = W_GetNumForName (DEH_String("S_START")) + 1;
     lastspritelump = W_GetNumForName (DEH_String("S_END")) - 1;
@@ -679,19 +677,7 @@ void R_InitSpriteLumps (void)
     spritetopoffset = Z_Malloc (numspritelumps*sizeof(*spritetopoffset), PU_STATIC, 0);
     
     return;
-    /*
-    for (i=0 ; i< numspritelumps ; i++)
-    {
-	if (!(i&63))
-	    printf (".");
-
-	patch = W_CacheLumpNum (firstspritelump+i, PU_CACHE);
-	spritewidth[i] = SHORT(patch->width)<<FRACBITS;
-	spriteoffset[i] = SHORT(patch->leftoffset)<<FRACBITS;
-	spritetopoffset[i] = SHORT(patch->topoffset)<<FRACBITS;
-    }
-    */
-}
+  }
 
 
 
@@ -701,14 +687,6 @@ void R_InitSpriteLumps (void)
 void R_InitColormaps (void)
 {
     return;
-    /*
-    int	lump;
-
-    // Load in the light tables, 
-    //  256 byte align tables.
-    lump = W_GetNumForName(DEH_String("COLORMAP"));
-    colormaps = W_CacheLumpNum(lump, PU_STATIC);
-    */
 }
 
 
@@ -726,8 +704,6 @@ void R_InitData (void)
     R_InitFlats ();
     printf (".");
     R_InitSpriteLumps ();
-    // printf (".");
-    // R_InitColormaps ();
 }
 
 
@@ -763,28 +739,6 @@ int R_FlatNumForName (char* name)
 int	R_CheckTextureNumForName (char *name)
 {
     return 1;
-    /*
-    texture_t *texture;
-    int key;
-
-    // "NoTexture" marker.
-    if (name[0] == '-')		
-	return 0;
-		
-    key = W_LumpNameHash(name) % numtextures;
-
-    texture=textures_hashtable[key]; 
-    
-    while (texture != NULL)
-    {
-	if (!strncasecmp (texture->name, name, 8) )
-	    return texture->index;
-
-        texture = texture->next;
-    }
-    
-    return -1;
-    */
 }
 
 
@@ -797,18 +751,6 @@ int	R_CheckTextureNumForName (char *name)
 int	R_TextureNumForName (char* name)
 {
     return 0;
-    /*
-    int		i;
-	
-    i = R_CheckTextureNumForName (name);
-
-    if (i==-1)
-    {
-	I_Error ("R_TextureNumForName: %s not found",
-		 name);
-    }
-    return i;
-    */
 }
 
 
@@ -825,114 +767,6 @@ int		spritememory;
 void R_PrecacheLevel (void)
 {
     return;
-    /*
-    char*		flatpresent;
-    char*		texturepresent;
-    char*		spritepresent;
-
-    int			i;
-    int			j;
-    int			k;
-    int			lump;
-    
-    texture_t*		texture;
-    thinker_t*		th;
-    spriteframe_t*	sf;
-
-    if (demoplayback)
-	return;
-    
-    // Precache flats.
-    flatpresent = Z_Malloc(numflats, PU_STATIC, NULL);
-    memset (flatpresent,0,numflats);	
-
-    for (i=0 ; i<numsectors ; i++)
-    {
-	flatpresent[sectors[i].floorpic] = 1;
-	flatpresent[sectors[i].ceilingpic] = 1;
-    }
-	
-    flatmemory = 0;
-
-    for (i=0 ; i<numflats ; i++)
-    {
-	if (flatpresent[i])
-	{
-	    lump = firstflat + i;
-	    flatmemory += lumpinfo[lump].size;
-	    W_CacheLumpNum(lump, PU_CACHE);
-	}
-    }
-
-    Z_Free(flatpresent);
-    
-    // Precache textures.
-    texturepresent = Z_Malloc(numtextures, PU_STATIC, NULL);
-    memset (texturepresent,0, numtextures);
-	
-    for (i=0 ; i<numsides ; i++)
-    {
-	texturepresent[sides[i].toptexture] = 1;
-	texturepresent[sides[i].midtexture] = 1;
-	texturepresent[sides[i].bottomtexture] = 1;
-    }
-
-    // Sky texture is always present.
-    // Note that F_SKY1 is the name used to
-    //  indicate a sky floor/ceiling as a flat,
-    //  while the sky texture is stored like
-    //  a wall texture, with an episode dependend
-    //  name.
-    texturepresent[skytexture] = 1;
-	
-    texturememory = 0;
-    for (i=0 ; i<numtextures ; i++)
-    {
-	if (!texturepresent[i])
-	    continue;
-
-	texture = textures[i];
-	
-	for (j=0 ; j<texture->patchcount ; j++)
-	{
-	    lump = texture->patches[j].patch;
-	    texturememory += lumpinfo[lump].size;
-	    W_CacheLumpNum(lump , PU_CACHE);
-	}
-    }
-
-    Z_Free(texturepresent);
-    
-    // Precache sprites.
-    spritepresent = Z_Malloc(numsprites, PU_STATIC, NULL);
-    memset (spritepresent,0, numsprites);
-	
-    for (th = thinkercap.next ; th != &thinkercap ; th=th->next)
-    {
-	if (th->function.acp1 == (actionf_p1)P_MobjThinker)
-	    spritepresent[((mobj_t *)th)->sprite] = 1;
-    }
-	
-    spritememory = 0;
-    for (i=0 ; i<numsprites ; i++)
-    {
-	if (!spritepresent[i])
-	    continue;
-
-	for (j=0 ; j<sprites[i].numframes ; j++)
-	{
-	    sf = &sprites[i].spriteframes[j];
-	    for (k=0 ; k<8 ; k++)
-	    {
-		lump = firstspritelump + sf->lump[k];
-		spritememory += lumpinfo[lump].size;
-		W_CacheLumpNum(lump , PU_CACHE);
-	    }
-	}
-    }
-
-    Z_Free(spritepresent);
-    */
 }
 
 

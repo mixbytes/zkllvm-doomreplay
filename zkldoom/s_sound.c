@@ -15,8 +15,6 @@
 // DESCRIPTION:  none
 //
 
-#include <stdio.h>
-#include <stdlib.h>
 
 #include "i_sound.h"
 #include "i_system.h"
@@ -99,7 +97,7 @@ static boolean mus_paused;
 
 // Music currently being played
 
-static musicinfo_t *mus_playing = NULL;
+static musicinfo_t *mus_playing = 0;
 
 // Number of channels to use
 
