@@ -20,8 +20,6 @@
 //
 
 
-//#include <ctype.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -169,7 +167,7 @@ unsigned int last_event_idx = 0;
 
 void pop_mocked_event_for_tic(unsigned int ticnum, __uint128_t inputs[]) {
     
-    event_t ev = {{'type',0}, {'data1',0}, {'data2',0}, {'data3',0}, {'data4',0}, {'data5',0} };
+    event_t ev = {{'type',0}, {'data1',0}, {'data2',0}, {'data3',0}, {'data4',0}};
     event_t *evt = &ev;
 
     // BBBBBBBBBBBBBBBBBBBBBBBBBBB

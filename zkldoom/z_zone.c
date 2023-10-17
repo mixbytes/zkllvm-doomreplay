@@ -16,7 +16,6 @@
 //	Zone Memory Allocation. Neat.
 //
 
-
 #include "z_zone.h"
 #include "i_system.h"
 #include "doomtype.h"
@@ -103,7 +102,7 @@ void Z_Free (void* ptr)
     if (block->id != ZONEID)
 	I_Error ("Z_Free: freed a pointer without ZONEID");
 		
-    if (block->tag != PU_FREE && block->user != NULL)
+    if (block->tag != PU_FREE && block->user != 0)
     {
     	// clear the user's mark
 	    *block->user = 0;
@@ -111,7 +110,7 @@ void Z_Free (void* ptr)
 
     // mark as free
     block->tag = PU_FREE;
-    block->user = NULL;
+    block->user = 0;
     block->id = 0;
 	
     other = block->prev;
@@ -229,7 +228,7 @@ Z_Malloc
         newblock->size = extra;
 	
         newblock->tag = PU_FREE;
-        newblock->user = NULL;	
+        newblock->user = 0;	
         newblock->prev = base;
         newblock->next = base->next;
         newblock->next->prev = newblock;
@@ -238,7 +237,7 @@ Z_Malloc
         base->size = size;
     }
 	
-	if (user == NULL && tag >= PU_PURGELEVEL)
+	if (user == 0 && tag >= PU_PURGELEVEL)
 	    I_Error ("Z_Malloc: an owner is required for purgable blocks");
 
     base->user = user;
@@ -332,39 +331,6 @@ Z_DumpHeap
 
 
 //
-// Z_FileDumpHeap
-//
-void Z_FileDumpHeap (FILE* f)
-{
-    memblock_t*	block;
-	
-    fprintf (f,"zone size: %i  location: %p\n",mainzone->size,mainzone);
-	
-    for (block = mainzone->blocklist.next ; ; block = block->next)
-    {
-	fprintf (f,"block:%p    size:%7i    user:%p    tag:%3i\n",
-		 block, block->size, block->user, block->tag);
-		
-	if (block->next == &mainzone->blocklist)
-	{
-	    // all blocks have been hit
-	    break;
-	}
-	
-	if ( (byte *)block + block->size != (byte *)block->next)
-	    fprintf (f,"ERROR: block size does not touch the next block\n");
-
-	if ( block->next->prev != block)
-	    fprintf (f,"ERROR: next block doesn't have proper back link\n");
-
-	if (block->tag == PU_FREE && block->next->tag == PU_FREE)
-	    fprintf (f,"ERROR: two consecutive free blocks\n");
-    }
-}
-
-
-
-//
 // Z_CheckHeap
 //
 void Z_CheckHeap (void)
@@ -406,7 +372,7 @@ void Z_ChangeTag2(void *ptr, int tag, char *file, int line)
         I_Error("%s:%i: Z_ChangeTag: block without a ZONEID!",
                 file, line);
 
-    if (tag >= PU_PURGELEVEL && block->user == NULL)
+    if (tag >= PU_PURGELEVEL && block->user == 0)
         I_Error("%s:%i: Z_ChangeTag: an owner is required "
                 "for purgable blocks", file, line);
 

@@ -16,7 +16,6 @@
 //     to the IWAD type.
 //
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
@@ -323,40 +322,6 @@ static void CheckSteamEdition(void)
 
 static void CheckSteamGUSPatches(void)
 {
-    const char *current_path;
-    char *install_path;
-    char *patch_path;
-    int len;
-
-    // Already configured? Don't stomp on the user's choices.
-    current_path = M_GetStrVariable("gus_patch_path");
-    if (current_path != NULL && strlen(current_path) > 0)
-    {
-        return;
-    }
-
-    install_path = GetRegistryString(&steam_install_location);
-
-    if (install_path == NULL)
-    {
-        return;
-    }
-
-    len = strlen(install_path) + strlen(STEAM_BFG_GUS_PATCHES) + 20;
-    patch_path = malloc(len);
-    M_snprintf(patch_path, len, "%s\\%s\\ACBASS.PAT",
-               install_path, STEAM_BFG_GUS_PATCHES);
-
-    // Does acbass.pat exist? If so, then set gus_patch_path.
-    if (M_FileExists(patch_path))
-    {
-        M_snprintf(patch_path, len, "%s\\%s",
-                   install_path, STEAM_BFG_GUS_PATCHES);
-        M_SetVariable("gus_patch_path", patch_path);
-    }
-
-    free(patch_path);
-    free(install_path);
 }
 
 // Default install directories for DOS Doom
@@ -428,8 +393,6 @@ static char *CheckDirectoryHasIWAD(char *dir, char *iwadname)
     {
         filename = M_StringJoin(dir, DIR_SEPARATOR_S, iwadname, NULL);
     }
-
-    printf("Trying IWAD file:%s\n", filename);
 
     if (M_FileExists(filename))
     {
