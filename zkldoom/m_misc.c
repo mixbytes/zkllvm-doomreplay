@@ -16,7 +16,6 @@
 // DESCRIPTION:
 //      Miscellaneous.
 //
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -49,104 +48,6 @@ void M_MakeDirectory(char *path)
 #else
     mkdir(path, 0755);
 #endif
-}
-
-// Check if a file exists
-
-boolean M_FileExists(char *filename)
-{
-    FILE *fstream;
-
-    fstream = fopen(filename, "r");
-
-    if (fstream != NULL)
-    {
-        fclose(fstream);
-        return true;
-    }
-    else
-    {
-        // If we can't open because the file is a directory, the 
-        // "file" exists at least!
-
-        return 21; // EISDIR;
-    }
-}
-
-//
-// Determine the length of an open file.
-//
-
-long M_FileLength(FILE *handle)
-{ 
-    long savedpos;
-    long length;
-
-    // save the current position in the file
-    savedpos = ftell(handle);
-    
-    // jump to the end and find the length
-    fseek(handle, 0, SEEK_END);
-    length = ftell(handle);
-
-    // go back to the old location
-    fseek(handle, savedpos, SEEK_SET);
-
-    return length;
-}
-
-//
-// M_WriteFile
-//
-
-boolean M_WriteFile(char *name, void *source, int length)
-{
-    FILE *handle;
-    int	count;
-	
-    handle = fopen(name, "wb");
-
-    if (handle == NULL)
-	return false;
-
-    count = fwrite(source, 1, length, handle);
-    fclose(handle);
-	
-    if (count < length)
-	return false;
-		
-    return true;
-}
-
-
-//
-// M_ReadFile
-//
-
-int M_ReadFile(char *name, byte **buffer)
-{
-    FILE *handle;
-    int	count, length;
-    byte *buf;
-	
-    handle = fopen(name, "rb");
-    if (handle == NULL)
-	I_Error ("Couldn't read file %s", name);
-
-    // find the size of the file by seeking to the end and
-    // reading the current position
-
-    length = M_FileLength(handle);
-    
-    buf = Z_Malloc (length, PU_STATIC, NULL);
-    count = fread(buf, 1, length, handle);
-    fclose (handle);
-	
-    if (count < length)
-	I_Error ("Couldn't read file %s", name);
-		
-    *buffer = buf;
-    return length;
 }
 
 // Returns the path to a temporary file of the given name, stored
