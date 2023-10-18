@@ -44,28 +44,7 @@ ticcmd_t *netcmds;
 
 static void PlayerQuitGame(player_t *player)
 {
-    static char exitmsg[80];
-    unsigned int player_num;
-
-    player_num = player - players;
-
-    // Do this the same way as Vanilla Doom does, to allow dehacked
-    // replacements of this message
-
-    M_StringCopy(exitmsg, DEH_String("Player 1 left the game"),
-                 sizeof(exitmsg));
-
-    exitmsg[7] += player_num;
-
-    playeringame[player_num] = false;
-    players[consoleplayer].message = exitmsg;
-
-    // TODO: check if it is sensible to do this:
-
-    if (demorecording) 
-    {
-        G_CheckDemoStatus ();
-    }
+    static char exitmsg[80] = {'M','o','c','k','\0'};
 }
 
 static void RunTic(ticcmd_t *cmds, boolean *ingame)

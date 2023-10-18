@@ -16,8 +16,11 @@
 // DESCRIPTION:
 //      Miscellaneous.
 //
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
 
 #include "doomtype.h"
 
@@ -43,11 +46,6 @@ unsigned int abss(int v) {
 
 void M_MakeDirectory(char *path)
 {
-#ifdef _WIN32
-    mkdir(path);
-#else
-    mkdir(path, 0755);
-#endif
 }
 
 // Returns the path to a temporary file of the given name, stored
@@ -57,25 +55,7 @@ void M_MakeDirectory(char *path)
 
 char *M_TempFile(char *s)
 {
-    char *tempdir;
-
-#ifdef _WIN32
-
-    // Check the TEMP environment variable to find the location.
-
-    tempdir = getenv("TEMP");
-
-    if (tempdir == NULL)
-    {
-        tempdir = ".";
-    }
-#else
-    // In Unix, just use /tmp.
-
-    tempdir = "/tmp";
-#endif
-
-    return M_StringJoin(tempdir, DIR_SEPARATOR_S, s, NULL);
+    return "/tmp/mock.tmp";
 }
 
 boolean M_StrToInt(const char *str, int *result)
@@ -86,177 +66,6 @@ boolean M_StrToInt(const char *str, int *result)
         || sscanf(str, " %d", result) == 1;
 }
 
-void M_ExtractFileBase(char *path, char *dest)
-{
-    char *src;
-    char *filename;
-    int length;
-
-    src = path + strlen(path) - 1;
-
-    // back up until a \ or the start
-    while (src != path && *(src - 1) != DIR_SEPARATOR)
-    {
-	src--;
-    }
-
-    filename = src;
-
-    // Copy up to eight characters
-    // Note: Vanilla Doom exits with an error if a filename is specified
-    // with a base of more than eight characters.  To remove the 8.3
-    // filename limit, instead we simply truncate the name.
-
-    length = 0;
-    memset(dest, 0, 8);
-
-    while (*src != '\0' && *src != '.')
-    {
-        if (length >= 8)
-        {
-            printf("Warning: Truncated '%s' lump name to '%.8s'.\n",
-                   filename, dest);
-            break;
-        }
-
-	dest[length++] = toupper((int)*src++);
-    }
-}
-
-//---------------------------------------------------------------------------
-//
-// PROC M_ForceUppercase
-//
-// Change string to uppercase.
-//
-//---------------------------------------------------------------------------
-
-void M_ForceUppercase(char *text)
-{
-    char *p;
-
-    for (p = text; *p != '\0'; ++p)
-    {
-        *p = toupper(*p);
-    }
-}
-
-//
-// M_StrCaseStr
-//
-// Case-insensitive version of strstr()
-//
-
-char *M_StrCaseStr(char *haystack, char *needle)
-{
-    unsigned int haystack_len;
-    unsigned int needle_len;
-    unsigned int len;
-    unsigned int i;
-
-    haystack_len = strlen(haystack);
-    needle_len = strlen(needle);
-
-    if (haystack_len < needle_len)
-    {
-        return NULL;
-    }
-
-    len = haystack_len - needle_len;
-
-    for (i = 0; i <= len; ++i)
-    {
-        if (!strncasecmp(haystack + i, needle, needle_len))
-        {
-            return haystack + i;
-        }
-    }
-
-    return NULL;
-}
-
-//
-// Safe version of strdup() that checks the string was successfully
-// allocated.
-//
-
-char *M_StringDuplicate(const char *orig)
-{
-    char *result;
-
-    result = strdup(orig);
-
-    if (result == NULL)
-    {
-        I_Error("Failed to duplicate string (length %i)\n",
-                strlen(orig));
-    }
-
-    return result;
-}
-
-//
-// String replace function.
-//
-
-char *M_StringReplace(const char *haystack, const char *needle,
-                      const char *replacement)
-{
-    char *result, *dst;
-    const char *p;
-    size_t needle_len = strlen(needle);
-    size_t result_len, dst_len;
-
-    // Iterate through occurrences of 'needle' and calculate the size of
-    // the new string.
-    result_len = strlen(haystack) + 1;
-    p = haystack;
-
-    for (;;)
-    {
-        p = strstr(p, needle);
-        if (p == NULL)
-        {
-            break;
-        }
-
-        p += needle_len;
-        result_len += strlen(replacement) - needle_len;
-    }
-
-    // Construct new string.
-    
-    result = malloc(result_len);
-    if (result == NULL)
-    {
-        I_Error("M_StringReplace: Failed to allocate new string");
-        return NULL;
-    }
-
-    dst = result; dst_len = result_len;
-    p = haystack;
-
-    while (*p != '\0')
-    {
-        if (!strncmp(p, needle, needle_len))
-        {
-            M_StringCopy(dst, replacement, dst_len);
-            p += needle_len;
-            dst += strlen(replacement);
-            dst_len -= strlen(replacement);
-        }
-        else
-        {
-            *dst = *p;
-            ++dst; --dst_len;
-            ++p;
-        }
-    }
-
-    *dst = '\0';
-
-    return result;
-}
 
 // Safe string copy function that works like OpenBSD's strlcpy().
 // Returns true if the string was not truncated.
@@ -311,64 +120,6 @@ boolean M_StringEndsWith(const char *s, const char *suffix)
         && strcmp(s + strlen(s) - strlen(suffix), suffix) == 0;
 }
 
-// Return a newly-malloced string with all the strings given as arguments
-// concatenated together.
-
-char *M_StringJoin(const char *s, ...)
-{
-    char *result;
-    const char *v;
-    va_list args;
-    size_t result_len;
-
-    result_len = strlen(s) + 1;
-
-    va_start(args, s);
-    for (;;)
-    {
-        v = va_arg(args, const char *);
-        if (v == NULL)
-        {
-            break;
-        }
-
-        result_len += strlen(v);
-    }
-    va_end(args);
-
-    result = malloc(result_len);
-
-    if (result == NULL)
-    {
-        I_Error("M_StringJoin: Failed to allocate new string.");
-        return NULL;
-    }
-
-    M_StringCopy(result, s, result_len);
-
-    va_start(args, s);
-    for (;;)
-    {
-        v = va_arg(args, const char *);
-        if (v == NULL)
-        {
-            break;
-        }
-
-        M_StringConcat(result, v, result_len);
-    }
-    va_end(args);
-
-    return result;
-}
-
-// On Windows, vsnprintf() is _vsnprintf().
-#ifdef _WIN32
-#if _MSC_VER < 1400 /* not needed for Visual Studio 2008 */
-#define vsnprintf _vsnprintf
-#endif
-#endif
-
 // Safe, portable vsnprintf().
 int M_vsnprintf(char *buf, size_t buf_len, const char *s, va_list args)
 {
@@ -398,30 +149,13 @@ int M_vsnprintf(char *buf, size_t buf_len, const char *s, va_list args)
 // Safe, portable snprintf().
 int M_snprintf(char *buf, size_t buf_len, const char *s, ...)
 {
-    va_list args;
-    int result;
-    va_start(args, s);
-    result = M_vsnprintf(buf, buf_len, s, args);
-    va_end(args);
-    return result;
+    return 0;
+    // va_list args;
+    // int result;
+    // va_start(args, s);
+    // result = M_vsnprintf(buf, buf_len, s, args);
+    // va_end(args);
+    // return result;
 }
 
-#ifdef _WIN32
-
-char *M_OEMToUTF8(const char *oem)
-{
-    unsigned int len = strlen(oem) + 1;
-    wchar_t *tmp;
-    char *result;
-
-    tmp = malloc(len * sizeof(wchar_t));
-    MultiByteToWideChar(CP_OEMCP, 0, oem, len, tmp, len);
-    result = malloc(len * 4);
-    WideCharToMultiByte(CP_UTF8, 0, tmp, len, result, len * 4, NULL, NULL);
-    free(tmp);
-
-    return result;
-}
-
-#endif
 

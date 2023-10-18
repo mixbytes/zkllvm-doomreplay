@@ -17,7 +17,6 @@
 //    Configuration file interface.
 //
 
-
 #include <stdlib.h>
 #include <string.h>
 
@@ -1868,52 +1867,6 @@ void M_LoadDefaults (void)
 {
     int i;
  
-    // check for a custom default file
-
-    //!
-    // @arg <file>
-    // @vanilla
-    //
-    // Load main configuration from the specified file, instead of the
-    // default.
-    //
-
-    i = M_CheckParmWithArgs("-config", 1);
-
-    if (i)
-    {
-	doom_defaults.filename = myargv[i+1];
-	printf ("	default file: %s\n",doom_defaults.filename);
-    }
-    else
-    {
-        doom_defaults.filename
-            = M_StringJoin(configdir, default_main_config, NULL);
-    }
-
-    printf("saving config in %s\n", doom_defaults.filename);
-
-    //!
-    // @arg <file>
-    //
-    // Load additional configuration from the specified file, instead of
-    // the default.
-    //
-
-    i = M_CheckParmWithArgs("-extraconfig", 1);
-
-    if (i)
-    {
-        extra_defaults.filename = myargv[i+1];
-        printf("        extra configuration file: %s\n", 
-               extra_defaults.filename);
-    }
-    else
-    {
-        extra_defaults.filename
-            = M_StringJoin(configdir, default_extra_config, NULL);
-    }
-
     LoadDefaultCollection(&doom_defaults);
     LoadDefaultCollection(&extra_defaults);
 }
@@ -2044,25 +1997,7 @@ static char *GetDefaultConfigDir(void)
 
 void M_SetConfigDir(char *dir)
 {
-    // Use the directory that was passed, or find the default.
-
-    if (dir != NULL)
-    {
-        configdir = dir;
-    }
-    else
-    {
-        configdir = GetDefaultConfigDir();
-    }
-
-    if (strcmp(configdir, "") != 0)
-    {
-        printf("Using %s for configuration and saves\n", configdir);
-    }
-
-    // Make the directory if it doesn't already exist:
-
-    M_MakeDirectory(configdir);
+    configdir = dir;
 }
 
 //
@@ -2072,43 +2007,6 @@ void M_SetConfigDir(char *dir)
 
 char *M_GetSaveGameDir(char *iwadname)
 {
-    char *savegamedir;
-#if ORIGCODE
-    char *topdir;
-#endif
-
-    // If not "doing" a configuration directory (Windows), don't "do"
-    // a savegame directory, either.
-
-    if (!strcmp(configdir, ""))
-    {
-    	savegamedir = strdup("");
-    }
-    else
-    {
-#if ORIGCODE
-        // ~/.chocolate-doom/savegames
-
-        topdir = M_StringJoin(configdir, "savegame", NULL);
-        M_MakeDirectory(topdir);
-
-        // eg. ~/.chocolate-doom/savegames/doom2.wad/
-
-        savegamedir = M_StringJoin(topdir, DIR_SEPARATOR_S, iwadname,
-                                   DIR_SEPARATOR_S, NULL);
-
-        M_MakeDirectory(savegamedir);
-
-        free(topdir);
-#else
-        savegamedir = M_StringJoin(configdir, DIR_SEPARATOR_S, ".savegame/", NULL);
-
-        M_MakeDirectory(savegamedir);
-
-        printf ("Using %s for savegames\n", savegamedir);
-#endif
-    }
-
-    return savegamedir;
+    return "savegame";
 }
 
