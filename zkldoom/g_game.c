@@ -794,7 +794,7 @@ boolean G_Responder (event_t* ev)
         // Perform a low pass filter on this so that the thermometer 
         // appears to move smoothly.
 
-        testcontrols_mousespeed = abs(ev->data2);
+        testcontrols_mousespeed = abss(ev->data2);
     }
 
     // If the next/previous weapon keys are pressed, set the next_weapon

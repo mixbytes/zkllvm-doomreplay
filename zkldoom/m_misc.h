@@ -22,6 +22,7 @@
 
 #include "doomtype.h"
 
+unsigned int abss(int v);
 boolean M_WriteFile(char *name, void *source, int length);
 int M_ReadFile(char *name, byte **buffer);
 void M_MakeDirectory(char *dir);

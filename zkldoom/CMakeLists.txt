@@ -44,4 +44,5 @@ process_circuit(zkldoom SOURCES z_main.c doomgeneric_dr.c doomgeneric.c d_main.c
                 tables.c p_setup.c p_saveg.c r_main.c m_argv.c 
                 d_items.c st_lib.c am_map.c 
                 p_mobj.c p_tick.c p_ceilng.c r_segs.c p_map.c info.c p_maputl.c 
-                p_sight.c INPUT test-input.json)
+                p_sight.c 
+                info.c p_pspr.c p_maputl.c INPUT test-input.json)

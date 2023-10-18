@@ -17,7 +17,7 @@
 //      Miscellaneous.
 //
 
-
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "doomtype.h"
@@ -31,6 +31,12 @@
 #include "v_video.h"
 #include "w_wad.h"
 #include "z_zone.h"
+
+unsigned int abss(int v) {
+    if (v < 0)
+        return -1 * v;
+    return v;
+}
 
 //
 // Create a directory
@@ -354,7 +360,7 @@ char *M_StringReplace(const char *haystack, const char *needle,
 // Safe string copy function that works like OpenBSD's strlcpy().
 // Returns true if the string was not truncated.
 
-boolean M_StringCopy(char *dest, const char *src, size_t dest_size)
+boolean M_StringCopy(char *dest, const char *src, unsigned int dest_size)
 {
     size_t len;
 
@@ -375,7 +381,7 @@ boolean M_StringCopy(char *dest, const char *src, size_t dest_size)
 // Safe string concat function that works like OpenBSD's strlcat().
 // Returns true if string not truncated.
 
-boolean M_StringConcat(char *dest, const char *src, size_t dest_size)
+boolean M_StringConcat(char *dest, const char *src, unsigned int dest_size)
 {
     size_t offset;
 

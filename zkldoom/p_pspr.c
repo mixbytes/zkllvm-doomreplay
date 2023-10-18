@@ -62,7 +62,7 @@ P_SetPsprite
 	if (!stnum)
 	{
 	    // object removed itself
-	    psp->state = NULL;
+	    psp->state = 0;
 	    break;	
 	}
 	
@@ -843,7 +843,7 @@ void P_SetupPsprites (player_t* player)
 	
     // remove all psprites
     for (i=0 ; i<NUMPSPRITES ; i++)
-	player->psprites[i].state = NULL;
+	player->psprites[i].state = 0;
 		
     // spawn the gun
     player->pendingweapon = player->readyweapon;

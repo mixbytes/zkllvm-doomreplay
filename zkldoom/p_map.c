@@ -83,12 +83,6 @@ line_t*		spechit[MAXSPECIALCROSS];
 int		numspechit;
 
 
-fixed_t abss(fixed_t v) {
-    if (v < 0)
-        return -1 * v;
-    return v;
-}
-
 //
 // TELEPORT MOVE
 // 

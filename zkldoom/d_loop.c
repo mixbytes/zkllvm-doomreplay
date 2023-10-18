@@ -302,7 +302,6 @@ void D_ReceiveTic(ticcmd_t *ticcmds, boolean *players_mask)
 //
 // Called after the screen is set but before the game starts running.
 //
-
 void D_StartGameLoop(void)
 {
     lasttime = GetAdjustedTime() / ticdup;
