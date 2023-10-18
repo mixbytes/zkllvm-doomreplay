@@ -45,6 +45,7 @@ static void addConvertedKeyToQueue(int pressed, unsigned char key) {
 void DR_Init(replay_data_t replay_data) {
     // __builtin_dump_struct(&replay_data, &printf);
 
+    /* AAAAAAAAAAAAAAAAA
     g_key_map[dr_key_escape      ] = KEY_ESCAPE;
     g_key_map[dr_key_enter       ] = KEY_ENTER;
     g_key_map[dr_key_left        ] = KEY_LEFTARROW;
@@ -70,7 +71,7 @@ void DR_Init(replay_data_t replay_data) {
     g_key_map[dr_key_7           ] = '7';
     g_key_map[dr_key_8           ] = '8';
     g_key_map[dr_key_9           ] = '9';
-
+    */
     //g_replay_data = replay_data;
 
     g_replay_data.n_frames = replay_data.n_frames;

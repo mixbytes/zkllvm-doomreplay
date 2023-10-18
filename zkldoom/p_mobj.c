@@ -447,12 +447,14 @@ void P_MobjThinker (mobj_t* mobj)
     {
 	P_XYMovement (mobj);
 
+#ifndef __ZKLLVM__
     if (mobj->player) {
         printf("[DEBUG] Tick: %d, playerState: (x,y,z): (%d, %d, %d), angle: %d, health: %d, ammo: %d\n",
             gametic, mobj->x, mobj->y, mobj->z, mobj->angle, mobj->health,
             mobj->player->ammo[weaponinfo[mobj->player->readyweapon].ammo]);
             //__builtin_dump_struct(mobj, &printf);
     }
+#endif
 
 	// FIXME: decent NOP/NULL/Nil function pointer please.
 	if (mobj->thinker.function.acv == (actionf_v) (-1))

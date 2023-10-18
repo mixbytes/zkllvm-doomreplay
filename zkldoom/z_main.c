@@ -32,13 +32,11 @@
 
 #include "doom.h"
 
-// BBBBBBBBBBBBBBBBBBBBBBBBB
-//void D_DoomMain (__uint128_t tics_inputs[64]);
-void D_DoomMain (__uint128_t input1, __uint128_t input2);
+void D_DoomMain (__uint128_t n);
 void dg_Create();
 
 
-__attribute__((circuit)) int z_main(__uint128_t input1, __uint128_t input2)
+__attribute__((circuit)) int z_main(__uint128_t n)
 {
     replay_data_t replay_data;
     
@@ -73,19 +71,14 @@ __attribute__((circuit)) int z_main(__uint128_t input1, __uint128_t input2)
 
     dg_Create();
     
-
-	// D_DoomMain (tics_inputs);
-    // BBBBBBBBBBBBBBBBB
-      
-    D_DoomMain (input1, input2);
+    D_DoomMain (n);
     return cur_frame;
 }
 
-void printInputs(__uint128_t value1, __uint128_t value2) {
+void printInputs(__uint128_t value1) {
 #ifndef __ZKLLVM__
     printf("[ ");
     printf("{\"field\": %" PRIu64 "%" PRIu64 "}", (uint64_t)(value1 >> 64), (uint64_t)value1);
-    printf(", {\"field\": %" PRIu64 "%" PRIu64 "}", (uint64_t)(value2 >> 64), (uint64_t)value2);
     printf(" ]\n");
 #endif
 }
@@ -93,11 +86,9 @@ void printInputs(__uint128_t value1, __uint128_t value2) {
 
 int main(int argc, char **argv) {
 
-    __uint128_t input1 = *(__uint128_t*) "\xad\x00\x00\x00\xad\x00\x00\x00\xad\x00\x00\x00\x78\x01\x00\x00";
-    __uint128_t input2 = *(__uint128_t*) "\x9d\x00\x00\x00\x9d\x00\x00\x00\x9d\x00\x00\x00\xa0\x01\x00\x00";
-    //printInputs(input1, input2);
+    // printInputs(64);
     //return 0;
-    int a = z_main(input1, input2);
+    int a = z_main(64);
 #ifndef __ZKLLVM__
     printf("z_main out: %d\n", a);
 #endif

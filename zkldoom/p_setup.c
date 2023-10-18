@@ -774,21 +774,22 @@ P_SetupLevel
 	   
     // find map name
     
-    if ( gamemode == commercial)
-    {
-    if (map < 9)
-	    DEH_snprintf(lumpname, 9, "map0%i", map);
-	else
-	    DEH_snprintf(lumpname, 9, "map%i", map);
-    }
-    else
-    {
+    // AAAAAAAAAAAAAAAAAAAA - leave only E1M1-like levels (removing snprintf)
+    //if ( gamemode == commercial)
+    //{
+    //if (map < 9)
+	//    DEH_snprintf(lumpname, 9, "map0%i", map);
+	//else
+	//    DEH_snprintf(lumpname, 9, "map%i", map);
+    //}
+    //else
+    //{
 	lumpname[0] = 'E';
 	lumpname[1] = '0' + episode;
 	lumpname[2] = 'M';
 	lumpname[3] = '0' + map;
 	lumpname[4] = 0;
-    }
+    //}
     lumpnum = W_GetNumForName (lumpname);
 	
     leveltime = 0;
