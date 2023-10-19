@@ -67,22 +67,6 @@ boolean M_StrToInt(const char *str, int *result)
 }
 
 
-// Returns true if 's' begins with the specified prefix.
-
-boolean M_StringStartsWith(const char *s, const char *prefix)
-{
-    return strlen(s) > strlen(prefix)
-        && strncmp(s, prefix, strlen(prefix)) == 0;
-}
-
-// Returns true if 's' ends with the specified suffix.
-
-boolean M_StringEndsWith(const char *s, const char *suffix)
-{
-    return strlen(s) >= strlen(suffix)
-        && strcmp(s + strlen(s) - strlen(suffix), suffix) == 0;
-}
-
 // Safe, portable vsnprintf().
 int M_vsnprintf(char *buf, size_t buf_len, const char *s, va_list args)
 {

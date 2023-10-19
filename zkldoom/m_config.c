@@ -1793,22 +1793,6 @@ static void LoadDefaultCollection(default_collection_t *collection)
             continue;
         }
 
-        // Strip off trailing non-printable characters (\r characters
-        // from DOS text files)
-
-        while (strlen(strparm) > 0 && !isprint(strparm[strlen(strparm)-1]))
-        {
-            strparm[strlen(strparm)-1] = '\0';
-        }
-
-        // Surrounded by quotes? If so, remove them.
-        if (strlen(strparm) >= 2
-         && strparm[0] == '"' && strparm[strlen(strparm) - 1] == '"')
-        {
-            strparm[strlen(strparm) - 1] = '\0';
-            memmove(strparm, strparm + 1, sizeof(strparm) - 1);
-        }
-
         SetVariable(def, strparm);
     }
 
