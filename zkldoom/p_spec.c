@@ -20,8 +20,11 @@
 //	Line Tag handling. Line and Sector triggers.
 //
 
+//#include <stdio.h>
+//#include <stdlib.h>
 
-#include <stdlib.h>
+
+#define NULL 0
 
 #include "doomdef.h"
 #include "doomstat.h"
@@ -1181,76 +1184,6 @@ void P_UpdateSpecials (void)
 static void DonutOverrun(fixed_t *s3_floorheight, short *s3_floorpic,
                          line_t *line, sector_t *pillar_sector)
 {
-    static int first = 1;
-    static int tmp_s3_floorheight;
-    static int tmp_s3_floorpic;
-
-    extern int numflats;
-
-    if (first)
-    {
-        int p;
-
-        // This is the first time we have had an overrun.
-        first = 0;
-
-        // Default values
-        tmp_s3_floorheight = DONUT_FLOORHEIGHT_DEFAULT;
-        tmp_s3_floorpic = DONUT_FLOORPIC_DEFAULT;
-
-        //!
-        // @category compat
-        // @arg <x> <y>
-        //
-        // Use the specified magic values when emulating behavior caused
-        // by memory overruns from improperly constructed donuts.
-        // In Vanilla Doom this can differ depending on the operating
-        // system.  The default (if this option is not specified) is to
-        // emulate the behavior when running under Windows 98.
-
-        p = M_CheckParmWithArgs("-donut", 2);
-
-        if (p > 0)
-        {
-            // Dump of needed memory: (fixed_t)0000:0000 and (short)0000:0008
-            //
-            // C:\>debug
-            // -d 0:0
-            //
-            // DOS 6.22:
-            // 0000:0000    (57 92 19 00) F4 06 70 00-(16 00)
-            // DOS 7.1:
-            // 0000:0000    (9E 0F C9 00) 65 04 70 00-(16 00)
-            // Win98:
-            // 0000:0000    (00 00 00 00) 65 04 70 00-(16 00)
-            // DOSBox under XP:
-            // 0000:0000    (00 00 00 F1) ?? ?? ?? 00-(07 00)
-
-            M_StrToInt(myargv[p + 1], &tmp_s3_floorheight);
-            M_StrToInt(myargv[p + 2], &tmp_s3_floorpic);
-
-            if (tmp_s3_floorpic >= numflats)
-            {
-                fprintf(stderr,
-                        "DonutOverrun: The second parameter for \"-donut\" "
-                        "switch should be greater than 0 and less than number "
-                        "of flats (%d). Using default value (%d) instead. \n",
-                        numflats, DONUT_FLOORPIC_DEFAULT);
-                tmp_s3_floorpic = DONUT_FLOORPIC_DEFAULT;
-            }
-        }
-    }
-
-    /*
-    fprintf(stderr,
-            "Linedef: %d; Sector: %d; "
-            "New floor height: %d; New floor pic: %d\n",
-            line->iLineID, pillar_sector->iSectorID,
-            tmp_s3_floorheight >> 16, tmp_s3_floorpic);
-     */
-
-    *s3_floorheight = (fixed_t) tmp_s3_floorheight;
-    *s3_floorpic = (short) tmp_s3_floorpic;
 }
 
 
@@ -1293,9 +1226,9 @@ int EV_DoDonut(line_t*	line)
 
         if (s2 == NULL)
         {
-            fprintf(stderr,
-                    "EV_DoDonut: linedef had no second sidedef! "
-                    "Unexpected behavior may occur in Vanilla Doom. \n");
+            // fprintf(stderr,
+            //        "EV_DoDonut: linedef had no second sidedef! "
+            //        "Unexpected behavior may occur in Vanilla Doom. \n");
 	    break;
         }
 
@@ -1314,10 +1247,10 @@ int EV_DoDonut(line_t*	line)
                 // s3->floorpic is a short at 0000:0008
                 // Trying to emulate
 
-                fprintf(stderr,
-                        "EV_DoDonut: WARNING: emulating buffer overrun due to "
-                        "NULL back sector. "
-                        "Unexpected behavior may occur in Vanilla Doom.\n");
+                // fprintf(stderr,
+                //        "EV_DoDonut: WARNING: emulating buffer overrun due to "
+                //        "NULL back sector. "
+                //        "Unexpected behavior may occur in Vanilla Doom.\n");
 
                 DonutOverrun(&s3_floorheight, &s3_floorpic, line, s1);
             }

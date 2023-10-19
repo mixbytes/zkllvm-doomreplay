@@ -176,15 +176,9 @@ void cmap_to_fb(uint8_t * out, uint8_t * in, int in_pixels)
 void I_InitGraphics (void)
 {
     int i;
-    i = M_CheckParmWithArgs("-scaling", 1);
-    if (i > 0) {
-        i = atoi(myargv[i + 1]);
-        fb_scaling = i;
-    } else {
-        fb_scaling = s_Fb.xres / SCREENWIDTH;
-        if (s_Fb.yres / SCREENHEIGHT < fb_scaling)
-            fb_scaling = s_Fb.yres / SCREENHEIGHT;
-    }
+    fb_scaling = s_Fb.xres / SCREENWIDTH;
+    if (s_Fb.yres / SCREENHEIGHT < fb_scaling)
+        fb_scaling = s_Fb.yres / SCREENHEIGHT;
 
 
 	I_VideoBuffer = (byte*)Z_Malloc (SCREENWIDTH * SCREENHEIGHT, PU_STATIC, NULL);  // For DOOM to draw on

@@ -16,13 +16,10 @@
 //	Main program, simply calls D_DoomMain high level loop.
 //
 
-//#include "config.h"
-
 #ifndef __ZKLLVM__
 #include <stdio.h>
 #include <stdlib.h>
 #endif
-
 
 #include "doomtype.h"
 #include "m_argv.h"

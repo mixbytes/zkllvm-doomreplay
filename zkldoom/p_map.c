@@ -255,10 +255,9 @@ boolean PIT_CheckLine (line_t* ld)
         spechit[numspechit] = ld;
 	numspechit++;
 
-        // fraggle: spechits overrun emulation code from prboom-plus
         if (numspechit > MAXSPECIALCROSS_ORIGINAL)
         {
-            SpechitOverrun(ld);
+            // SpechitOverrun(ld);
         }
     }
 
@@ -1386,59 +1385,5 @@ P_ChangeSector
 
 static void SpechitOverrun(line_t *ld)
 {
-    static unsigned int baseaddr = 0;
-    unsigned int addr;
-   
-    if (baseaddr == 0)
-    {
-        int p;
-
-        // This is the first time we have had an overrun.  Work out
-        // what base address we are going to use.
-        // Allow a spechit value to be specified on the command line.
-
-        //!
-        // @category compat
-        // @arg <n>
-        //
-        // Use the specified magic value when emulating spechit overruns.
-        //
-
-        p = M_CheckParmWithArgs("-spechit", 1);
-        
-        if (p > 0)
-        {
-            M_StrToInt(myargv[p+1], (int *) &baseaddr);
-        }
-        else
-        {
-            baseaddr = DEFAULT_SPECHIT_MAGIC;
-        }
-    }
-    
-    // Calculate address used in doom2.exe
-
-    addr = baseaddr + (ld - lines) * 0x3E;
-
-    switch(numspechit)
-    {
-        case 9: 
-        case 10:
-        case 11:
-        case 12:
-            tmbbox[numspechit-9] = addr;
-            break;
-        case 13: 
-            crushchange = addr; 
-            break;
-        case 14: 
-            nofit = addr; 
-            break;
-        default:
-            //fprintf(stderr, "SpechitOverrun: Warning: unable to emulate"
-            //                "an overrun where numspechit=%i\n",
-            //                numspechit);
-            break;
-    }
 }
 
