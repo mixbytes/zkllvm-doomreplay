@@ -67,43 +67,6 @@ boolean M_StrToInt(const char *str, int *result)
 }
 
 
-// Safe string copy function that works like OpenBSD's strlcpy().
-// Returns true if the string was not truncated.
-
-boolean M_StringCopy(char *dest, const char *src, unsigned int dest_size)
-{
-    size_t len;
-
-    if (dest_size >= 1)
-    {
-        dest[dest_size - 1] = '\0';
-        strncpy(dest, src, dest_size - 1);
-    }
-    else
-    {
-        return false;
-    }
-
-    len = strlen(dest);
-    return src[len] == '\0';
-}
-
-// Safe string concat function that works like OpenBSD's strlcat().
-// Returns true if string not truncated.
-
-boolean M_StringConcat(char *dest, const char *src, unsigned int dest_size)
-{
-    size_t offset;
-
-    offset = strlen(dest);
-    if (offset > dest_size)
-    {
-        offset = dest_size;
-    }
-
-    return M_StringCopy(dest + offset, src, dest_size - offset);
-}
-
 // Returns true if 's' begins with the specified prefix.
 
 boolean M_StringStartsWith(const char *s, const char *prefix)

@@ -497,18 +497,8 @@ void R_InitTextures (void)
     
     // Load the patch names from pnames.lmp.
     name[8] = 0;
-    names = W_CacheLumpName (DEH_String("PNAMES"), PU_STATIC);
-    nummappatches = LONG ( *((int *)names) );
-    name_p = names + 4;
-    patchlookup = Z_Malloc(nummappatches*sizeof(*patchlookup), PU_STATIC, 0);
-
-    for (i = 0; i < nummappatches; i++)
-    {
-        M_StringCopy(name, name_p + i * 8, sizeof(name));
-        patchlookup[i] = W_CheckNumForName(name);
-    }
-    W_ReleaseLumpName(DEH_String("PNAMES"));
-
+    
+    
     // Load the map texture definitions from textures.lmp.
     // The data is contained in one or two lumps,
     //  TEXTURE1 for shareware, plus TEXTURE2 for commercial.

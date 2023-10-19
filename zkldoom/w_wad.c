@@ -158,14 +158,15 @@ wad_file_t *W_AddFile (char *filename)
     // WAD file
     W_Read(wad_file, 0, &header, sizeof(header));
 
-    if (strncmp(header.identification,"IWAD",4)) {
+    // AAAAAAAAAA = fuck all checks
+    // if (strncmp(header.identification,"IWAD",4)) {
         // Homebrew levels?
-        if (strncmp(header.identification,"PWAD",4)) {
-            I_Error ("Wad file %s doesn't have IWAD "
-         "or PWAD id\n", filename);
-        }
+    //    if (strncmp(header.identification,"PWAD",4)) {
+    //       I_Error ("Wad file %s doesn't have IWAD "
+    //     "or PWAD id\n", filename);
+    //    }
         // ???modifiedgame = true;
-    }
+    //}
 
     header.numlumps = LONG(header.numlumps);
     header.infotableofs = LONG(header.infotableofs);
@@ -189,12 +190,16 @@ wad_file_t *W_AddFile (char *filename)
 		lump_p->position = LONG(filerover->filepos);
 		lump_p->size = LONG(filerover->size);
 			lump_p->cache = NULL;
-		strncpy(lump_p->name, filerover->name, 8);
+		// AAAAAAAAAAAAA
+        //strncpy(lump_p->name, filerover->name, 8);
+        for (int i=0; i< 8; i++) {
+            lump_p->name[i] = filerover->name[i];
+        }
 
 			++lump_p;
 			++filerover;
     }
-
+    
     Z_Free(fileinfo);
 
     if (lumphash != NULL)

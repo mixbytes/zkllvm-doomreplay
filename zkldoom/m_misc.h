@@ -33,8 +33,6 @@ void M_ExtractFileBase(char *path, char *dest);
 void M_ForceUppercase(char *text);
 char *M_StrCaseStr(char *haystack, char *needle);
 char *M_StringDuplicate(const char *orig);
-boolean M_StringCopy(char *dest, const char *src, unsigned int dest_size);
-boolean M_StringConcat(char *dest, const char *src, unsigned int dest_size);
 char *M_StringReplace(const char *haystack, const char *needle,
                       const char *replacement);
 boolean M_StringStartsWith(const char *s, const char *prefix);

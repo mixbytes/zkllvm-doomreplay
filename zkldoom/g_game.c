@@ -924,39 +924,6 @@ void G_Ticker (void)
 	}
     }
     
-    // check for special buttons
-    for (i=0 ; i<MAXPLAYERS ; i++)
-    {
-	if (playeringame[i]) 
-	{ 
-	    if (players[i].cmd.buttons & BT_SPECIAL) 
-	    { 
-		switch (players[i].cmd.buttons & BT_SPECIALMASK) 
-		{ 
-		  case BTS_PAUSE: 
-		    paused ^= 1; 
-		    if (paused) 
-			S_PauseSound (); 
-		    else 
-			S_ResumeSound (); 
-		    break; 
-					 
-		  case BTS_SAVEGAME:
-		    if (!savedescription[0]) 
-                    {
-                        M_StringCopy(savedescription, "NET GAME",
-                                     sizeof(savedescription));
-                    }
-
-		    savegameslot =  
-			(players[i].cmd.buttons & BTS_SAVEMASK)>>BTS_SAVESHIFT; 
-		    gameaction = ga_savegame; 
-		    break; 
-		} 
-	    } 
-	}
-    }
-
     // Have we just finished displaying an intermission screen?
 
     if (oldgamestate == GS_INTERMISSION && gamestate != GS_INTERMISSION)
@@ -1186,26 +1153,6 @@ G_CheckSpot
 //
 void G_DeathMatchSpawnPlayer (int playernum) 
 { 
-    int             i,j; 
-    int				selections; 
-	 
-    selections = deathmatch_p - deathmatchstarts; 
-    if (selections < 4) 
-	I_Error ("Only %i deathmatch spots, 4 required", selections); 
- 
-    for (j=0 ; j<20 ; j++) 
-    { 
-	i = P_Random() % selections; 
-	if (G_CheckSpot (playernum, &deathmatchstarts[i]) ) 
-	{ 
-	    deathmatchstarts[i].type = playernum+1; 
-	    P_SpawnPlayer (&deathmatchstarts[i]); 
-	    return; 
-	} 
-    } 
- 
-    // no good spot, so the player will probably get stuck 
-    P_SpawnPlayer (&playerstarts[playernum]); 
 } 
 
 //
@@ -1213,53 +1160,11 @@ void G_DeathMatchSpawnPlayer (int playernum)
 // 
 void G_DoReborn (int playernum) 
 { 
-    int                             i; 
-	 
-    if (!netgame)
-    {
-	// reload the level from scratch
-	gameaction = ga_loadlevel;  
-    }
-    else 
-    {
-	// respawn at the start
-
-	// first dissasociate the corpse 
-	players[playernum].mo->player = NULL;   
-		 
-	// spawn at random spot if in death match 
-	if (deathmatch) 
-	{ 
-	    G_DeathMatchSpawnPlayer (playernum); 
-	    return; 
-	} 
-		 
-	if (G_CheckSpot (playernum, &playerstarts[playernum]) ) 
-	{ 
-	    P_SpawnPlayer (&playerstarts[playernum]); 
-	    return; 
-	}
-	
-	// try to spawn at one of the other players spots 
-	for (i=0 ; i<MAXPLAYERS ; i++)
-	{
-	    if (G_CheckSpot (playernum, &playerstarts[i]) ) 
-	    { 
-		playerstarts[i].type = playernum+1;	// fake as other player 
-		P_SpawnPlayer (&playerstarts[i]); 
-		playerstarts[i].type = i+1;		// restore 
-		return; 
-	    }	    
-	    // he's going to be inside something.  Too bad.
-	}
-	P_SpawnPlayer (&playerstarts[playernum]); 
-    } 
 } 
  
  
 void G_ScreenShot (void) 
 { 
-    gameaction = ga_screenshot; 
 } 
  
 
@@ -1291,24 +1196,21 @@ extern char*	pagename;
  
 void G_ExitLevel (void) 
 { 
-    secretexit = false; 
-    gameaction = ga_completed; 
+    // AAAAAAAAAAAAAAAAAA
+    // secretexit = false; 
+    // gameaction = ga_completed; 
 } 
 
 // Here's for the german edition.
 void G_SecretExitLevel (void) 
 { 
-    // IF NO WOLF3D LEVELS, NO SECRET EXIT!
-    if ( (gamemode == commercial)
-      && (W_CheckNumForName("map31")<0))
-	secretexit = false;
-    else
-	secretexit = true; 
-    gameaction = ga_completed; 
 } 
  
 void G_DoCompleted (void) 
 { 
+    
+    // AAAAAAAAAAAAAAa - finish level here ?
+    /*
     int             i; 
 	 
     gameaction = ga_nothing; 
@@ -1449,6 +1351,7 @@ void G_DoCompleted (void)
     StatCopy(&wminfo);
  
     WI_Start (&wminfo); 
+    */
 } 
 
 
@@ -1457,36 +1360,10 @@ void G_DoCompleted (void)
 //
 void G_WorldDone (void) 
 { 
-    gameaction = ga_worlddone; 
-
-    if (secretexit) 
-	players[consoleplayer].didsecret = true; 
-
-    if ( gamemode == commercial )
-    {
-	switch (gamemap)
-	{
-	  case 15:
-	  case 31:
-	    if (!secretexit)
-		break;
-	  case 6:
-	  case 11:
-	  case 20:
-	  case 30:
-	    F_StartFinale ();
-	    break;
-	}
-    }
 } 
  
 void G_DoWorldDone (void) 
 {        
-    gamestate = GS_LEVEL; 
-    gamemap = wminfo.next+1; 
-    G_DoLoadLevel (); 
-    gameaction = ga_nothing; 
-    viewactive = true; 
 } 
  
 
@@ -1502,8 +1379,6 @@ char	savename[256];
 
 void G_LoadGame (char* name) 
 { 
-    M_StringCopy(savename, name, sizeof(savename));
-    gameaction = ga_loadgame; 
 } 
  
 #define VERSIONSIZE		16 
@@ -1524,9 +1399,6 @@ G_SaveGame
 ( int	slot,
   char*	description )
 {
-    savegameslot = slot;
-    M_StringCopy(savedescription, description, sizeof(savedescription));
-    sendsave = true;
 }
 
 void G_DoSaveGame (void) 
