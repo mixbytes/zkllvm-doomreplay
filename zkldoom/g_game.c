@@ -1730,31 +1730,6 @@ void G_WriteDemoTiccmd (ticcmd_t* cmd)
 //
 void G_RecordDemo (char *name)
 {
-    size_t demoname_size;
-    int i;
-    int maxsize;
-
-    usergame = false;
-    demoname_size = strlen(name) + 5;
-    demoname = Z_Malloc(demoname_size, PU_STATIC, NULL);
-    //M_snprintf(demoname, demoname_size, "%s.lmp", name);
-    maxsize = 0x20000;
-
-    //!
-    // @arg <size>
-    // @category demo
-    // @vanilla
-    //
-    // Specify the demo buffer size (KiB)
-    //
-
-    i = M_CheckParmWithArgs("-maxdemo", 1);
-    if (i)
-	maxsize = atoi(myargv[i+1])*1024;
-    demobuffer = Z_Malloc (maxsize,PU_STATIC,NULL); 
-    demoend = demobuffer + maxsize;
-	
-    demorecording = true; 
 } 
 
 // Get the demo version code appropriate for the version set in gameversion.
