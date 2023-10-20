@@ -563,6 +563,7 @@ P_SpawnMobj
 	mobj->z = z;
 
     mobj->thinker.function.acp1 = (actionf_p1)P_MobjThinker;
+    //mobj->thinker.func_id = F_P_MobjThinker;
 	
     P_AddThinker (&mobj->thinker);
 

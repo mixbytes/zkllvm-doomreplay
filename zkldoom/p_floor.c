@@ -18,6 +18,7 @@
 
 
 
+#include <stddef.h>
 #include "z_zone.h"
 #include "doomdef.h"
 #include "p_local.h"
@@ -209,7 +210,6 @@ void T_MoveFloor(floormove_t* floor)
 		      floor->crush,0,floor->direction);
     
     if (!(leveltime&7))
-	S_StartSound(&floor->sector->soundorg, sfx_stnmov);
     
     if (res == pastdest)
     {
@@ -239,7 +239,6 @@ void T_MoveFloor(floormove_t* floor)
 	}
 	P_RemoveThinker(&floor->thinker);
 
-	S_StartSound(&floor->sector->soundorg, sfx_pstop);
     }
 
 }

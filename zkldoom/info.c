@@ -1080,6 +1080,11 @@ state_t	states[NUMSTATES] = {
 
 // accepting 1 pointer
 void dispatch_state_func1(unsigned int action_id, void * ptr1) {
+    // DEBUG 
+    //if (action_id > 10000) {
+    //    printf("trash!!!\n");
+    //    return;
+    //}
     switch (action_id) {
 case S_NULL:  return;
 case S_LIGHTDONE: A_Light0(ptr1); return;

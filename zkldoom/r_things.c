@@ -18,6 +18,7 @@
 
 
 
+#include <stddef.h>
 
 #include "deh_main.h"
 #include "doomdef.h"

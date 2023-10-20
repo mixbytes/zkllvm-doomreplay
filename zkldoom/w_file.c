@@ -16,6 +16,7 @@
 //	WAD I/O functions.
 //
 
+#include <stddef.h>
 #include "config.h"
 
 #include "doomtype.h"
@@ -24,8 +25,8 @@
 #include "w_file.h"
 #include "../doom1_wad_hardcopy.h"
 
-size_t W_Read(wad_file_t *wad, unsigned int offset,
-              void *buffer, size_t buffer_len)
+unsigned int W_Read(wad_file_t *wad, unsigned int offset,
+              void *buffer, unsigned int buffer_len)
 {
     int i = 0;
     for (i = 0; i < buffer_len; i++) {

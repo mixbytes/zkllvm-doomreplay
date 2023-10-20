@@ -59,10 +59,21 @@ typedef struct thinker_s
 {
     struct thinker_s*	prev;
     struct thinker_s*	next;
+    // CCCCCCCCCCCCCCCCCCCCCCCCCCC - remove funcptrs
     think_t		function;
+    //int func_id;
     
 } thinker_t;
 
-
+#define F_T_MoveFloor 1
+#define F_T_PlatRaise 2
+#define F_T_FireFlicker 3
+#define F_T_LightFlash 4
+#define F_T_StrobeFlash 5
+#define F_T_Glow 6
+#define F_P_MobjThinker 7
+#define F_T_VerticalDoor 8
+#define F_T_SlidingDoor 9
+#define F_T_MoveCeiling 10
 
 #endif

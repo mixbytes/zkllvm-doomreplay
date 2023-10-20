@@ -20,6 +20,7 @@
 
 
 
+#include <stddef.h>
 
 #include "doomdef.h"
 #include "deh_main.h"
