@@ -22,7 +22,7 @@
 #ifndef __D_THINK__
 #define __D_THINK__
 
-
+#include <stddef.h>
 
 
 
@@ -61,9 +61,13 @@ typedef struct thinker_s
     struct thinker_s*	next;
     // CCCCCCCCCCCCCCCCCCCCCCCCCCC - remove funcptrs
     think_t		function;
-    //int func_id;
+    int func_id;
     
 } thinker_t;
+
+#define F_FUNC_NULL NULL
+#define F_FUNC_DEAD -1
+#define F_FUNC_ZERO 0
 
 #define F_T_MoveFloor 1
 #define F_T_PlatRaise 2

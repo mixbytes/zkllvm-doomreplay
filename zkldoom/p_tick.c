@@ -73,7 +73,7 @@ void P_AddThinker (thinker_t* thinker)
 void P_RemoveThinker (thinker_t* thinker)
 {
   // FIXME: NOP.
-  thinker->function.acv = (actionf_v)(-1);
+  thinker->function.acv = (actionf_v)(-1); thinker->func_id = F_FUNC_DEAD;
 }
 
 
@@ -98,7 +98,9 @@ void P_RunThinkers (void)
     currentthinker = thinkercap.next;
     while (currentthinker != &thinkercap)
     {
-	if ( currentthinker->function.acv == (actionf_v)(-1) )
+	
+    //if ( currentthinker->function.acv == (actionf_v)(-1) )
+    if ( currentthinker->func_id == F_FUNC_DEAD )
 	{
 	    // time to remove it
 	    currentthinker->next->prev = currentthinker->prev;
@@ -108,7 +110,7 @@ void P_RunThinkers (void)
 	else
 	{
 	    if (currentthinker->function.acp1)
-		currentthinker->function.acp1 (currentthinker);
+		    currentthinker->function.acp1 (currentthinker);
 	}
 	currentthinker = currentthinker->next;
     }

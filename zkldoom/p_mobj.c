@@ -458,7 +458,8 @@ void P_MobjThinker (mobj_t* mobj)
 #endif
 
 	// FIXME: decent NOP/NULL/Nil function pointer please.
-	if (mobj->thinker.function.acv == (actionf_v) (-1))
+	// if (mobj->thinker.function.acv == (actionf_v) (-1))
+	if (mobj->thinker.func_id == F_FUNC_DEAD)
 	    return;		// mobj was removed
     }
     if ( (mobj->z != mobj->floorz)
@@ -467,7 +468,8 @@ void P_MobjThinker (mobj_t* mobj)
 	P_ZMovement (mobj);
 	
 	// FIXME: decent NOP/NULL/Nil function pointer please.
-	if (mobj->thinker.function.acv == (actionf_v) (-1))
+	//if (mobj->thinker.function.acv == (actionf_v) (-1))
+	if (mobj->thinker.func_id == F_FUNC_DEAD)
 	    return;		// mobj was removed
     }
 
@@ -562,8 +564,7 @@ P_SpawnMobj
     else 
 	mobj->z = z;
 
-    mobj->thinker.function.acp1 = (actionf_p1)P_MobjThinker;
-    //mobj->thinker.func_id = F_P_MobjThinker;
+    mobj->thinker.function.acp1 = (actionf_p1)P_MobjThinker; mobj->thinker.func_id = F_P_MobjThinker;
 	
     P_AddThinker (&mobj->thinker);
 
