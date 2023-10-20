@@ -109,8 +109,11 @@ void P_RunThinkers (void)
 	}
 	else
 	{
-	    if (currentthinker->function.acp1)
-		    currentthinker->function.acp1 (currentthinker);
+	    if (currentthinker->func_id > 0) {
+            dispatch_thinker_func(currentthinker->func_id, currentthinker);
+        }
+        //if (currentthinker->function.acp1)
+		//    currentthinker->function.acp1 (currentthinker);
 	}
 	currentthinker = currentthinker->next;
     }

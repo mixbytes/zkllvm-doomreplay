@@ -77,7 +77,6 @@ typedef struct thinker_s
 #define F_T_Glow 6
 #define F_P_MobjThinker 7
 #define F_T_VerticalDoor 8
-#define F_T_SlidingDoor 9
-#define F_T_MoveCeiling 10
+#define F_T_MoveCeiling 9
 
 #endif
