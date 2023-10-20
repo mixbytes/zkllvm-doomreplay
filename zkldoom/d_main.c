@@ -80,7 +80,7 @@
 // D-DoomLoop()
 // Not a globally visible function,
 //  just included for source reference,
-//  called by D_DoomMain, never exits.
+//  called by D_Doom Main, never exits.
 // Manages timing and IO,
 //  calls all ?_Responder, ?_Ticker, and ?_Drawer,
 //  calls I_GetTime, I_StartFrame, and I_StartTic

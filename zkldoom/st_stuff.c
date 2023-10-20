@@ -18,7 +18,7 @@
 //	Does palette indicators as well (red pain/berserk, bright pickup)
 //
 
-
+#include <stddef.h>
 
 #include "i_system.h"
 #include "i_video.h"
@@ -584,16 +584,6 @@ ST_Responder (event_t* ev)
 	plyr->weaponowned[wp_chainsaw] = true;
 	plyr->powers[pw_invulnerability] = true;
 	plyr->message = DEH_String(STSTR_CHOPPERS);
-      }
-      // 'mypos' for player position
-      else if (cht_CheckCheat(&cheat_mypos, ev->data2))
-      {
-        static char buf[ST_MSGWIDTH];
-        M_snprintf(buf, sizeof(buf), "ang=0x%x;x,y=(0x%x,0x%x)",
-                   players[consoleplayer].mo->angle,
-                   players[consoleplayer].mo->x,
-                   players[consoleplayer].mo->y);
-        plyr->message = buf;
       }
     }
     

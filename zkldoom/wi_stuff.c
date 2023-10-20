@@ -16,8 +16,7 @@
 //	Intermission screens.
 //
 
-
-#include <stdio.h>
+#include <stddef.h>
 
 #include "z_zone.h"
 

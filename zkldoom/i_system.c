@@ -15,6 +15,7 @@
 // DESCRIPTION:
 //
 
+#include <stdlib.h>
 
 #include "doomtype.h"
 
@@ -22,64 +23,10 @@
 #define MIN_RAM     6  /* MiB */
 
 
-static byte *AutoAllocMemory(int *size, int default_ram, int min_ram)
-{
-    byte *zonemem;
-
-    // Allocate the zone memory.  This loop tries progressively smaller
-    // zone sizes until a size is found that can be allocated.
-    // If we used the -mb command line parameter, only the parameter
-    // provided is accepted.
-
-    zonemem = 0;
-
-    while (zonemem == 0)
-    {
-        // We need a reasonable minimum amount of RAM to start.
-
-        if (default_ram < min_ram)
-        {
-            return 0;
-        }
-
-        // Try to allocate the zone memory.
-
-        *size = default_ram * 1024 * 1024;
-
-        zonemem = malloc(*size);
-
-        // Failed to allocate?  Reduce zone size until we reach a size
-        // that is acceptable.
-
-        if (zonemem == 0)
-        {
-            default_ram -= 1;
-        }
-    }
-
-    return zonemem;
-}
-
-
-
 byte *I_ZoneBase (int *size)
 {
     *size = DEFAULT_RAM * 1024 * 1024;
     return malloc(*size);
-    
-    // AAAAAAAAAAAAAAAAAAAAA
-    // byte *zonemem;
-    // int min_ram, default_ram;
-    // int p;
-    
-    // default_ram = DEFAULT_RAM;
-    // min_ram = MIN_RAM;
-    // zonemem = AutoAllocMemory(size, default_ram, min_ram);
-    
-    //printf("zone memory: %p, %x allocated for zone\n", 
-    //       zonemem, *size);
-
-    // return zonemem;
 }
 
 // 

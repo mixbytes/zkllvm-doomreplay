@@ -50,30 +50,29 @@ P_SetMobjState
   statenum_t	state )
 {
     state_t*	st;
-
     do
     {
-	if (state == S_NULL)
-	{
-	    mobj->state = (state_t *) S_NULL;
-	    P_RemoveMobj (mobj);
-	    return false;
-	}
+        if (state == S_NULL)
+        {
+            mobj->state = (state_t *) S_NULL;
+            P_RemoveMobj (mobj);
+            return false;
+        }
+        st = &states[state];
+        mobj->state = st;
+        mobj->tics = st->tics;
+        mobj->sprite = st->sprite;
+        mobj->frame = st->frame;
 
-	st = &states[state];
-	mobj->state = st;
-	mobj->tics = st->tics;
-	mobj->sprite = st->sprite;
-	mobj->frame = st->frame;
-
-	// Modified handling.
-	// Call action functions when the state is set
-	if (st->action.acp1)		
-	    st->action.acp1(mobj);	
-	
-	state = st->nextstate;
+        // Modified handling.
+        // Call action functions when the state is set
+        
+        if (st->action.acp1)	    
+            st->action.acp1(mobj);	
+        
+        state = st->nextstate;
     } while (!mobj->tics);
-				
+
     return true;
 }
 
