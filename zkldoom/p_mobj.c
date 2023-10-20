@@ -67,8 +67,10 @@ P_SetMobjState
         // Modified handling.
         // Call action functions when the state is set
         
-        if (st->action.acp1)	    
-            st->action.acp1(mobj);	
+        // CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC - modified to avoid function pointers
+        dispatch_state_func(state, (void *)mobj);
+        //if (st->action.acp1)	    
+        //    st->action.acp1(mobj);	
         
         state = st->nextstate;
     } while (!mobj->tics);

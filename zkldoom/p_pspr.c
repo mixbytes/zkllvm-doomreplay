@@ -79,7 +79,8 @@ P_SetPsprite
 	
 	// Call action routine.
 	// Modified handling.
-	if (state->action.acp2)
+	
+    if (state->action.acp2)
 	{
 	    state->action.acp2(player, psp);
 	    if (!psp->state)

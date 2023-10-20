@@ -1140,13 +1140,14 @@ typedef enum
     NUMSTATES
 } statenum_t;
 
+void dispatch_state_func(unsigned int action_id, void * ptr);
 
 typedef struct
 {
     spritenum_t sprite;
     int frame;
     int tics;
-    // void (*action) ();
+    //void (*action) ();
     actionf_t action;
     statenum_t nextstate;
     int misc1;
