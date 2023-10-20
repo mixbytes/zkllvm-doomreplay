@@ -1140,7 +1140,8 @@ typedef enum
     NUMSTATES
 } statenum_t;
 
-void dispatch_state_func(unsigned int action_id, void * ptr);
+void dispatch_state_func1(unsigned int action_id, void * ptr1);
+void dispatch_state_func2(unsigned int action_id, void * ptr1, void *ptr2);
 
 typedef struct
 {

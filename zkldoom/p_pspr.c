@@ -80,12 +80,17 @@ P_SetPsprite
 	// Call action routine.
 	// Modified handling.
 	
-    if (state->action.acp2)
-	{
-	    state->action.acp2(player, psp);
-	    if (!psp->state)
-		break;
-	}
+    dispatch_state_func2(stnum, (void *)player, (void *)psp);
+	if (!psp->state)
+        break;
+    
+    // CCCCCCCCCCCCCCCCCCCCC
+    //if (state->action.acp2)
+	//{
+	//    state->action.acp2(player, psp);
+	//    if (!psp->state)
+    //    break;
+	//}
 	
 	stnum = psp->state->nextstate;
 	
