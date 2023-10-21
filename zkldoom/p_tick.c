@@ -23,6 +23,7 @@
 
 #include "doomstat.h"
 
+#include "d_think.h"
 
 int	leveltime;
 

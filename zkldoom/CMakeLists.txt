@@ -44,10 +44,15 @@ process_circuit(zkldoom SOURCES z_main.c doomgeneric_dr.c doomgeneric.c d_main.c
                 d_loop.c i_video.c g_game.c doomstat.c d_net.c m_controls.c r_sky.c m_menu.c p_inter.c 
                 tables.c p_setup.c p_saveg.c r_main.c m_argv.c 
                 d_items.c st_lib.c am_map.c 
-                # the one with function pointers in struct                
+                # the one with function pointers in struct
+                p_spec.c
+                p_plats.c p_floor.c p_doors.c p_ceilng.c p_lights.c 
+                d_think.c
                 p_mobj.c
                 p_pspr.c
-                p_tick.c p_ceilng.c r_segs.c p_map.c info.c p_maputl.c 
+                p_tick.c
+                p_enemy.c
+                r_segs.c p_map.c info.c p_maputl.c 
                 p_sight.c 
-                info.c m_misc.c p_maputl.c
+                info.c m_misc.c 
 INPUT test-input.json)

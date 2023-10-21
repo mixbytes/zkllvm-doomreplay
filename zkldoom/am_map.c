@@ -16,7 +16,6 @@
 // DESCRIPTION:  the automap code
 //
 
-
 #include "deh_main.h"
 
 #include "z_zone.h"

@@ -20,8 +20,6 @@
 //	Line Tag handling. Line and Sector triggers.
 //
 
-#include <stddef.h>
-
 #include "doomdef.h"
 #include "doomstat.h"
 
@@ -1137,34 +1135,35 @@ void P_UpdateSpecials (void)
 
     
     //	DO BUTTONS
-    for (i = 0; i < MAXBUTTONS; i++)
-	if (buttonlist[i].btimer)
-	{
-	    buttonlist[i].btimer--;
-	    if (!buttonlist[i].btimer)
-	    {
-		switch(buttonlist[i].where)
-		{
-		  case top:
-		    sides[buttonlist[i].line->sidenum[0]].toptexture =
-			buttonlist[i].btexture;
-		    break;
-		    
-		  case middle:
-		    sides[buttonlist[i].line->sidenum[0]].midtexture =
-			buttonlist[i].btexture;
-		    break;
-		    
-		  case bottom:
-		    sides[buttonlist[i].line->sidenum[0]].bottomtexture =
-			buttonlist[i].btexture;
-		    break;
-		}
-		memset(&buttonlist[i],0,sizeof(button_t));
-	    }
-	}
+    for (i = 0; i < MAXBUTTONS; i++) {
+        if (buttonlist[i].btimer) {
+            buttonlist[i].btimer--;
+            if (!buttonlist[i].btimer) {
+                switch(buttonlist[i].where) {
+                  case top:
+                    sides[buttonlist[i].line->sidenum[0]].toptexture =
+                    buttonlist[i].btexture;
+                    break;
+                    
+                  case middle:
+                    sides[buttonlist[i].line->sidenum[0]].midtexture =
+                    buttonlist[i].btexture;
+                    break;
+                    
+                  case bottom:
+                    sides[buttonlist[i].line->sidenum[0]].bottomtexture =
+                    buttonlist[i].btexture;
+                    break;
+                }
+                // memset(&buttonlist[i],0,sizeof(button_t));
+                unsigned char* ptr = (unsigned char *)&buttonlist[i];
+                for (int j=0; j<sizeof(button_t); j++) {
+                    *ptr++ = 0;
+                }
+            }
+        }
+    }
 }
-
 
 //
 // Donut overrun emulation
@@ -1273,7 +1272,7 @@ int EV_DoDonut(line_t*	line)
 	    floor = Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
 	    P_AddThinker (&floor->thinker);
 	    s1->specialdata = floor;
-	    floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor; floor->thinker.func_id = T_MoveFloor;
+	    floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor; floor->thinker.func_id = F_T_MoveFloor;
 	    floor->type = lowerFloor;
 	    floor->crush = false;
 	    floor->direction = -1;
@@ -1412,9 +1411,14 @@ void P_SpawnSpecials (void)
     for (i = 0;i < MAXPLATS;i++)
 	activeplats[i] = NULL;
     
-    for (i = 0;i < MAXBUTTONS;i++)
-	memset(&buttonlist[i],0,sizeof(button_t));
+    for (i = 0;i < MAXBUTTONS;i++) {
+	    //memset(&buttonlist[i],0,sizeof(button_t));
+        unsigned char* ptr = (unsigned char *)&buttonlist[i];
+        for (int j=0; j<sizeof(button_t); j++) {
+            *ptr++ = 0;
+        }
 
+    }
     // UNUSED: no horizonal sliders.
     //	P_InitSlidingDoorFrames();
 }

@@ -23,6 +23,7 @@
 #ifndef __P_SPEC__
 #define __P_SPEC__
 
+#include <stddef.h>
 
 //
 // End-level timer (-TIMER option)

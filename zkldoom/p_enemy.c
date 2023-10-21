@@ -559,7 +559,8 @@ void A_KeenDie (mobj_t* mo)
     // to see if all Keens are dead
     for (th = thinkercap.next ; th != &thinkercap ; th=th->next)
     {
-	if (th->function.acp1 != (actionf_p1)P_MobjThinker)
+	// if (th->function.acp1 != (actionf_p1)P_MobjThinker)
+	if (th->func_id != F_P_MobjThinker)
 	    continue;
 
 	mo2 = (mobj_t *)th;
@@ -1462,7 +1463,8 @@ A_PainShootSkull
     currentthinker = thinkercap.next;
     while (currentthinker != &thinkercap)
     {
-	if (   (currentthinker->function.acp1 == (actionf_p1)P_MobjThinker)
+	//if (   (currentthinker->function.acp1 == (actionf_p1)P_MobjThinker)
+	if (   (currentthinker->func_id == F_P_MobjThinker)
 	    && ((mobj_t *)currentthinker)->type == MT_SKULL)
 	    count++;
 	currentthinker = currentthinker->next;
@@ -1688,7 +1690,8 @@ void A_BossDeath (mobj_t* mo)
     // if all bosses are dead
     for (th = thinkercap.next ; th != &thinkercap ; th=th->next)
     {
-	if (th->function.acp1 != (actionf_p1)P_MobjThinker)
+	//if (th->function.acp1 != (actionf_p1)P_MobjThinker)
+	if (th->func_id != F_P_MobjThinker)
 	    continue;
 	
 	mo2 = (mobj_t *)th;
@@ -1821,7 +1824,8 @@ void A_BrainAwake (mobj_t* mo)
 	 thinker != &thinkercap ;
 	 thinker = thinker->next)
     {
-	if (thinker->function.acp1 != (actionf_p1)P_MobjThinker)
+	//if (thinker->function.acp1 != (actionf_p1)P_MobjThinker)
+	if (thinker->func_id != F_P_MobjThinker)
 	    continue;	// not a mobj
 
 	m = (mobj_t *)thinker;

@@ -24,8 +24,6 @@
 
 #include <stddef.h>
 
-
-
 //
 // Experimental stuff.
 // To compile this as "ANSI C with classes"
@@ -78,5 +76,8 @@ typedef struct thinker_s
 #define F_P_MobjThinker 7
 #define F_T_VerticalDoor 8
 #define F_T_MoveCeiling 9
+
+
+void dispatch_thinker_func(int action, void * ptr);
 
 #endif
