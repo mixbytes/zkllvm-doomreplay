@@ -536,24 +536,8 @@ void R_InitTextures (void)
     temp2 = W_GetNumForName (DEH_String("S_END")) - 1;
     temp3 = ((temp2-temp1+63)/64) + ((numtextures+63)/64);
 
-    // If stdout is a real console, use the classic vanilla "filling
-    // up the box" effect, which uses backspace to "step back" inside
-    // the box.  If stdout is a file, don't draw the box.
-
-    if (I_ConsoleStdout())
-    {
-        printf("[");
-        for (i = 0; i < temp3 + 9; i++)
-            printf(" ");
-        printf("]");
-        for (i = 0; i < temp3 + 10; i++)
-            printf("\b");
-    }
-	
     for (i=0 ; i<numtextures ; i++, directory++)
     {
-	if (!(i&63))
-	    printf (".");
 
 	if (i == numtextures1)
 	{
@@ -690,9 +674,7 @@ void R_InitColormaps (void)
 void R_InitData (void)
 {
     R_InitTextures ();
-    printf (".");
     R_InitFlats ();
-    printf (".");
     R_InitSpriteLumps ();
 }
 

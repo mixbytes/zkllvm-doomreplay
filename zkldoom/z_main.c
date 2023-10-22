@@ -31,7 +31,7 @@ void dg_Create();
 __attribute__((circuit)) int z_main(__uint128_t n)
 {
     replay_data_t replay_data;
-    
+       
     replay_data.framerate = 35;
     replay_data.n_start = 0;
     replay_data.n_freeze = 0;
@@ -62,7 +62,7 @@ __attribute__((circuit)) int z_main(__uint128_t n)
     DR_Init(replay_data);
 
     dg_Create();
-    
+   
     D_DoomMain (n);
     return cur_frame;
 }
@@ -80,7 +80,7 @@ int main(int argc, char **argv) {
 
     // printInputs(64);
     //return 0;
-    int a = z_main(64);
+    int a = z_main(*(__uint128_t*) "\x9d\x00\x00\x00\x9d\x00\x00\x00\x9d\x00\x00\x00\xa8\x02\x00\x00");
 #ifndef __ZKLLVM__
     printf("z_main out: %d\n", a);
 #endif
