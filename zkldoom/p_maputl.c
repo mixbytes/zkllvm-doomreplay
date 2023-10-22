@@ -543,7 +543,7 @@ divline_t 	trace;
 boolean 	earlyout;
 int		ptflags;
 
-static void InterceptsOverrun(int num_intercepts, intercept_t *intercept);
+//static void InterceptsOverrun(int num_intercepts, intercept_t *intercept);
 
 //
 // PIT_AddLineIntercepts.
@@ -600,7 +600,7 @@ PIT_AddLineIntercepts (line_t* ld)
     intercept_p->frac = frac;
     intercept_p->isaline = true;
     intercept_p->d.line = ld;
-    InterceptsOverrun(intercept_p - intercepts, intercept_p);
+    //InterceptsOverrun(intercept_p - intercepts, intercept_p);
     intercept_p++;
 
     return true;	// continue
@@ -666,7 +666,7 @@ boolean PIT_AddThingIntercepts (mobj_t* thing)
     intercept_p->frac = frac;
     intercept_p->isaline = false;
     intercept_p->d.thing = thing;
-    InterceptsOverrun(intercept_p - intercepts, intercept_p);
+    //InterceptsOverrun(intercept_p - intercepts, intercept_p);
     intercept_p++;
 
     return true;		// keep going
@@ -735,12 +735,16 @@ extern fixed_t bulletslope;
 // implementation of Intercepts Overrun emulation in PrBoom-plus
 // which this is based on.
 
+/* AAAAAAAAAAAAAA
 typedef struct
 {
     int len;
     void *addr;
     boolean int16_array;
 } intercepts_overrun_t;
+*/
+
+
 
 // Intercepts memory table.  This is where various variables are located
 // in memory in Vanilla Doom.  When the intercepts table overflows, we
@@ -750,35 +754,37 @@ typedef struct
 // playerstarts, which is effectively an array of 16-bit integers and
 // must be treated differently.
 
-static intercepts_overrun_t intercepts_overrun[] =
-{
-    {4,   NULL,                          false},
-    {4,   NULL, /* &earlyout, */         false},
-    {4,   NULL, /* &intercept_p, */      false},
-    {4,   &lowfloor,                     false},
-    {4,   &openbottom,                   false},
-    {4,   &opentop,                      false},
-    {4,   &openrange,                    false},
-    {4,   NULL,                          false},
-    {120, NULL, /* &activeplats, */      false},
-    {8,   NULL,                          false},
-    {4,   &bulletslope,                  false},
-    {4,   NULL, /* &swingx, */           false},
-    {4,   NULL, /* &swingy, */           false},
-    {4,   NULL,                          false},
-    {40,  &playerstarts,                 true},
-    {4,   NULL, /* &blocklinks, */       false},
-    {4,   &bmapwidth,                    false},
-    {4,   NULL, /* &blockmap, */         false},
-    {4,   &bmaporgx,                     false},
-    {4,   &bmaporgy,                     false},
-    {4,   NULL, /* &blockmaplump, */     false},
-    {4,   &bmapheight,                   false},
-    {0,   NULL,                          false},
-};
+// AAAAAAAAAAAAAAAAAAAAAAA
+//static intercepts_overrun_t intercepts_overrun[] =
+//{
+//    {4,   NULL,                          false},
+//    {4,   NULL, /* &earlyout, */         false},
+//    {4,   NULL, /* &intercept_p, */      false},
+//    {4,   &lowfloor,                     false},
+//    {4,   &openbottom,                   false},
+//    {4,   &opentop,                      false},
+//    {4,   &openrange,                    false},
+//    {4,   NULL,                          false},
+//    {120, NULL, /* &activeplats, */      false},
+//    {8,   NULL,                          false},
+//    {4,   &bulletslope,                  false},
+//    {4,   NULL, /* &swingx, */           false},
+//    {4,   NULL, /* &swingy, */           false},
+//    {4,   NULL,                          false},
+//    {40,  &playerstarts,                 true},
+//    {4,   NULL, /* &blocklinks, */       false},
+//    {4,   &bmapwidth,                    false},
+//    {4,   NULL, /* &blockmap, */         false},
+//    {4,   &bmaporgx,                     false},
+//    {4,   &bmaporgy,                     false},
+//    {4,   NULL, /* &blockmaplump, */     false},
+//    {4,   &bmapheight,                   false},
+//    {0,   NULL,                          false},
+//};
 
 // Overwrite a specific memory location with a value.
 
+/* AAAAAAAAAAAAAAAA
 static void InterceptsMemoryOverrun(int location, int value)
 {
     int i, offset;
@@ -821,9 +827,11 @@ static void InterceptsMemoryOverrun(int location, int value)
         ++i;
     }
 }
+*/
 
 // Emulate overruns of the intercepts[] array.
 
+/*
 static void InterceptsOverrun(int num_intercepts, intercept_t *intercept)
 {
     int location;
@@ -848,7 +856,7 @@ static void InterceptsOverrun(int num_intercepts, intercept_t *intercept)
     InterceptsMemoryOverrun(location + 4, intercept->isaline);
     InterceptsMemoryOverrun(location + 8, (int) intercept->d.thing);
 }
-
+*/
 
 //
 // P_PathTraverse
