@@ -745,7 +745,8 @@ P_SetupLevel
 {
     int		i;
     // AAAAAAAAAAAAAAAAAAAA - hardcode map name
-    char	lumpname[9] = "map01";
+    // WARNING with case - in ZKLDOOM no strcasecmp(all names must be EXACTLY in the needed case)
+    char	lumpname[9] = "MAP01"; 
     int		lumpnum;
 	
     totalkills = totalitems = totalsecret = wminfo.maxfrags = 0;

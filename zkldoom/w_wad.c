@@ -16,13 +16,12 @@
 //	Handles WAD file header, directory, lump I/O.
 //
 
+#include <stdlib.h>
 
-
-
-#include <ctype.h>
-#include <stdio.h>
+#ifndef __ZKLLVM__
 #include <stdlib.h>
 #include <string.h>
+#endif
 
 #include "doomtype.h"
 
@@ -69,6 +68,27 @@ static lumpinfo_t *reloadlumps = NULL;
 static char *reloadname = NULL;
 static int reloadlump = -1;
 
+
+
+int own_strncasecmp( const char * s1, const char * s2, size_t n )
+{
+    while ( n && *s1 && ( *s1 == *s2 ) ) {
+        ++s1; ++s2; --n;
+    }
+    if ( n == 0 ) {
+        return 0;
+    } else {
+        return ( *(unsigned char *)s1 - *(unsigned char *)s2 );
+    }
+}
+
+void own_strncpy( char* _dst, const char* _src, unsigned int _n )
+{
+   unsigned int i = 0;
+   while(i++ != _n && (*_dst++ = *_src++));
+}
+
+
 // Hash function used for lump names.
 unsigned int W_LumpNameHash(const char *s)
 {
@@ -80,7 +100,8 @@ unsigned int W_LumpNameHash(const char *s)
 
     for (i=0; i < 8 && s[i] != '\0'; ++i)
     {
-        result = ((result << 5) ^ result ) ^ toupper(s[i]);
+        // result = ((result << 5) ^ result ) ^ toupper(s[i]); AAAAAAAAAAAAAAAAAAAA
+        result = ((result << 5) ^ result ) ^ (s[i]);
     }
 
     return result;
@@ -117,10 +138,10 @@ wad_file_t *W_AddFile (const char *filename)
     // WAD file
     W_Read(wad_file, 0, &header, sizeof(header));
 
-	if (strncmp(header.identification,"IWAD",4))
+	if (own_strncasecmp(header.identification,"IWAD",4))
 	{
 	    // Homebrew levels?
-	    if (strncmp(header.identification,"PWAD",4))
+	    if (own_strncasecmp(header.identification,"PWAD",4))
 	    {
 		I_Error ("Wad file %s doesn't have IWAD "
 			 "or PWAD id\n", filename);
@@ -133,7 +154,7 @@ wad_file_t *W_AddFile (const char *filename)
 
          // Vanilla Doom doesn't like WADs with more than 4046 lumps
          // https://www.doomworld.com/vb/post/1010985
-         if (!strncmp(header.identification,"PWAD",4) && header.numlumps > 4046)
+         if (!own_strncasecmp(header.identification,"PWAD",4) && header.numlumps > 4046)
          {
                  I_Error ("Error: Vanilla limit for lumps in a WAD is 4046, "
                           "PWAD %s has %d", filename, header.numlumps);
@@ -150,7 +171,13 @@ wad_file_t *W_AddFile (const char *filename)
 
 
     // Increase size of numlumps array to accomodate the new file.
-    filelumps = calloc(numfilelumps, sizeof(lumpinfo_t));
+    
+    // AAAAAAAAAAAAAAA - fuck, calloc also initializes mem with zeroes (but it works in zkdoom)
+    // filelumps = calloc(numfilelumps, sizeof(lumpinfo_t));
+    unsigned int nsize = numfilelumps * sizeof(lumpinfo_t);
+    filelumps = malloc(nsize);
+    
+
     if (filelumps == NULL)
     {
         I_Error("Failed to allocate array for lumps from new file.");
@@ -170,7 +197,7 @@ wad_file_t *W_AddFile (const char *filename)
         lump_p->position = LONG(filerover->filepos);
         lump_p->size = LONG(filerover->size);
         lump_p->cache = NULL;
-        strncpy(lump_p->name, filerover->name, 8);
+        own_strncpy(lump_p->name, filerover->name, 8);
         lumpinfo[i] = lump_p;
 
         ++filerover;
@@ -205,7 +232,6 @@ int W_NumLumps (void)
 }
 
 
-
 //
 // W_CheckNumForName
 // Returns -1 if name not found.
@@ -225,7 +251,7 @@ lumpindex_t W_CheckNumForName(const char *name)
         hash = W_LumpNameHash(name) % numlumps;
         for (i = lumphash[hash]; i != -1; i = lumpinfo[i]->next)
         {
-            if (!strncasecmp(lumpinfo[i]->name, name, 8))
+            if (!own_strncasecmp(lumpinfo[i]->name, name, 8))
             {
                 return i;
             }
@@ -239,7 +265,7 @@ lumpindex_t W_CheckNumForName(const char *name)
 
         for (i = numlumps - 1; i >= 0; --i)
         {
-            if (!strncasecmp(lumpinfo[i]->name, name, 8))
+            if (!own_strncasecmp(lumpinfo[i]->name, name, 8))
             {
                 return i;
             }
