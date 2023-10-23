@@ -421,7 +421,7 @@ void ST_refreshBackground(void)
 boolean
 ST_Responder (event_t* ev)
 {
-  return true; // AAAAAAAAAAAAAAA or false;
+  return false; // AAAAAAAAAAAAAAAA
 }
 
 
