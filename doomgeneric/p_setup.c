@@ -750,7 +750,7 @@ P_SetupLevel
     int		i;
     char	lumpname[9];
     int		lumpnum;
-	
+    
     totalkills = totalitems = totalsecret = wminfo.maxfrags = 0;
     wminfo.partime = 180;
     for (i=0 ; i<MAXPLAYERS ; i++)

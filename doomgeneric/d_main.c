@@ -501,7 +501,8 @@ void D_StartTitle (void)
 
 void D_IdentifyVersion(void)
 {
-    gamemode = shareware;
+    //gamemode = shareware;
+    gamemode = commercial;
 }
 
 

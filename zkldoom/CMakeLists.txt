@@ -43,9 +43,9 @@ process_circuit(zkldoom SOURCES z_main.c doomgeneric_dr.c doomgeneric.c d_main.c
                 z_zone.c i_system.c
                 d_loop.c i_video.c g_game.c doomstat.c d_net.c m_controls.c r_sky.c m_menu.c p_inter.c 
                 tables.c p_setup.c p_saveg.c r_main.c m_argv.c 
+                info.c
                 d_items.c st_lib.c am_map.c 
                 p_spec.c
-                info.c
                 p_plats.c p_floor.c p_doors.c p_ceilng.c p_lights.c p_switch.c
                 d_think.c
                 p_mobj.c
@@ -58,4 +58,6 @@ process_circuit(zkldoom SOURCES z_main.c doomgeneric_dr.c doomgeneric.c d_main.c
                 r_data.c
                 p_user.c
                 p_enemy.c
+                w_wad.c
+                w_file.c
 INPUT test-input.json)

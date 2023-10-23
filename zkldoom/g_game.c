@@ -613,7 +613,7 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
 void G_DoLoadLevel (void) 
 { 
     int             i; 
-
+    
     // Set the sky map.
     // First thing, we have a dummy sky texture name,
     //  a flat. The data is in the WAD only because
@@ -1604,7 +1604,6 @@ G_InitNew
     skytexturename = DEH_String(skytexturename);
 
     skytexture = R_TextureNumForName(skytexturename);
-
 
     G_DoLoadLevel ();
 }

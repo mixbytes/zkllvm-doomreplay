@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
     fclose(file);
 
 
-    fprintf(ofd, "\n\nunsigned char *wad_contents=\"");
+    fprintf(ofd, "\n\nunsigned char wad_contents[%d]=\"", length);
     for (int jj=0; jj< length; jj++)
         fprintf(ofd, "\\x%02x",wad_contents[jj]);
     fprintf(ofd, "\";\n");

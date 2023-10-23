@@ -450,7 +450,7 @@ void D_StartTitle (void)
 
 void D_IdentifyVersion(void)
 {
-    gamemode = shareware;
+    gamemode = commercial;
 }
 
 
@@ -606,7 +606,6 @@ void D_DoomMain (__uint128_t n)
     // [AAAA] autostart
     autostart = 1;
     G_InitNew (startskill, startepisode, startmap);
-
     D_DoomLoop ();  // never returns
 }
 

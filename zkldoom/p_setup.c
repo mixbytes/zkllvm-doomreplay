@@ -41,9 +41,7 @@
 
 #include "doomstat.h"
 
-
 void	P_SpawnMapThing (mapthing_t*	mthing);
-
 
 //
 // MAP related Lookup tables.
@@ -128,7 +126,7 @@ void P_LoadVertexes (int lump)
     numvertexes = W_LumpLength (lump) / sizeof(mapvertex_t);
 
     // Allocate zone memory for buffer.
-    vertexes = Z_Malloc (numvertexes*sizeof(vertex_t),PU_LEVEL,0);	
+    vertexes = Z_Malloc (numvertexes*sizeof(vertex_t),PU_LEVEL,NULL);	
 
     // Load data into cache.
     data = W_CacheLumpNum (lump, PU_STATIC);
@@ -199,6 +197,7 @@ void P_LoadSegs (int lump)
 	ldef = &lines[linedef];
 	li->linedef = ldef;
 	side = SHORT(ml->side);
+
 	li->sidedef = &sides[ldef->sidenum[side]];
 	li->frontsector = sides[ldef->sidenum[side]].sector;
 
@@ -286,7 +285,7 @@ void P_LoadSectors (int lump)
 	ss->lightlevel = SHORT(ms->lightlevel);
 	ss->special = SHORT(ms->special);
 	ss->tag = SHORT(ms->tag);
-	ss->thinglist = 0;
+	ss->thinglist = NULL;
     }
 	
     W_ReleaseLumpNum(lump);
@@ -403,7 +402,7 @@ void P_LoadLineDefs (int lump)
     lines = Z_Malloc (numlines*sizeof(line_t),PU_LEVEL,0);	
     memset (lines, 0, numlines*sizeof(line_t));
     data = W_CacheLumpNum (lump,PU_STATIC);
-	
+
     mld = (maplinedef_t *)data;
     ld = lines;
     for (i=0 ; i<numlines ; i++, mld++, ld++)
@@ -463,7 +462,6 @@ void P_LoadLineDefs (int lump)
 	else
 	    ld->backsector = 0;
     }
-
     W_ReleaseLumpNum(lump);
 }
 
@@ -511,7 +509,7 @@ void P_LoadBlockMap (int lump)
     lumplen = W_LumpLength(lump);
     count = lumplen / 2;
 	
-    blockmaplump = Z_Malloc(lumplen, PU_LEVEL, 0);
+    blockmaplump = Z_Malloc(lumplen, PU_LEVEL, NULL);
     W_ReadLump(lump, blockmaplump);
     blockmap = blockmaplump + 4;
 
@@ -600,7 +598,7 @@ void P_GroupLines (void)
     { 
         li = &lines[i];
 
-        if (li->frontsector != 0)
+        if (li->frontsector != NULL)
         {
             sector = li->frontsector;
 
@@ -608,7 +606,7 @@ void P_GroupLines (void)
             ++sector->linecount;
         }
 
-        if (li->backsector != 0 && li->frontsector != li->backsector)
+        if (li->backsector != NULL && li->frontsector != li->backsector)
         {
             sector = li->backsector;
 
@@ -700,7 +698,7 @@ static void PadRejectArray(byte *array, unsigned int len)
         }
         else
         {
-            padvalue = 0xf00;
+            padvalue = 0x00;
         }
 
         memset(array + sizeof(rejectpad), padvalue, len - sizeof(rejectpad));
@@ -746,7 +744,8 @@ P_SetupLevel
   skill_t	skill)
 {
     int		i;
-    char	lumpname[9];
+    // AAAAAAAAAAAAAAAAAAAA - hardcode map name
+    char	lumpname[9] = "map01";
     int		lumpnum;
 	
     totalkills = totalitems = totalsecret = wminfo.maxfrags = 0;
@@ -771,7 +770,9 @@ P_SetupLevel
 	   
     // find map name
     
-    // AAAAAAAAAAAAAAAAAAAA - leave only E1M1-like levels (removing snprintf)
+    
+    // AAAAAAAAAAAAAAAAAAAA (removing snprintf)
+    // HARDCODE above (lumpname == "map01")
     //if ( gamemode == commercial)
     //{
     //if (map < 9)
@@ -781,14 +782,13 @@ P_SetupLevel
     //}
     //else
     //{
-	lumpname[0] = 'E';
-	lumpname[1] = '0' + episode;
-	lumpname[2] = 'M';
-	lumpname[3] = '0' + map;
-	lumpname[4] = 0;
+	//lumpname[0] = 'E';
+	//lumpname[1] = '0' + episode;
+	//lumpname[2] = 'M';
+	//lumpname[3] = '0' + map;
+	//lumpname[4] = 0;
     //}
     lumpnum = W_GetNumForName (lumpname);
-	
     leveltime = 0;
 	
     // note: most of this ordering is important	
@@ -809,19 +809,6 @@ P_SetupLevel
     deathmatch_p = deathmatchstarts;
     P_LoadThings (lumpnum+ML_THINGS);
     
-    // if deathmatch, randomly spawn the active players
-    if (deathmatch)
-    {
-	for (i=0 ; i<MAXPLAYERS ; i++)
-	    if (playeringame[i])
-	    {
-		players[i].mo = 0;
-		G_DeathMatchSpawnPlayer (i);
-	    }
-			
-    }
-
-    // clear special respawning que
     iquehead = iquetail = 0;		
 	
     // set up world state
@@ -829,7 +816,7 @@ P_SetupLevel
 	
     // build subsector connect matrix
     //	UNUSED P_ConnectSubsectors ();
-
+    
     // preload graphics
     if (precache)
 	R_PrecacheLevel ();
@@ -847,9 +834,9 @@ void P_Init (void)
 {
     return; // AAAAAAAAAAAAAAAAAA
 
-    // P_InitSwitchList ();
-    // P_InitPicAnims ();
-    // R_InitSprites (sprnames);
+    P_InitSwitchList ();
+    P_InitPicAnims ();
+    //R_InitSprites (sprnames);
 }
 
 

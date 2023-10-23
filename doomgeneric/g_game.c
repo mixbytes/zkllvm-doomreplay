@@ -1700,7 +1700,6 @@ G_InitNew
 	S_ResumeSound ();
     }
 
-    /*
     // Note: This commented-out block of code was added at some point
     // between the DOS version(s) and the Doom source release. It isn't
     // found in disassemblies of the DOS version and causes IDCLEV and
@@ -1728,7 +1727,6 @@ G_InitNew
       if (episode > 3)
 	episode = 3;
     }
-    */
 
     if (skill > sk_nightmare)
 	skill = sk_nightmare;
@@ -1845,7 +1843,6 @@ G_InitNew
     skytexturename = DEH_String(skytexturename);
 
     skytexture = R_TextureNumForName(skytexturename);
-
 
     G_DoLoadLevel ();
 }
