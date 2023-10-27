@@ -27,6 +27,7 @@ cd ~/zkllvm-doomreplay/zkldoom/ && make -f Makefile.zkld && ./zkldoom
 ```
 
 ## [TEMP] Run all compile-link-asssign-prove (run full zk-cycle)
+(GENERATE MINIMAL PROOF)
 ```
 cd ~/zkllvm-doomreplay/build/ && cmake .. && make zkldoom_run_prover
 ```

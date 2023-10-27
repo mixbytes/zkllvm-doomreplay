@@ -575,6 +575,8 @@ void D_DoomMain (__uint128_t n)
 	deathmatch = 0;
     
     modifiedgame = false;
+    return;
+
     D_AddFile("../doom1.wad");
     // Generate the WAD hash table.  Speed things up a bit.
     // HZ CCCCCCCCCCC check
@@ -605,6 +607,7 @@ void D_DoomMain (__uint128_t n)
 
     // [AAAA] autostart
     autostart = 1;
+    
     G_InitNew (startskill, startepisode, startmap);
     D_DoomLoop ();  // never returns
 }
