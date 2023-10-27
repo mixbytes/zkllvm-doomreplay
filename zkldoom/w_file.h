@@ -22,6 +22,8 @@
 
 #include "doomtype.h"
 
+#define SHARD_SIZE 1024
+
 typedef struct _wad_file_s wad_file_t;
 
 typedef struct
