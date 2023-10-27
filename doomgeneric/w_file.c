@@ -33,7 +33,7 @@ unsigned int W_Read(wad_file_t *wad, unsigned int offset,
     unsigned int byte_index = 0;
     for (int i = 0; i < buffer_len; i++) {
         shard_num = (offset + i) / SHARD_SIZE;
-        byte_index = (offset + i) % SHARD_SIZE;
+        byte_index = offset + i - (shard_num * SHARD_SIZE); // instead of (offset + i) % SHARD_SIZE
         ((unsigned char *)buffer)[i] = wad_contents[shard_num][byte_index];
     }
 
