@@ -29,12 +29,11 @@
 unsigned int W_Read(wad_file_t *wad, unsigned int offset,
               void *buffer, unsigned int buffer_len)
 {
-    //printf("N: %d\n", sizeof(wad_contents));
-    //exit(0);
-
+    unsigned int shard_num = 0;
+    unsigned int byte_index = 0;
     for (int i = 0; i < buffer_len; i++) {
-        unsigned int shard_num = (offset + i) / SHARD_SIZE;
-        unsigned int byte_index = (offset + i) % SHARD_SIZE;
+        shard_num = (offset + i) / SHARD_SIZE;
+        byte_index = (offset + i) % SHARD_SIZE;
         ((unsigned char *)buffer)[i] = wad_contents[shard_num][byte_index];
     }
 
