@@ -16,8 +16,7 @@
 //	WAD I/O functions.
 //
 
-#include <stdio.h>
-
+#include <stddef.h>
 #include "config.h"
 
 #include "doomtype.h"
@@ -26,60 +25,17 @@
 #include "w_file.h"
 #include "../doom1_wad_hardcopy.h"
 
-
-extern wad_file_class_t stdc_wad_file;
-
-static wad_file_class_t *wad_file_classes[] = 
+// reading form sharded wad file (split to arrays of SHARD_SIZE)
+unsigned int W_Read(wad_file_t *wad, unsigned int offset,
+              void *buffer, unsigned int buffer_len)
 {
-    &stdc_wad_file,
-};
+    //printf("N: %d\n", sizeof(wad_contents));
+    //exit(0);
 
-/*
-wad_file_t *W_OpenFile(char *path)
-{
-    wad_file_t *result;
-    int i;
-
-    //!
-    // Use the OS's virtual memory subsystem to map WAD files
-    // directly into memory.
-    //
-
-    if (!M_CheckParm("-mmap"))
-    {
-        return stdc_wad_file.OpenFile(path);
-    }
-
-    // Try all classes in order until we find one that works
-
-    result = NULL;
-
-    for (i = 0; i < arrlen(wad_file_classes); ++i)
-    {
-        result = wad_file_classes[i]->OpenFile(path);
-
-        if (result != NULL)
-        {
-            break;
-        }
-    }
-
-    return result;
-}
-
-void W_CloseFile(wad_file_t *wad)
-{
-    wad->file_class->CloseFile(wad);
-}
-*/
-
-size_t W_Read(wad_file_t *wad, unsigned int offset,
-              void *buffer, size_t buffer_len)
-{
-    int i = 0;
-    int b=0;
-    for (i = 0; i < buffer_len; i++) {
-        ((char *)buffer)[i] = wad_contents[offset + i];
+    for (int i = 0; i < buffer_len; i++) {
+        unsigned int shard_num = (offset + i) / SHARD_SIZE;
+        unsigned int byte_index = (offset + i) % SHARD_SIZE;
+        ((unsigned char *)buffer)[i] = wad_contents[shard_num][byte_index];
     }
 
     return buffer_len;
