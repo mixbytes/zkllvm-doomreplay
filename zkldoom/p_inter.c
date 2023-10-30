@@ -73,9 +73,6 @@ P_GiveAmmo
     if (ammo == am_noammo)
 	return false;
 		
-    if (ammo > NUMAMMO)
-	I_Error ("P_GiveAmmo: bad type %i", ammo);
-		
     if ( player->ammo[ammo] == player->maxammo[ammo]  )
 	return false;
 		
@@ -645,7 +642,8 @@ P_TouchSpecialThing
 	break;
 		
       default:
-	I_Error ("P_SpecialThing: Unknown gettable thing");
+	    // AAAAAAAAAAAAAA
+        // dieee I_  Error ("P_SpecialThing: Unknown gettable thing");
     }
 	
     if (special->flags & MF_COUNTITEM)

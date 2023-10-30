@@ -1870,13 +1870,6 @@ static default_t *GetDefaultForName(char *name)
         result = SearchCollection(&extra_defaults, name);
     }
 
-    // Not found? Internal error.
-
-    if (result == NULL)
-    {
-        I_Error("Unknown configuration variable: '%s'", name);
-    }
-
     return result;
 }
 

@@ -1131,7 +1131,6 @@ G_CheckSpot
                 ya = finesine[an];
                 break;
             default:
-                I_Error("G_CheckSpot: unexpected angle %d\n", an);
                 xa = ya = 0;
                 break;
         }
@@ -1737,7 +1736,8 @@ int G_VanillaVersionCode(void)
     switch (gameversion)
     {
         case exe_doom_1_2:
-            I_Error("Doom 1.2 does not have a version code!");
+            exit(666); // HZ AAAAAAAAA
+            // die I_ Error("Doom 1.2 does not have a version code!");
         case exe_doom_1_666:
             return 106;
         case exe_doom_1_7:
@@ -1875,7 +1875,6 @@ void G_DoPlayDemo (void)
                                   "/info/patches.php\n"
                         "    This appears to be %s.";
 
-        //I_Error(message, demoversion, G_VanillaVersionCode(),
         // printf(message, demoversion, G_VanillaVersionCode(),
         //                 DemoVersionDescription(demoversion));
     }
@@ -1956,9 +1955,6 @@ boolean G_CheckDemoStatus (void)
         // Prevent recursive calls
         timingdemo = false;
         demoplayback = false;
-
-	I_Error ("timed %i gametics in %i realtics (%f fps)",
-                 gametic, realtics, fps);
     } 
 	 
 

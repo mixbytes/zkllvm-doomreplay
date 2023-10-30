@@ -174,10 +174,6 @@ void P_InitPicAnims (void)
 	lastanim->istexture = animdefs[i].istexture;
 	lastanim->numpics = lastanim->picnum - lastanim->basepic + 1;
 
-	if (lastanim->numpics < 2)
-	    I_Error ("P_InitPicAnims: bad cycle from %s to %s",
-		     startname, endname);
-	
 	lastanim->speed = animdefs[i].speed;
 	lastanim++;
     }
@@ -354,13 +350,7 @@ P_FindNextHighestFloor
             {
                 height = other->floorheight;
             }
-            else if (h == MAX_ADJOINING_SECTORS + 2)
-            {
-                // Fatal overflow: game crashes at 22 textures
-                I_Error("Sector with more than 22 adjoining sectors. "
-                        "Vanilla will crash here");
-            }
-
+   
             heightlist[h++] = other->floorheight;
         }
     }
@@ -1073,9 +1063,6 @@ void P_PlayerInSpecialSector (player_t* player)
 	break;
 			
       default:
-	I_Error ("P_PlayerInSpecialSector: "
-		 "unknown special %i",
-		 sector->special);
 	break;
     };
 }
@@ -1391,11 +1378,6 @@ void P_SpawnSpecials (void)
 	switch(lines[i].special)
 	{
 	  case 48:
-            if (numlinespecials >= MAXLINEANIMS)
-            {
-                I_Error("Too many scrolling wall linedefs! "
-                        "(Vanilla limit is 64)");
-            }
 	    // EFFECT FIRSTCOL SCROLL+
 	    linespeciallist[numlinespecials] = &lines[i];
 	    numlinespecials++;

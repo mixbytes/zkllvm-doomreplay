@@ -45,9 +45,9 @@ boolean I_ConsoleStdout(void)
 // I_Error
 //
 
-void I_Error (char *error, ...)
-{
-}
+// void I_Error (char *error, ...)
+//{
+//}
 
 boolean I_GetMemoryValue(unsigned int offset, void *value, int size)
 {

@@ -387,11 +387,6 @@ R_StoreWallRange
     if (ds_p == &drawsegs[MAXDRAWSEGS])
 	return;		
 		
-#ifdef RANGECHECK
-    if (start >=viewwidth || start > stop)
-	I_Error ("Bad R_RenderWallRange: %i to %i", start , stop);
-#endif
-    
     sidedef = curline->sidedef;
     linedef = curline->linedef;
 

@@ -88,19 +88,6 @@ void V_CopyRect(int srcx, int srcy, byte *source,
     byte *src;
     byte *dest; 
  
-#ifdef RANGECHECK 
-    if (srcx < 0
-     || srcx + width > SCREENWIDTH
-     || srcy < 0
-     || srcy + height > SCREENHEIGHT 
-     || destx < 0
-     || destx + width > SCREENWIDTH
-     || desty < 0
-     || desty + height > SCREENHEIGHT)
-    {
-        I_Error ("Bad V_CopyRect");
-    }
-#endif 
 
     V_MarkRect(destx, desty, width, height); 
  
@@ -154,16 +141,6 @@ void V_DrawPatch(int x, int y, patch_t *patch)
         if(!patchclip_callback(patch, x, y))
             return;
     }
-
-#ifdef RANGECHECK
-    if (x < 0
-     || x + SHORT(patch->width) > SCREENWIDTH
-     || y < 0
-     || y + SHORT(patch->height) > SCREENHEIGHT)
-    {
-        I_Error("Bad V_DrawPatch x=%i y=%i patch.width=%i patch.height=%i topoffset=%i leftoffset=%i", x, y, patch->width, patch->height, patch->topoffset, patch->leftoffset);
-    }
-#endif
 
     V_MarkRect(x, y, SHORT(patch->width), SHORT(patch->height));
 
@@ -219,15 +196,6 @@ void V_DrawPatchFlipped(int x, int y, patch_t *patch)
             return;
     }
 
-#ifdef RANGECHECK 
-    if (x < 0
-     || x + SHORT(patch->width) > SCREENWIDTH
-     || y < 0
-     || y + SHORT(patch->height) > SCREENHEIGHT)
-    {
-        I_Error("Bad V_DrawPatchFlipped");
-    }
-#endif
 
     V_MarkRect (x, y, SHORT(patch->width), SHORT(patch->height));
 
@@ -284,14 +252,6 @@ void V_DrawTLPatch(int x, int y, patch_t * patch)
 
     y -= SHORT(patch->topoffset);
     x -= SHORT(patch->leftoffset);
-
-    if (x < 0
-     || x + SHORT(patch->width) > SCREENWIDTH 
-     || y < 0
-     || y + SHORT(patch->height) > SCREENHEIGHT)
-    {
-        I_Error("Bad V_DrawTLPatch");
-    }
 
     col = 0;
     desttop = dest_screen + y * SCREENWIDTH + x;
@@ -384,14 +344,6 @@ void V_DrawAltTLPatch(int x, int y, patch_t * patch)
     y -= SHORT(patch->topoffset);
     x -= SHORT(patch->leftoffset);
 
-    if (x < 0
-     || x + SHORT(patch->width) > SCREENWIDTH
-     || y < 0
-     || y + SHORT(patch->height) > SCREENHEIGHT)
-    {
-        I_Error("Bad V_DrawAltTLPatch");
-    }
-
     col = 0;
     desttop = dest_screen + y * SCREENWIDTH + x;
 
@@ -434,14 +386,6 @@ void V_DrawShadowedPatch(int x, int y, patch_t *patch)
 
     y -= SHORT(patch->topoffset);
     x -= SHORT(patch->leftoffset);
-
-    if (x < 0
-     || x + SHORT(patch->width) > SCREENWIDTH
-     || y < 0
-     || y + SHORT(patch->height) > SCREENHEIGHT)
-    {
-        I_Error("Bad V_DrawShadowedPatch");
-    }
 
     col = 0;
     desttop = dest_screen + y * SCREENWIDTH + x;
@@ -503,15 +447,6 @@ void V_DrawBlock(int x, int y, int width, int height, byte *src)
 { 
     byte *dest; 
  
-#ifdef RANGECHECK 
-    if (x < 0
-     || x + width >SCREENWIDTH
-     || y < 0
-     || y + height > SCREENHEIGHT)
-    {
-	I_Error ("Bad V_DrawBlock");
-    }
-#endif 
  
     V_MarkRect (x, y, width, height); 
  

@@ -252,11 +252,6 @@ static void D_Disconnected(void)
     // In drone mode, the game cannot continue once disconnected.
 
     // AAAAAAAAAAAAAA
-    //if (drone)
-    //{
-    //    I_Error("Disconnected from server in drone mode.");
-    //}
-
     // disconnected from server
 
     // AAAAAAAAAAAAAAAAAa
@@ -464,9 +459,6 @@ void TryRunTics (void)
         DR_UpdateTime();
         lowtic = GetLowTic();
 
-	if (lowtic < gametic/ticdup)
-	    I_Error ("TryRunTics: lowtic < gametic");
-
         // Don't stay in this loop forever.  The menu is still running,
         // so return to update the screen
 
@@ -493,9 +485,6 @@ void TryRunTics (void)
 
 	for (i=0 ; i<ticdup ; i++)
 	{
-        if (gametic/ticdup > lowtic)
-            I_Error ("gametic>lowtic");
-
         memcpy(local_playeringame, set->ingame, sizeof(local_playeringame));
 
         // BBBBBBBBBBBBBBBBBBB loop_interface->RunTic(set->cmds, set->ingame);

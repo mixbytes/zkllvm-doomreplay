@@ -159,12 +159,6 @@ wad_file_t *W_AddFile (const char *filename)
     unsigned int nsize = numfilelumps * sizeof(lumpinfo_t);
     filelumps = malloc(nsize);
     
-
-    if (filelumps == NULL)
-    {
-        I_Error("Failed to allocate array for lumps from new file.");
-    }
-
     startlump = numlumps;
     numlumps += numfilelumps;
     // AAAAAAAAAAAAAAAAAAAAAAA
@@ -272,11 +266,6 @@ lumpindex_t W_GetNumForName(const char *name)
 
     i = W_CheckNumForName (name);
 
-    if (i < 0)
-    {
-        I_Error ("W_GetNumForName: %s not found!", name);
-    }
- 
     return i;
 }
 
@@ -287,10 +276,6 @@ lumpindex_t W_GetNumForName(const char *name)
 //
 int W_LumpLength(lumpindex_t lump)
 {
-    if (lump >= numlumps)
-    {
-	I_Error ("W_LumpLength: %i >= numlumps", lump);
-    }
 
     return lumpinfo[lump]->size;
 }
@@ -306,11 +291,6 @@ void W_ReadLump(lumpindex_t lump, void *dest)
 {
     int c;
     lumpinfo_t *l;
-
-    if (lump >= numlumps)
-    {
-        I_Error ("W_ReadLump: %i >= numlumps", lump);
-    }
 
     l = lumpinfo[lump];
 
@@ -336,11 +316,6 @@ void *W_CacheLumpNum(lumpindex_t lumpnum, int tag)
 {
     byte *result;
     lumpinfo_t *lump;
-
-    if ((unsigned)lumpnum >= numlumps)
-    {
-	I_Error ("W_CacheLumpNum: %i >= numlumps", lumpnum);
-    }
 
     lump = lumpinfo[lumpnum];
 
@@ -390,11 +365,6 @@ void *W_CacheLumpName(const char *name, int tag)
 void W_ReleaseLumpNum(lumpindex_t lumpnum)
 {
     lumpinfo_t *lump;
-
-    if ((unsigned)lumpnum >= numlumps)
-    {
-	I_Error ("W_ReleaseLumpNum: %i >= numlumps", lumpnum);
-    }
 
     lump = lumpinfo[lumpnum];
 
