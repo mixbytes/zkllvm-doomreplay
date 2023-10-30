@@ -19,15 +19,16 @@ int main(int argc, char *argv[]) {
     
     unsigned int bytenum = 0;
     unsigned int SHARDS_NUM = (length / SHARD_SIZE + 1);
-    fprintf(ofd, "\n\nunsigned char *wad_contents[%d]={\n", SHARDS_NUM);
+    fprintf(ofd, "\n\nunsigned char wad_contents[%d][%d]={\n", SHARDS_NUM, SHARD_SIZE);
     for (int shard_num=0; shard_num < SHARDS_NUM; shard_num++) {
         char div = shard_num == 0 ? ' ': ',';   
-        fprintf(ofd, "%c (unsigned char *)\"", div);
+        fprintf(ofd, "%c {", div);
         for (int jj=0; jj< SHARD_SIZE; jj++) {
             unsigned char byte = (bytenum++ > length) ? 0 : wad_contents[shard_num*SHARD_SIZE + jj];
-            fprintf(ofd, "\\x%02x", byte);
+            char divv = (jj == 0) ? ' ':',';
+            fprintf(ofd, "%c0x%02x", divv, byte);
         }
-        fprintf(ofd, "\"\n");
+        fprintf(ofd, "}\n");
     }
     fprintf(ofd, "};\n");
     fclose(ofd);

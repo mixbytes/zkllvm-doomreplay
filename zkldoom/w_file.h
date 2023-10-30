@@ -22,7 +22,7 @@
 
 #include "doomtype.h"
 
-#define SHARD_SIZE 1024
+#define SHARD_SIZE 256
 
 typedef struct _wad_file_s wad_file_t;
 
@@ -74,7 +74,7 @@ void W_CloseFile(wad_file_t *wad);
 // data is read from the specified offset from the start of the file.
 // Returns the number of bytes read.
 
-unsigned int W_Read(wad_file_t *wad, unsigned int offset,
-              void *buffer, unsigned int buffer_len);
+void W_Read(wad_file_t *wad, unsigned int offset,
+              unsigned char *buffer, unsigned int buffer_len);
 
 #endif /* #ifndef __W_FILE__ */

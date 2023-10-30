@@ -122,7 +122,7 @@ unsigned int W_LumpNameHash(const char *s)
 
 wad_file_t *W_AddFile (const char *filename)
 {
-    wadinfo_t header;
+    wadinfo_t *header;
     lumpindex_t i;
     wad_file_t *wad_file;
     int length;
@@ -135,37 +135,19 @@ wad_file_t *W_AddFile (const char *filename)
    // Open the file and add to directory
     wad_file = NULL;
 
+	header = Z_Malloc(sizeof(wadinfo_t), PU_STATIC, 0);
+
     // WAD file
-    W_Read(wad_file, 0, &header, sizeof(header));
+    W_Read(wad_file, 0, header, sizeof(wadinfo_t));
 
-	if (own_strncasecmp(header.identification,"IWAD",4))
-	{
-	    // Homebrew levels?
-	    if (own_strncasecmp(header.identification,"PWAD",4))
-	    {
-		I_Error ("Wad file %s doesn't have IWAD "
-			 "or PWAD id\n", filename);
-	    }
+	header->numlumps = LONG(header->numlumps);
 
-	    // ???modifiedgame = true;
-	}
-
-	header.numlumps = LONG(header.numlumps);
-
-         // Vanilla Doom doesn't like WADs with more than 4046 lumps
-         // https://www.doomworld.com/vb/post/1010985
-         if (!own_strncasecmp(header.identification,"PWAD",4) && header.numlumps > 4046)
-         {
-                 I_Error ("Error: Vanilla limit for lumps in a WAD is 4046, "
-                          "PWAD %s has %d", filename, header.numlumps);
-         }
-
-	header.infotableofs = LONG(header.infotableofs);
-	length = header.numlumps*sizeof(filelump_t);
+	header->infotableofs = LONG(header->infotableofs);
+	length = header->numlumps*sizeof(filelump_t);
 	fileinfo = Z_Malloc(length, PU_STATIC, 0);
 
-    W_Read(wad_file, header.infotableofs, fileinfo, length);
-	numfilelumps = header.numlumps;
+    W_Read(wad_file, header->infotableofs, (unsigned char *)fileinfo, length);
+	numfilelumps = header->numlumps;
 
 
 
@@ -332,13 +314,7 @@ void W_ReadLump(lumpindex_t lump, void *dest)
 
     l = lumpinfo[lump];
 
-    c = W_Read(l->wad_file, l->position, dest, l->size);
-
-    if (c < l->size)
-    {
-        I_Error("W_ReadLump: only read %i of %i on lump %i",
-                c, l->size, lump);
-    }
+    W_Read(l->wad_file, l->position, (unsigned char *)dest, l->size);
 }
 
 
