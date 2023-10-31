@@ -644,6 +644,7 @@ P_TouchSpecialThing
       default:
 	    // AAAAAAAAAAAAAA
         // dieee I_  Error ("P_SpecialThing: Unknown gettable thing");
+        break;
     }
 	
     if (special->flags & MF_COUNTITEM)
