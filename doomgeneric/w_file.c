@@ -26,17 +26,17 @@
 #include "../doom1_wad_hardcopy.h"
 
 // reading form sharded wad file (split to arrays of SHARD_SIZE)
-unsigned int W_Read(wad_file_t *wad, unsigned int offset,
-              void *buffer, unsigned int buffer_len)
+void W_Read(wad_file_t *wad, unsigned int offset,
+              unsigned char *buffer, unsigned int buffer_len)
 {
     unsigned int shard_num = 0;
     unsigned int byte_index = 0;
     for (int i = 0; i < buffer_len; i++) {
         shard_num = (offset + i) / SHARD_SIZE;
         byte_index = offset + i - (shard_num * SHARD_SIZE); // instead of (offset + i) % SHARD_SIZE
-        ((unsigned char *)buffer)[i] = wad_contents[shard_num][byte_index];
+        buffer[i] = wad_contents[shard_num][byte_index];
     }
 
-    return buffer_len;
+    return;// buffer_len;
 }
 

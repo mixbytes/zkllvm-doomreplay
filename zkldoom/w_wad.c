@@ -136,7 +136,6 @@ wad_file_t *W_AddFile (const char *filename)
     wad_file = NULL;
 
 	header = Z_Malloc(sizeof(wadinfo_t), PU_STATIC, 0);
-
     // WAD file
     W_Read(wad_file, 0, header, sizeof(wadinfo_t));
 
@@ -144,6 +143,10 @@ wad_file_t *W_AddFile (const char *filename)
 
 	header->infotableofs = LONG(header->infotableofs);
 	length = header->numlumps*sizeof(filelump_t);
+
+#ifndef __ZKLLVM__
+    printf("Loading %d bytes of fileinfo\n", length);
+#endif
 	fileinfo = Z_Malloc(length, PU_STATIC, 0);
 
     W_Read(wad_file, header->infotableofs, (unsigned char *)fileinfo, length);

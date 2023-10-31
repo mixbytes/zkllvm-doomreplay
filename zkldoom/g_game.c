@@ -1521,7 +1521,6 @@ G_InitNew
     if ( (map > 9)
 	 && ( gamemode != commercial) )
       map = 9;
-
     M_ClearRandom ();
 
     if (skill == sk_nightmare || respawnparm )
@@ -1545,10 +1544,10 @@ G_InitNew
 	mobjinfo[MT_HEADSHOT].speed = 10*FRACUNIT;
 	mobjinfo[MT_TROOPSHOT].speed = 10*FRACUNIT;
     }
-
     // force players to be initialized upon first level load
     for (i=0 ; i<MAXPLAYERS ; i++)
 	players[i].playerstate = PST_REBORN;
+    
 
     usergame = true;                // will be set false if a demo
     paused = false;
