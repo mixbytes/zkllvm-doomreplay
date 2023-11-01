@@ -16,6 +16,8 @@
 //	Zone Memory Allocation. Neat.
 //
 
+#include <stdlib.h>
+
 #include "z_zone.h"
 #include "i_system.h"
 #include "doomtype.h"
@@ -93,6 +95,9 @@ Z_Malloc
   int		tag,
   void*		user )
 {
+#ifndef __ZKLLVM__
+    //printf("Malloc %d bytes\n", size);
+#endif
     return malloc(size);
 }
 

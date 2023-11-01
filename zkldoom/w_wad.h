@@ -34,13 +34,29 @@
 // WADFILE I/O related stuff.
 //
 
+typedef struct
+{
+    // Should be "IWAD" or "PWAD".
+    char		identification[4];
+    int			numlumps;
+    int			infotableofs;
+} wadinfo_t;
+
+
+typedef struct
+{
+    int			filepos;
+    int			size;
+    char		name[8];
+} filelump_t;
+
+
 typedef struct lumpinfo_s lumpinfo_t;
 typedef int lumpindex_t;
 
 struct lumpinfo_s
 {
     char	name[8];
-    wad_file_t *wad_file;
     int		position;
     int		size;
     void       *cache;
@@ -53,7 +69,7 @@ struct lumpinfo_s
 extern lumpinfo_t **lumpinfo;
 extern unsigned int numlumps;
 
-wad_file_t *W_AddFile(const char *filename);
+void W_AddFile(const char *filename);
 void W_Reload(void);
 
 lumpindex_t W_CheckNumForName(const char *name);

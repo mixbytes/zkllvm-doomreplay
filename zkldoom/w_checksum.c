@@ -23,33 +23,11 @@
 #include "w_checksum.h"
 #include "w_wad.h"
 
-static wad_file_t **open_wadfiles = NULL;
 static int num_open_wadfiles = 0;
 
-static int GetFileNumber(wad_file_t *handle)
+static int GetFileNumber()
 {
-    int i;
-    int result;
-
-    for (i=0; i<num_open_wadfiles; ++i)
-    {
-        if (open_wadfiles[i] == handle)
-        {
-            return i;
-        }
-    }
-
-    // Not found in list.  This is a new file we haven't seen yet.
-    // Allocate another slot for this file.
-
-    open_wadfiles = realloc(open_wadfiles,
-                            sizeof(wad_file_t *) * (num_open_wadfiles + 1));
-    open_wadfiles[num_open_wadfiles] = handle;
-
-    result = num_open_wadfiles;
-    ++num_open_wadfiles;
-
-    return result;
+    return 1;
 }
 
 static void ChecksumAddLump(sha1_context_t *sha1_context, lumpinfo_t *lump)
@@ -61,9 +39,6 @@ static void ChecksumAddLump(sha1_context_t *sha1_context, lumpinfo_t *lump)
     buf[9] = 0;
     // M_StringCopy(buf, lump->name, sizeof(buf));
     SHA1_UpdateString(sha1_context, buf);
-    SHA1_UpdateInt32(sha1_context, GetFileNumber(lump->wad_file));
-    SHA1_UpdateInt32(sha1_context, lump->position);
-    SHA1_UpdateInt32(sha1_context, lump->size);
 }
 
 void W_Checksum(sha1_digest_t digest)

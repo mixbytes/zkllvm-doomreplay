@@ -187,6 +187,8 @@ void pop_mocked_event_for_tic(unsigned int ticnum, __uint128_t inputs[]) {
         if (event_ticnum == ticnum) {
             unsigned int t = unpack_event(mock_inputs[last_event_idx], evt);
             //printf("Post: Curtic: %d, last_evt_idx: %d, extrtic: %d\n", ticnum, last_event_idx, event_ticnum);
+            //printf("\n");
+            // print_tick_packed_input(mock_inputs[last_event_idx]);
             D_PostEvent(evt);
             last_event_idx++;
             continue;
@@ -458,7 +460,7 @@ static void D_AddFile(char *filename)
 {
     wad_file_t *handle;
 
-    handle = W_AddFile(filename);
+    W_AddFile(filename);
 
     return;
 }
@@ -593,12 +595,6 @@ void D_DoomMain (__uint128_t n)
     // Not loading a game
     startloadgame = -1;
     
-    // AAAAAAAAA not-needed in zkllvm version
-    // R_Init a();
-
-    // AAAAAAAAA not-needed in zkllvm version
-    // P_Init ();
-
     D_CheckNetGame ();
 
     ST_Init ();

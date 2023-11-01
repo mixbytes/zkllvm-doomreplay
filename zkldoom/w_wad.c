@@ -33,22 +33,6 @@
 
 #include "w_wad.h"
 
-typedef struct
-{
-    // Should be "IWAD" or "PWAD".
-    char		identification[4];
-    int			numlumps;
-    int			infotableofs;
-} wadinfo_t;
-
-
-typedef struct
-{
-    int			filepos;
-    int			size;
-    char		name[8];
-} filelump_t;
-
 //
 // GLOBALS
 //
@@ -63,7 +47,6 @@ static lumpindex_t *lumphash;
 // Variables for the reload hack: filename of the PWAD to reload, and the
 // lumps from WADs before the reload file, so we can resent numlumps and
 // load the file again.
-static wad_file_t *reloadhandle = NULL;
 static lumpinfo_t *reloadlumps = NULL;
 static char *reloadname = NULL;
 static int reloadlump = -1;
@@ -120,11 +103,10 @@ unsigned int W_LumpNameHash(const char *s)
 // Other files are single lumps with the base filename
 //  for the lump name.
 
-wad_file_t *W_AddFile (const char *filename)
+void W_AddFile (const char *filename)
 {
     wadinfo_t *header;
     lumpindex_t i;
-    wad_file_t *wad_file;
     int length;
     int startlump;
     filelump_t *fileinfo;
@@ -132,12 +114,9 @@ wad_file_t *W_AddFile (const char *filename)
     lumpinfo_t *filelumps;
     int numfilelumps;
 
-   // Open the file and add to directory
-    wad_file = NULL;
-
 	header = Z_Malloc(sizeof(wadinfo_t), PU_STATIC, 0);
     // WAD file
-    W_Read(wad_file, 0, header, sizeof(wadinfo_t));
+    W_Read(0, (unsigned char *)header, sizeof(wadinfo_t));
 
 	header->numlumps = LONG(header->numlumps);
 
@@ -149,7 +128,7 @@ wad_file_t *W_AddFile (const char *filename)
 #endif
 	fileinfo = Z_Malloc(length, PU_STATIC, 0);
 
-    W_Read(wad_file, header->infotableofs, (unsigned char *)fileinfo, length);
+    W_Read(header->infotableofs, (unsigned char *)fileinfo, length);
 	numfilelumps = header->numlumps;
 
 
@@ -172,7 +151,6 @@ wad_file_t *W_AddFile (const char *filename)
     for (i = startlump; i < numlumps; ++i)
     {
         lumpinfo_t *lump_p = &filelumps[i - startlump];
-        lump_p->wad_file = wad_file;
         lump_p->position = LONG(filerover->filepos);
         lump_p->size = LONG(filerover->size);
         lump_p->cache = NULL;
@@ -190,15 +168,7 @@ wad_file_t *W_AddFile (const char *filename)
         lumphash = NULL;
     }
 
-    // If this is the reload file, we need to save some details about the
-    // file so that we can close it later on when we do a reload.
-    if (reloadname)
-    {
-        reloadhandle = wad_file;
-        reloadlumps = filelumps;
-    }
-
-    return wad_file;
+    return;
 }
 
 
@@ -297,7 +267,7 @@ void W_ReadLump(lumpindex_t lump, void *dest)
 
     l = lumpinfo[lump];
 
-    W_Read(l->wad_file, l->position, (unsigned char *)dest, l->size);
+    W_Read(l->position, (unsigned char *)dest, l->size);
 }
 
 
@@ -424,5 +394,5 @@ const char *W_WadNameForLump(const lumpinfo_t *lump)
 
 boolean W_IsIWADLump(const lumpinfo_t *lump)
 {
-	return lump->wad_file == lumpinfo[0]->wad_file;
+	return true; // AAAAAAAAAA lump->wad_file == lumpinfo[0]->wad_file;
 }
