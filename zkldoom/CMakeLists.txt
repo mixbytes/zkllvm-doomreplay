@@ -60,4 +60,7 @@ process_circuit(zkldoom SOURCES z_main.c doomgeneric_dr.c doomgeneric.c d_main.c
                 p_enemy.c
                 w_wad.c
                 w_file.c
+                i_timer.c
+                st_stuff.c
+                m_random.c
 INPUT test-input.json)
