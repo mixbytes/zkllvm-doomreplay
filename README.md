@@ -48,17 +48,12 @@ cd ~/zkllvm-doomreplay/doomgeneric && make -f Makefile.dr && ./doomgeneric -iwad
 
 # Generate harcoded .wad in doom1_wad_hardcopy.h
 
-(obsolete, now miniwad.wad is used ) - but I still use helper script to hardcode .wad files
+[TEMP], now miniwad.wad is used 
 
-Takes ```./doom1.wad``` file and puts its binary contents into ```unsigned char * wad_contents[] = "\x01\x02\...``` buffer in ```doom1_wad_hardcopy.h``` file
+Takes ```./miniwad.wad``` file and puts its binary contents into zk_wad_hardcoded.h (it will be used in ```wad.c``` for
+reading level data
 
-Compile
+Compile and run
 ```
-gcc hardcode_wad.c -o hardcode_wad
-```
-
-Run
-```
-./hardcode_wad ./doom1.wad doomgeneric/doom1_wad_hardcopy.h
-
+cd ~/zkllvm-doomreplay/ && gcc -o ./hardcode_wad ./hardcode_wad.c && ./hardcode_wad ./miniwad.wad && cat ./zk_wad_hardcoded.h
 ```

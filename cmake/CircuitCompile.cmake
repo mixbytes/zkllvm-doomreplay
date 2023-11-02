@@ -75,12 +75,15 @@ function(add_circuit name)
         set(format_option -c)
     endif()
 
+
+    set(ZKLLVM_DIR zkllvm) # to change between Release and Debug versions
+    # set(ZKLLVM_DIR tmp/zkLLVM) # to change between Release and Debug versions
     
     # TEMP (to use different self-compiled parts of zkllvm)
-    set(CLANG ${CMAKE_SOURCE_DIR}/../zkllvm/build/libs/circifier/llvm/bin/clang)
-    set(LIBC_STDLIB_LL ${CMAKE_SOURCE_DIR}/../zkllvm/build/libs/stdlib/libc/zkllvm-libc.ll)
-    set(LINKER ${CMAKE_SOURCE_DIR}/../zkllvm/build/libs/circifier/llvm/bin/llvm-link)
-    set(ASSIGNER ${CMAKE_SOURCE_DIR}/../zkllvm/build/bin/assigner/assigner)
+    set(CLANG ${CMAKE_SOURCE_DIR}/../${ZKLLVM_DIR}/build/libs/circifier/llvm/bin/clang)
+    set(LIBC_STDLIB_LL ${CMAKE_SOURCE_DIR}/../${ZKLLVM_DIR}/build/libs/stdlib/libc/zkllvm-libc.ll)
+    set(LINKER ${CMAKE_SOURCE_DIR}/../${ZKLLVM_DIR}/build/libs/circifier/llvm/bin/llvm-link)
+    set(ASSIGNER ${CMAKE_SOURCE_DIR}/../${ZKLLVM_DIR}/build/bin/assigner/assigner)
     set(TEST_INPUT_JSON ${CMAKE_SOURCE_DIR}/zkldoom/test-input.json)
     set(STATEMENT_PREPARE ${CMAKE_SOURCE_DIR}/../proof-market-toolchain/scripts/prepare_statement.py)
     set(PROVER ${CMAKE_SOURCE_DIR}/../proof-market-toolchain/build/bin/proof-generator/proof-generator)
@@ -141,11 +144,11 @@ function(add_circuit name)
                       -t ${name}.tbl
                       -c ${name}.crct
                       -e pallas
-                      --check
                       --verbose
                       
                       VERBATIM COMMAND_EXPAND_LISTS
                       )
+                      # --check
     
     add_custom_target(${name}_run_prepare_statement
                       DEPENDS ${name}_run_assigner

@@ -583,7 +583,6 @@ void D_DoomMain (__uint128_t n)
     //W_GenerateHashTable();
 
     I_InitTimer();
-
     // get skill / episode / map from parms
     startskill = sk_medium;
     startepisode = 1;

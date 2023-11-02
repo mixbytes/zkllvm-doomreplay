@@ -103,8 +103,23 @@ unsigned int W_LumpNameHash(const char *s)
 // Other files are single lumps with the base filename
 //  for the lump name.
 
+#include "../zk_wad_hardcoded.h"
+
 void W_AddFile (const char *filename)
 {
+    numlumps = ZK_NUMLUMPS;
+    /*
+    for (int i = 0; i < ZK_NUMLUMPS; ++i)
+    {
+        lumpinfo_t *lump_p = &(ZK_LUMPSTRUCTS[i]);
+        printf("{.name = \"%s\", .position = %d, .size = %d, .next = %d}\n",                                                 
+            lump_p->name, lump_p->position, lump_p->size, lump_p->next);   
+        //lump_p->cache = &(ZK_LUMPBODIES[i]);
+        //lumpinfo[i] = lump_p;//&ZK_LUMPSTRUCTS[i];
+    }
+    */
+
+    /*
     wadinfo_t *header;
     lumpindex_t i;
     int length;
@@ -131,9 +146,6 @@ void W_AddFile (const char *filename)
     W_Read(header->infotableofs, (unsigned char *)fileinfo, length);
 	numfilelumps = header->numlumps;
 
-
-
-
     // Increase size of numlumps array to accomodate the new file.
     
     // AAAAAAAAAAAAAAA - fuck, calloc also initializes mem with zeroes (but it works in zkdoom)
@@ -156,6 +168,8 @@ void W_AddFile (const char *filename)
         lump_p->cache = NULL;
         own_strncpy(lump_p->name, filerover->name, 8);
         lumpinfo[i] = lump_p;
+        //printf("{.name = \"%s\", .position = %d, .size = %d, .next = 0}\n",                                                 
+        //    filerover->name,filerover->filepos, filerover->size);   
 
         ++filerover;
     }
@@ -168,16 +182,8 @@ void W_AddFile (const char *filename)
         lumphash = NULL;
     }
 
+    */
     return;
-}
-
-
-//
-// W_NumLumps
-//
-int W_NumLumps (void)
-{
-    return numlumps;
 }
 
 
@@ -198,9 +204,9 @@ lumpindex_t W_CheckNumForName(const char *name)
         // We do! Excellent.
 
         hash = W_LumpNameHash(name) % numlumps;
-        for (i = lumphash[hash]; i != -1; i = lumpinfo[i]->next)
+        for (i = lumphash[hash]; i != -1; i = ZK_LUMPSTRUCTS[i].next)
         {
-            if (!own_strncasecmp(lumpinfo[i]->name, name, 8))
+            if (!own_strncasecmp(ZK_LUMPSTRUCTS[i].name, name, 8))
             {
                 return i;
             }
@@ -214,7 +220,7 @@ lumpindex_t W_CheckNumForName(const char *name)
 
         for (i = numlumps - 1; i >= 0; --i)
         {
-            if (!own_strncasecmp(lumpinfo[i]->name, name, 8))
+            if (!own_strncasecmp(ZK_LUMPSTRUCTS[i].name, name, 8))
             {
                 return i;
             }
@@ -249,8 +255,7 @@ lumpindex_t W_GetNumForName(const char *name)
 //
 int W_LumpLength(lumpindex_t lump)
 {
-
-    return lumpinfo[lump]->size;
+    return ZK_LUMPSTRUCTS[lump].size;
 }
 
 
@@ -264,10 +269,11 @@ void W_ReadLump(lumpindex_t lump, void *dest)
 {
     int c;
     lumpinfo_t *l;
-
-    l = lumpinfo[lump];
-
-    W_Read(l->position, (unsigned char *)dest, l->size);
+    l = &(ZK_LUMPSTRUCTS[lump]);
+    for(int i =0; i< l->size; i++) {
+        *(unsigned char *)(dest + i) = ZK_LUMPBODIES[lump][i];
+    }
+    //W_Read(l->position, (unsigned char *)dest, l->size);
 }
 
 
@@ -287,9 +293,18 @@ void W_ReadLump(lumpindex_t lump, void *dest)
 
 void *W_CacheLumpNum(lumpindex_t lumpnum, int tag)
 {
+    // AAAAAAAAA  - same read, we don't have a cache
+    lumpinfo_t *l;
+    l = &(ZK_LUMPSTRUCTS[lumpnum]);
+    byte *result = malloc(l->size);
+    for(int i =0; i < l->size; i++) {
+        *(unsigned char *)(result + i) = ZK_LUMPBODIES[lumpnum][i];
+    }
+    return result;
+
+    /*
     byte *result;
     lumpinfo_t *lump;
-
     lump = lumpinfo[lumpnum];
 
     // Get the pointer to return.  If the lump is in a memory-mapped
@@ -313,6 +328,7 @@ void *W_CacheLumpNum(lumpindex_t lumpnum, int tag)
         result = lump->cache;
     }
     return result;
+    */
 }
 
 
@@ -337,6 +353,8 @@ void *W_CacheLumpName(const char *name, int tag)
 
 void W_ReleaseLumpNum(lumpindex_t lumpnum)
 {
+    return;
+
     lumpinfo_t *lump;
 
     lump = lumpinfo[lumpnum];
@@ -375,11 +393,11 @@ void W_GenerateHashTable(void)
         {
             unsigned int hash;
 
-            hash = W_LumpNameHash(lumpinfo[i]->name) % numlumps;
+            hash = W_LumpNameHash(ZK_LUMPSTRUCTS[i].name) % numlumps;
 
             // Hook into the hash table
 
-            lumpinfo[i]->next = lumphash[hash];
+            ZK_LUMPSTRUCTS[i].next = lumphash[hash];
             lumphash[hash] = i;
         }
     }
