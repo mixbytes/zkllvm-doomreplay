@@ -1138,9 +1138,6 @@ G_CheckSpot
                          ss->sector->floorheight, MT_TFOG);
     }
 
-    if (players[consoleplayer].viewz != 1) 
-	S_StartSound (mo, sfx_telept);	// don't start sound on first frame 
- 
     return true; 
 } 
 
@@ -1452,44 +1449,8 @@ G_InitNew
     char *skytexturename;
     int             i;
 
-    if (paused)
-    {
-	paused = false;
-	S_ResumeSound ();
-    }
-
-    /*
-    // Note: This commented-out block of code was added at some point
-    // between the DOS version(s) and the Doom source release. It isn't
-    // found in disassemblies of the DOS version and causes IDCLEV and
-    // the -warp command line parameter to behave differently.
-    // This is left here for posterity.
-
-    // This was quite messy with SPECIAL and commented parts.
-    // Supposedly hacks to make the latest edition work.
-    // It might not work properly.
-    if (episode < 1)
-      episode = 1;
-
-    if ( gamemode == retail )
-    {
-      if (episode > 4)
-	episode = 4;
-    }
-    else if ( gamemode == shareware )
-    {
-      if (episode > 1)
-	   episode = 1;	// only start episode 1 on shareware
-    }
-    else
-    {
-      if (episode > 3)
-	episode = 3;
-    }
-    */
-
     if (skill > sk_nightmare)
-	skill = sk_nightmare;
+	    skill = sk_nightmare;
 
     if (gameversion >= exe_ultimate)
     {
@@ -1521,32 +1482,38 @@ G_InitNew
     if ( (map > 9)
 	 && ( gamemode != commercial) )
       map = 9;
+    
     M_ClearRandom ();
-
     if (skill == sk_nightmare || respawnparm )
-	respawnmonsters = true;
+	    respawnmonsters = true;
     else
-	respawnmonsters = false;
+	    respawnmonsters = false;
 
-    if (fastparm || (skill == sk_nightmare && gameskill != sk_nightmare) )
-    {
-	for (i=S_SARG_RUN1 ; i<=S_SARG_PAIN2 ; i++)
-	    states[i].tics >>= 1;
-	mobjinfo[MT_BRUISERSHOT].speed = 20*FRACUNIT;
-	mobjinfo[MT_HEADSHOT].speed = 20*FRACUNIT;
-	mobjinfo[MT_TROOPSHOT].speed = 20*FRACUNIT;
+    if (fastparm || (skill == sk_nightmare && gameskill != sk_nightmare) ) {
+	    for (i=S_SARG_RUN1 ; i<=S_SARG_PAIN2 ; i++)
+	        states[i].tics >>= 1;
+	    
+        mobjinfo[MT_BRUISERSHOT].speed = 20*FRACUNIT;
+	    mobjinfo[MT_HEADSHOT].speed = 20*FRACUNIT;
+	    mobjinfo[MT_TROOPSHOT].speed = 20*FRACUNIT;
     }
     else if (skill != sk_nightmare && gameskill == sk_nightmare)
     {
-	for (i=S_SARG_RUN1 ; i<=S_SARG_PAIN2 ; i++)
-	    states[i].tics <<= 1;
-	mobjinfo[MT_BRUISERSHOT].speed = 15*FRACUNIT;
-	mobjinfo[MT_HEADSHOT].speed = 10*FRACUNIT;
-	mobjinfo[MT_TROOPSHOT].speed = 10*FRACUNIT;
+	    for (i=S_SARG_RUN1 ; i<=S_SARG_PAIN2 ; i++)
+	        states[i].tics <<= 1;
+	    
+        mobjinfo[MT_BRUISERSHOT].speed = 15*FRACUNIT;
+	    mobjinfo[MT_HEADSHOT].speed = 10*FRACUNIT;
+	    mobjinfo[MT_TROOPSHOT].speed = 10*FRACUNIT;
     }
+    
     // force players to be initialized upon first level load
-    for (i=0 ; i<MAXPLAYERS ; i++)
-	players[i].playerstate = PST_REBORN;
+
+    // AAAAAAAAAAAAAAAA - disabled it to go forward (zk don't like uninitialized structs)
+    // but seems like DANGEROUS   
+    
+    //for (i=0 ; i<MAXPLAYERS ; i++)
+	//    players[i].playerstate = PST_REBORN;
     
 
     usergame = true;                // will be set false if a demo
@@ -1570,37 +1537,11 @@ G_InitNew
     // restore from a saved game.  This was fixed before the Doom
     // source release, but this IS the way Vanilla DOS Doom behaves.
 
-    if (gamemode == commercial)
-    {
-        if (gamemap < 12)
-            skytexturename = "SKY1";
-        else if (gamemap < 21)
-            skytexturename = "SKY2";
-        else
-            skytexturename = "SKY3";
-    }
-    else
-    {
-        switch (gameepisode)
-        {
-          default:
-          case 1:
-            skytexturename = "SKY1";
-            break;
-          case 2:
-            skytexturename = "SKY2";
-            break;
-          case 3:
-            skytexturename = "SKY3";
-            break;
-          case 4:        // Special Edition sky
-            skytexturename = "SKY4";
-            break;
-        }
-    }
+    // AAAAAAAAAAAA - fuck all the SKY
+    skytexturename = "SKY1";
+
 
     skytexturename = DEH_String(skytexturename);
-
     skytexture = R_TextureNumForName(skytexturename);
 
     G_DoLoadLevel ();
