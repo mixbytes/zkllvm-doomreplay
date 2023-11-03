@@ -322,7 +322,7 @@ void W_ReadLump(unsigned int lump, void *dest)
 	
     I_BeginRead ();
 	
-    c = W_Read(l->wad_file, l->position, dest, l->size);
+    W_Read(l->wad_file, l->position, dest, l->size);
 
     if (c < l->size)
     {
