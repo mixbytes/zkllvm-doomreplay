@@ -47,9 +47,10 @@ static lumpindex_t *lumphash;
 // Variables for the reload hack: filename of the PWAD to reload, and the
 // lumps from WADs before the reload file, so we can resent numlumps and
 // load the file again.
-static lumpinfo_t *reloadlumps = NULL;
-static char *reloadname = NULL;
-static int reloadlump = -1;
+
+//  AAAAAA static lumpinfo_t *reloadlumps = NULL;
+//  AAAAAA static char *reloadname = NULL;
+//  AAAAAA static int reloadlump = -1;
 
 
 
@@ -267,7 +268,6 @@ int W_LumpLength(lumpindex_t lump)
 //
 void W_ReadLump(lumpindex_t lump, void *dest)
 {
-    int c;
     lumpinfo_t *l;
     l = &(ZK_LUMPSTRUCTS[lump]);
     for(int i =0; i< l->size; i++) {

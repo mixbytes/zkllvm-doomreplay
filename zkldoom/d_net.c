@@ -40,19 +40,6 @@
 
 ticcmd_t *netcmds;
 
-// Called when a player leaves the game
-
-static void PlayerQuitGame(player_t *player)
-{
-    static char exitmsg[80] = {'M','o','c','k','\0'};
-}
-
-static void RunTic(ticcmd_t *cmds, boolean *ingame)
-{
-    netcmds = cmds;
-    G_Ticker ();
-}
-
 // BBBBBBBBBBBBBBB - remove pointers to functions
 //static loop_interface_t doom_loop_interface = {
 //    D_ProcessEvents,
@@ -110,81 +97,8 @@ static void SaveGameSettings(net_gamesettings_t *settings)
                          && M_CheckParm("-longtics") == 0;
 }
 
-static void InitConnectData(net_connect_data_t *connect_data)
-{
-    connect_data->max_players = MAXPLAYERS;
-    connect_data->drone = false;
-
-    //!
-    // @category net
-    //
-    // Run as the left screen in three screen mode.
-    //
-
-    if (M_CheckParm("-left") > 0)
-    {
-        viewangleoffset = ANG90;
-        connect_data->drone = true;
-    }
-
-    //! 
-    // @category net
-    //
-    // Run as the right screen in three screen mode.
-    //
-
-    if (M_CheckParm("-right") > 0)
-    {
-        viewangleoffset = ANG270;
-        connect_data->drone = true;
-    }
-
-    //
-    // Connect data
-    //
-
-    // Game type fields:
-
-    connect_data->gamemode = gamemode;
-    connect_data->gamemission = gamemission;
-
-    // Are we recording a demo? Possibly set lowres turn mode
-
-    connect_data->lowres_turn = M_CheckParm("-record") > 0
-                             && M_CheckParm("-longtics") == 0;
-
-    // Read checksums of our WAD directory and dehacked information
-
-    W_Checksum(connect_data->wad_sha1sum);
-
-#if ORIGCODE
-    DEH_Checksum(connect_data->deh_sha1sum);
-#endif
-
-    // Are we playing with the Freedoom IWAD?
-
-    connect_data->is_freedoom = W_CheckNumForName("FREEDOOM") >= 0;
-}
-
 void D_ConnectNetGame(void)
 {
-    net_connect_data_t connect_data;
-
-    InitConnectData(&connect_data);
-    netgame = D_InitNetGame(&connect_data);
-
-    //!
-    // @category net
-    //
-    // Start the game playing as though in a netgame with a single
-    // player.  This can also be used to play back single player netgame
-    // demos.
-    //
-
-    if (M_CheckParm("-solo-net") > 0)
-    {
-        netgame = true;
-    }
 }
 
 //

@@ -1,3 +1,8 @@
+
+#ifndef __ZKLLVM__        
+#include<stdio.h>
+#endif
+
 #include "doomkeys.h"
 #include "doomgeneric.h"
 #include "doomreplay.h"
@@ -25,54 +30,12 @@ static const int64_t g_dt_gs = (g_dt/5)/TICRATE; // ensure at least 5 updates pe
 
 static int64_t g_time_gs     = 0; // current time
 static int32_t g_frame_id    = 0; // frame index
-static int32_t g_username_id = 0; // username index
 
 static dr_keys_t g_pressed_last;
-static dr_keys_t g_key_map;
 static replay_data_t g_replay_data;
-
-static void renderText(uint32_t * screen, const char * text, int xoffs, int yoffs, int ecol) {
-}
-
-static void addConvertedKeyToQueue(int pressed, unsigned char key) {
-    unsigned short keyData = (pressed << 8) | key;
-
-    s_KeyQueue[s_KeyQueueWriteIndex] = keyData;
-    s_KeyQueueWriteIndex++;
-    s_KeyQueueWriteIndex %= KEYQUEUE_SIZE;
-}
 
 void DR_Init(replay_data_t replay_data) {
     // __builtin_dump_struct(&replay_data, &printf);
-
-    /* AAAAAAAAAAAAAAAAA
-    g_key_map[dr_key_escape      ] = KEY_ESCAPE;
-    g_key_map[dr_key_enter       ] = KEY_ENTER;
-    g_key_map[dr_key_left        ] = KEY_LEFTARROW;
-    g_key_map[dr_key_right       ] = KEY_RIGHTARROW;
-    g_key_map[dr_key_up          ] = KEY_UPARROW;
-    g_key_map[dr_key_down        ] = KEY_DOWNARROW;
-    g_key_map[dr_key_alt         ] = KEY_LALT;
-    g_key_map[dr_key_shift       ] = KEY_RSHIFT;
-    g_key_map[dr_key_use         ] = KEY_USE;
-    g_key_map[dr_key_fire        ] = KEY_FIRE;
-    g_key_map[dr_key_tab         ] = KEY_TAB;
-    g_key_map[dr_key_yes         ] = 'y';
-    g_key_map[dr_key_no          ] = 'n';
-    g_key_map[dr_key_strafe_left ] = KEY_STRAFE_L;
-    g_key_map[dr_key_strafe_right] = KEY_STRAFE_R;
-    g_key_map[dr_key_0           ] = '0';
-    g_key_map[dr_key_1           ] = '1';
-    g_key_map[dr_key_2           ] = '2';
-    g_key_map[dr_key_3           ] = '3';
-    g_key_map[dr_key_4           ] = '4';
-    g_key_map[dr_key_5           ] = '5';
-    g_key_map[dr_key_6           ] = '6';
-    g_key_map[dr_key_7           ] = '7';
-    g_key_map[dr_key_8           ] = '8';
-    g_key_map[dr_key_9           ] = '9';
-    */
-    //g_replay_data = replay_data;
 
     g_replay_data.n_frames = replay_data.n_frames;
     g_replay_data.n_usernames = replay_data.n_usernames;

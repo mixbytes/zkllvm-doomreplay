@@ -16,6 +16,9 @@
 // memory.
 //
 
+#ifndef __ZKLLVM__
+#include <stdio.h>
+#endif
 #include <string.h>
 
 #include "memio.h"

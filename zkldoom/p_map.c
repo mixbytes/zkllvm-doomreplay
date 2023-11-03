@@ -193,8 +193,6 @@ P_TeleportMove
 // MOVEMENT ITERATOR FUNCTIONS
 //
 
-static void SpechitOverrun(line_t *ld);
-
 //
 // PIT_CheckLine
 // Adjusts tmfloorz and tmceilingz as lines are contacted
@@ -1374,12 +1372,3 @@ P_ChangeSector
 	
     return nofit;
 }
-
-// Code to emulate the behavior of Vanilla Doom when encountering an overrun
-// of the spechit array.  This is by Andrey Budko (e6y) and comes from his
-// PrBoom plus port.  A big thanks to Andrey for this.
-
-static void SpechitOverrun(line_t *ld)
-{
-}
-

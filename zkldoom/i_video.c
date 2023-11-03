@@ -22,9 +22,6 @@
 //
 //-----------------------------------------------------------------------------
 
-static const char
-rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
-
 #include "config.h"
 #include "v_video.h"
 #include "m_argv.h"
@@ -175,23 +172,13 @@ void cmap_to_fb(uint8_t * out, uint8_t * in, int in_pixels)
 
 void I_InitGraphics (void)
 {
-    int i;
-    fb_scaling = s_Fb.xres / SCREENWIDTH;
-    if (s_Fb.yres / SCREENHEIGHT < fb_scaling)
-        fb_scaling = s_Fb.yres / SCREENHEIGHT;
-
-
-	I_VideoBuffer = (byte*)Z_Malloc (SCREENWIDTH * SCREENHEIGHT, PU_STATIC, NULL);  // For DOOM to draw on
-
 	screenvisible = true;
-
     extern int I_InitInput(void);
     I_InitInput();
 }
 
 void I_ShutdownGraphics (void)
 {
-	Z_Free (I_VideoBuffer);
 }
 
 void I_StartFrame (void)
@@ -238,7 +225,6 @@ void I_ReadScreen (byte* scr)
 
 void I_SetPalette (byte* palette)
 {
-	int i;
 }
 
 // Given an RGB value, find the closest matching palette index.

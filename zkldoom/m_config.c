@@ -17,6 +17,9 @@
 //    Configuration file interface.
 //
 
+#ifndef __ZKLLVM__
+#include <stdio.h>
+#endif
 #include <stdlib.h>
 #include <string.h>
 
@@ -1849,8 +1852,6 @@ void M_SaveDefaultsAlternate(char *main, char *extra)
 
 void M_LoadDefaults (void)
 {
-    int i;
- 
     LoadDefaultCollection(&doom_defaults);
     LoadDefaultCollection(&extra_defaults);
 }

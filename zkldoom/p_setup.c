@@ -743,7 +743,8 @@ P_SetupLevel
   int		playermask,
   skill_t	skill)
 {
-    int		i;
+    // int		i;
+    
     // AAAAAAAAAAAAAAAAAAAA - hardcode map name
     // WARNING with case - in ZKLDOOM no strcasecmp(all names must be EXACTLY in the needed case)
     char	lumpname[9] = "MAP01"; 

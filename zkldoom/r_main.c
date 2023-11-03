@@ -834,9 +834,9 @@ R_PointInSubsector
 //
 void R_SetupFrame (player_t* player)
 {		
+    /*
     int		i;
     
-    /*
     viewplayer = player;
     viewx = player->mo->x;
     viewy = player->mo->y;

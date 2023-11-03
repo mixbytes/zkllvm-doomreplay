@@ -223,7 +223,6 @@ static boolean  joyarray[MAX_JOY_BUTTONS + 1];
 static boolean *joybuttons = &joyarray[1];		// allow [-1] 
  
 static int      savegameslot; 
-static char     savedescription[32]; 
  
 #define	BODYQUESIZE	32
 
@@ -428,9 +427,6 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
         side += sidemove[speed]; 
     }
 
-    // buttons
-    // cmd->chatchar = HU_dequeueChatChar(); 
- 
     if (gamekeydown[key_fire] || mousebuttons[mousebfire] || joybuttons[joybfire]) {
 	    cmd->buttons |= BT_ATTACK; 
     }
@@ -612,7 +608,7 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
 //
 void G_DoLoadLevel (void) 
 { 
-    int             i; 
+    //int             i; 
     
     levelstarttic = gametic;        // for time calculation
     
@@ -744,8 +740,6 @@ boolean G_Responder (event_t* ev)
 
     if (gamestate == GS_LEVEL) 
     { 
-	//if (HU_Responder (ev)) 
-	//    return true;	// chat ate the event 
 	if (ST_Responder (ev)) 
 	    return true;	// status window ate it 
 	if (AM_Responder (ev)) 
@@ -911,7 +905,6 @@ void G_Ticker (void)
 	P_Ticker (); 
 	ST_Ticker (); 
 	AM_Ticker (); 
-	// HU_Ticker ();            
 	break; 
 	 
       case GS_INTERMISSION: 
@@ -1716,107 +1709,8 @@ void G_DeferedPlayDemo (char* name)
     gameaction = ga_playdemo; 
 } 
 
-// Generate a string describing a demo version
-
-static char *DemoVersionDescription(int version)
-{
-    static char resultbuf[16];
-
-    switch (version)
-    {
-        case 104:
-            return "v1.4";
-        case 105:
-            return "v1.5";
-        case 106:
-            return "v1.6/v1.666";
-        case 107:
-            return "v1.7/v1.7a";
-        case 108:
-            return "v1.8";
-        case 109:
-            return "v1.9";
-        default:
-            break;
-    }
-
-    // Unknown version.  Perhaps this is a pre-v1.4 IWAD?  If the version
-    // byte is in the range 0-4 then it can be a v1.0-v1.2 demo.
-
-    if (version >= 0 && version <= 4)
-    {
-        return "v1.0/v1.1/v1.2";
-    }
-    else
-    {
-        //M_snprintf(resultbuf, sizeof(resultbuf),
-        //           "%i.%i (unknown)", version / 100, version % 100);
-        return resultbuf;
-    }
-}
-
 void G_DoPlayDemo (void) 
 { 
-    skill_t skill; 
-    int             i, episode, map; 
-    int demoversion;
-	 
-    gameaction = ga_nothing; 
-    demobuffer = demo_p = W_CacheLumpName (defdemoname, PU_STATIC); 
-
-    demoversion = *demo_p++;
-
-    if (demoversion == G_VanillaVersionCode())
-    {
-        longtics = false;
-    }
-    else if (demoversion == DOOM_191_VERSION)
-    {
-        // demo recorded with cph's modified "v1.91" doom exe
-        longtics = true;
-    }
-    else
-    {
-        char *message = "Demo is from a different game version!\n"
-                        "(read %i, should be %i)\n"
-                        "\n"
-                        "*** You may need to upgrade your version "
-                            "of Doom to v1.9. ***\n"
-                        "    See: https://www.doomworld.com/classicdoom"
-                                  "/info/patches.php\n"
-                        "    This appears to be %s.";
-
-        // printf(message, demoversion, G_VanillaVersionCode(),
-        //                 DemoVersionDescription(demoversion));
-    }
-    
-    skill = *demo_p++; 
-    episode = *demo_p++; 
-    map = *demo_p++; 
-    deathmatch = *demo_p++;
-    respawnparm = *demo_p++;
-    fastparm = *demo_p++;
-    nomonsters = *demo_p++;
-    consoleplayer = *demo_p++;
-	
-    for (i=0 ; i<MAXPLAYERS ; i++) 
-	playeringame[i] = *demo_p++; 
-
-    if (playeringame[1] || M_CheckParm("-solo-net") > 0
-                        || M_CheckParm("-netdemo") > 0)
-    {
-	netgame = true;
-	netdemo = true;
-    }
-
-    // don't spend a lot of time in loadlevel 
-    precache = false;
-    G_InitNew (skill, episode, map); 
-    precache = true; 
-    starttime = I_GetTime (); 
-
-    usergame = false; 
-    demoplayback = true; 
 } 
 
 //

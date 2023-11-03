@@ -16,17 +16,9 @@
 //
 
 
-#include <stdlib.h>
+//#include <stdlib.h>
 
 #include "doomtype.h"
-//#include "i_system.h"
-//#include "m_misc.h"
-//#include "m_argv.h"  // haleyjd 20110212: warning fix
-
-//int		myargc;
-//char**		myargv;
-
-
 
 
 //
@@ -63,10 +55,6 @@ int M_CheckParm(char *check)
 }
 
 #define MAXARGVS        100
-
-static void LoadResponseFile(int argv_index)
-{
-}
 
 //
 // Find a Response File

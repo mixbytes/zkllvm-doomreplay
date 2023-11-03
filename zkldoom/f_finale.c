@@ -93,6 +93,7 @@ void F_CastTicker (void)
 
 boolean F_CastResponder (event_t* ev)
 {
+    return false; // AAAAAAAAA - or true?
 }
 
 
@@ -127,10 +128,6 @@ F_DrawPatchCol
 // F_BunnyScroll
 //
 void F_BunnyScroll (void)
-{
-}
-
-static void F_ArtScreenDrawer(void)
 {
 }
 

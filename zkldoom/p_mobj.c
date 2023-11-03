@@ -16,6 +16,10 @@
 //	Moving object handling. Spawn functions.
 //
 
+#ifndef __ZKLLVM__
+#include <stdio.h>
+#endif
+
 #include <string.h>
 
 #include "i_system.h"
@@ -731,13 +735,6 @@ void P_SpawnPlayer (mapthing_t* mthing)
 	for (i=0 ; i<NUMCARDS ; i++)
 	    p->cards[i] = true;
 			
-    if (mthing->type-1 == consoleplayer)
-    {
-	// wake up the status bar
-	ST_Start ();
-	// wake up the heads up text
-	HU_Start ();		
-    }
 }
 
 

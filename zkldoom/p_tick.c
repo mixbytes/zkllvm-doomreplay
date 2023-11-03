@@ -39,9 +39,6 @@ int	leveltime;
 
 // Both the head and tail of the thinker list.
 thinker_t	thinkercap;
-// = {
-// .next = 0, .prev = 0, .func_id = F_FUNC_ZERO
-//};
 
 
 //

@@ -60,7 +60,7 @@ typedef struct
 } memzone_t;
 
 
-static memzone_t*	mainzone;
+// AAAAAAAAAA static memzone_t*	mainzone;
 
 //
 // Z_Init

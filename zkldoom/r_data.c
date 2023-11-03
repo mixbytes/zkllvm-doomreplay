@@ -402,7 +402,7 @@ R_GetColumn
     return texturecomposite[tex] + ofs;
 }
 
-
+/* AAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 static void GenerateTextureHashTable(void)
 {
     // TODO
@@ -445,6 +445,7 @@ static void GenerateTextureHashTable(void)
         *rover = textures[i];
     }
 }
+*/
 
 
 //
@@ -454,6 +455,8 @@ static void GenerateTextureHashTable(void)
 //
 void R_InitTextures (void)
 {
+    /*
+    
     // TODO
     maptexture_t*	mtexture;
     texture_t*		texture;
@@ -468,13 +471,13 @@ void R_InitTextures (void)
     int*		maptex1;
     
     char		name[9];
-    char*		names;
-    char*		name_p;
+    // AAAAAAAAAAAAA char*		names;
+    // AAAAAAAAAAAAA char*		name_p;
     
-    int*		patchlookup;
+    int*		patchlookup = NULL;
     
     int			totalwidth;
-    int			nummappatches;
+    // AAAAAAAAAAAAA int			nummappatches;
     int			offset;
     int			maxoff;
     int			maxoff2;
@@ -490,7 +493,6 @@ void R_InitTextures (void)
     
     // Load the patch names from pnames.lmp.
     name[8] = 0;
-    
     
     // Load the map texture definitions from textures.lmp.
     // The data is contained in one or two lumps,
@@ -592,8 +594,8 @@ void R_InitTextures (void)
     
     for (i=0 ; i<numtextures ; i++)
 	texturetranslation[i] = i;
-
     GenerateTextureHashTable();
+    */
 }
 
 

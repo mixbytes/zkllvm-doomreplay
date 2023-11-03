@@ -76,8 +76,8 @@ function(add_circuit name)
     endif()
 
 
-    set(ZKLLVM_DIR zkllvm) # to change between Release and Debug versions
-    # set(ZKLLVM_DIR tmp/zkLLVM) # to change between Release and Debug versions
+    # set(ZKLLVM_DIR zkllvm) # to change between Release and Debug versions
+    set(ZKLLVM_DIR tmp/zkLLVM) # to change between Release and Debug versions
     
     # TEMP (to use different self-compiled parts of zkllvm)
     set(CLANG ${CMAKE_SOURCE_DIR}/../${ZKLLVM_DIR}/build/libs/circifier/llvm/bin/clang)
