@@ -268,7 +268,7 @@ EV_DoDoor
 	P_AddThinker (&door->thinker);
 	sec->specialdata = door;
 
-	door->thinker.function.acp1 = (actionf_p1) T_VerticalDoor; door->thinker.func_id = F_T_VerticalDoor;
+    door->thinker.func_id = F_T_VerticalDoor;
 	door->sector = sec;
 	door->type = type;
 	door->topwait = VDOORWAIT;
@@ -405,12 +405,10 @@ EV_VerticalDoor
                 // In Vanilla, door->direction is set, even though
                 // "specialdata" might not actually point at a door.
 
-                // if (door->thinker.function.acp1 == (actionf_p1) T_VerticalDoor)
                 if (door->thinker.func_id == F_T_VerticalDoor)
                 {
                     door->direction = -1;	// start going down immediately
                 }
-                // else if (door->thinker.function.acp1 == (actionf_p1) T_PlatRaise)
                 else if (door->thinker.func_id == F_T_PlatRaise)
                 {
                     // Erm, this is a plat, not a door.
@@ -462,7 +460,7 @@ EV_VerticalDoor
     door = Z_Malloc (sizeof(*door), PU_LEVSPEC, 0);
     P_AddThinker (&door->thinker);
     sec->specialdata = door;
-    door->thinker.function.acp1 = (actionf_p1) T_VerticalDoor; door->thinker.func_id = F_T_VerticalDoor;
+    door->thinker.func_id = F_T_VerticalDoor;
     door->sector = sec;
     door->direction = 1;
     door->speed = VDOORSPEED;
@@ -516,7 +514,7 @@ void P_SpawnDoorCloseIn30 (sector_t* sec)
     sec->specialdata = door;
     sec->special = 0;
 
-    door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor; door->thinker.func_id = F_T_VerticalDoor;
+    door->thinker.func_id = F_T_VerticalDoor;
     door->sector = sec;
     door->direction = 0;
     door->type = vld_normal;
@@ -541,7 +539,7 @@ P_SpawnDoorRaiseIn5Mins
     sec->specialdata = door;
     sec->special = 0;
 
-    door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor; door->thinker.func_id = F_T_VerticalDoor;
+    door->thinker.func_id = F_T_VerticalDoor;
     door->sector = sec;
     door->direction = 2;
     door->type = vld_raiseIn5Mins;

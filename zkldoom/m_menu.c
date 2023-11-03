@@ -759,10 +759,6 @@ void M_QuitResponse(int key)
 }
 
 
-static char *M_SelectEndMessage(void)
-{
-}
-
 
 void M_QuitDOOM(int choice)
 {
@@ -836,21 +832,7 @@ void M_StopMessage(void)
 
 
 
-//
-// Find string width from hu_font chars
-//
-int M_StringWidth(char* string)
-{
-}
 
-
-
-//
-//      Find string height from hu_font chars
-//
-int M_StringHeight(char* string)
-{
-}
 
 
 //
@@ -866,11 +848,6 @@ M_WriteText
 
 // These keys evaluate to a "null" key in Vanilla Doom that allows weird
 // jumping in the menus. Preserve this behavior for accuracy.
-
-// AAAAAAAAA ??
-static boolean IsNullKey(int key)
-{
-}
 
 //
 // CONTROL PANEL

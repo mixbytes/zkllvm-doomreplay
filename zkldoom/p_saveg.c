@@ -92,16 +92,6 @@ static void saveg_write_pad(void)
 }
 
 
-// Pointers
-
-static void *saveg_readp(void)
-{
-}
-
-static void saveg_writep(void *p)
-{
-}
-
 // Enum values are 32-bit integers.
 
 #define saveg_read_enum saveg_read32
@@ -293,18 +283,6 @@ static void saveg_write_glow_t(glow_t *str)
 //
 // Write the header for a savegame
 //
-
-void P_WriteSaveGameHeader(char *description)
-{
-}
-
-// 
-// Read the header for a savegame
-//
-
-boolean P_ReadSaveGameHeader(void)
-{
-}
 
 //
 // Read the end of file marker.  Returns true if read successfully.

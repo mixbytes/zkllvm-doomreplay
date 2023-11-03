@@ -614,46 +614,16 @@ void G_DoLoadLevel (void)
 { 
     int             i; 
     
-    // Set the sky map.
-    // First thing, we have a dummy sky texture name,
-    //  a flat. The data is in the WAD only because
-    //  we look for an actual index, instead of simply
-    //  setting one.
-
-    skyflatnum = R_FlatNumForName(DEH_String(SKYFLATNAME));
-
-    // The "Sky never changes in Doom II" bug was fixed in
-    // the id Anthology version of doom2.exe for Final Doom.
-    if ((gamemode == commercial)
-     && (gameversion == exe_final2 || gameversion == exe_chex))
-    {
-        char *skytexturename;
-
-        if (gamemap < 12)
-        {
-            skytexturename = "SKY1";
-        }
-        else if (gamemap < 21)
-        {
-            skytexturename = "SKY2";
-        }
-        else
-        {
-            skytexturename = "SKY3";
-        }
-
-        skytexturename = DEH_String(skytexturename);
-
-        skytexture = R_TextureNumForName(skytexturename);
-    }
-
     levelstarttic = gametic;        // for time calculation
     
-    if (wipegamestate == GS_LEVEL) 
-	wipegamestate = -1;             // force a wipe 
+    // AAAAAAAAAAAAAAAAAAA - hz 
+    //if (wipegamestate == GS_LEVEL) 
+	//    wipegamestate = -1;             // force a wipe 
 
     gamestate = GS_LEVEL; 
 
+    // AAAAAAAAAAAAAAAAAAAAAAAAAA - maybe DANGEROUS, but works (still afraid for non-initialized player_t structs)
+    /*
     for (i=0 ; i<MAXPLAYERS ; i++) 
     { 
 	turbodetected[i] = false;
@@ -661,7 +631,8 @@ void G_DoLoadLevel (void)
 	    players[i].playerstate = PST_REBORN; 
 	memset (players[i].frags,0,sizeof(players[i].frags)); 
     } 
-		 
+	*/
+	 
     P_SetupLevel (gameepisode, gamemap, 0, gameskill);    
     displayplayer = consoleplayer;		// view the guy you are playing    
     gameaction = ga_nothing; 

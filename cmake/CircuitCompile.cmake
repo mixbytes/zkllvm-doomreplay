@@ -105,6 +105,11 @@ function(add_circuit name)
                         COMMAND ${CLANG} 
                         -target assigner 
                         -Xclang -fpreserve-vec3-type
+
+                        -Wno-deprecated-non-prototype
+                        -Wno-macro-redefined
+                        -Wno-excess-initializers
+                        -Wno-multichar
                         -std=c17
                         -D__ZKLLVM__
                         ${INCLUDE_DIRS_LIST}

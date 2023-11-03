@@ -17,7 +17,7 @@
 //	Thinker, Ticker.
 //
 
-
+#include <stdlib.h>
 #include "z_zone.h"
 #include "p_local.h"
 
@@ -39,6 +39,9 @@ int	leveltime;
 
 // Both the head and tail of the thinker list.
 thinker_t	thinkercap;
+// = {
+// .next = 0, .prev = 0, .func_id = F_FUNC_ZERO
+//};
 
 
 //
@@ -73,8 +76,8 @@ void P_AddThinker (thinker_t* thinker)
 //
 void P_RemoveThinker (thinker_t* thinker)
 {
-  // FIXME: NOP.
-  thinker->function.acv = (actionf_v)(-1); thinker->func_id = F_FUNC_DEAD;
+    // FIXME: NOP.
+    thinker->func_id = F_FUNC_DEAD;
 }
 
 
@@ -100,7 +103,6 @@ void P_RunThinkers (void)
     while (currentthinker != &thinkercap)
     {
 	
-    //if ( currentthinker->function.acv == (actionf_v)(-1) )
     if ( currentthinker->func_id == F_FUNC_DEAD )
 	{
 	    // time to remove it
@@ -113,8 +115,6 @@ void P_RunThinkers (void)
 	    if (currentthinker->func_id > 0) {
             dispatch_thinker_func(currentthinker->func_id, currentthinker);
         }
-        //if (currentthinker->function.acp1)
-		//    currentthinker->function.acp1 (currentthinker);
 	}
 	currentthinker = currentthinker->next;
     }

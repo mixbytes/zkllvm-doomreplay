@@ -425,12 +425,6 @@ ST_Responder (event_t* ev)
 }
 
 
-
-int ST_calcPainOffset(void)
-{
-}
-
-
 //
 // This is a not-very-pretty routine which handles
 //  the face states and their timing.

@@ -749,20 +749,26 @@ P_SetupLevel
     char	lumpname[9] = "MAP01"; 
     int		lumpnum;
 	
-    totalkills = totalitems = totalsecret = wminfo.maxfrags = 0;
-    wminfo.partime = 180;
+    // AAAAAAAAAAAAAAAAAA - hz wat is it
+    //totalkills = totalitems = totalsecret = wminfo.maxfrags = 0;
+    //wminfo.partime = 180;
+    
+    // AAAAAAAAAAAAAAAAAAAA - another hz place with players and unitiialized structs
+    /*
     for (i=0 ; i<MAXPLAYERS ; i++)
     {
 	players[i].killcount = players[i].secretcount 
 	    = players[i].itemcount = 0;
     }
+    */
 
     // Initial height of PointOfView
     // will be set by player think.
     players[consoleplayer].viewz = 1; 
 
     // Make sure all sounds are stopped before Z_FreeTags.
-    S_Start ();			
+    
+    //AAAAAAAAA        S_Start ();			
 
     Z_FreeTags (PU_LEVEL, PU_PURGELEVEL-1);
 

@@ -58,7 +58,6 @@ typedef struct thinker_s
     struct thinker_s*	prev;
     struct thinker_s*	next;
     // CCCCCCCCCCCCCCCCCCCCCCCCCCC - remove funcptrs
-    think_t		function;
     int func_id;
     
 } thinker_t;
