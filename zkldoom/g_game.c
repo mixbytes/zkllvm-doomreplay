@@ -1483,8 +1483,8 @@ G_InitNew
     // AAAAAAAAAAAAAAAA - disabled it to go forward (zk don't like uninitialized structs)
     // but seems like DANGEROUS   
     
-    //for (i=0 ; i<MAXPLAYERS ; i++)
-	//    players[i].playerstate = PST_REBORN;
+    for (i=0 ; i<MAXPLAYERS ; i++)
+	    players[i].playerstate = PST_REBORN;
     
 
     usergame = true;                // will be set false if a demo
