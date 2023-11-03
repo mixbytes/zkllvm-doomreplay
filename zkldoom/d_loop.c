@@ -116,7 +116,7 @@ static boolean  new_sync = true;
 
 // Callback functions for loop code.
 
-static loop_interface_t *loop_interface = NULL;
+// AAAAAAAAAAAAAAAA static loop_interface_t *loop_interface = NULL;
 
 // Current players in the multiplayer game.
 // This is distinct from playeringame[] used by the game code, which may
@@ -349,9 +349,9 @@ static int GetLowTic(void)
     return lowtic;
 }
 
-static int frameon;
-static int frameskip[4];
-static int oldnettics;
+// AAAAAAAAAAA static int frameon;
+// AAAAAAAAAAAA static int frameskip[4];
+// AAAAAAAAAAAA static int oldnettics;
 
 // Returns true if there are players in the game:
 

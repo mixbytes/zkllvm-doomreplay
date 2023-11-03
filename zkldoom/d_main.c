@@ -179,13 +179,16 @@ void pop_mocked_event_for_tic(unsigned int ticnum, __uint128_t inputs[]) {
         return;
     }
 
-    int r = 0; // temp restrict
-    unsigned int event_ticnum = 0;
+    //int r = 0; // temp restrict
+    // unsigned int event_ticnum = 0;
     while (last_event_idx < 64) {
         unsigned int event_ticnum = extract_ticnum(inputs[last_event_idx]);
         
         if (event_ticnum == ticnum) {
             unsigned int t = unpack_event(mock_inputs[last_event_idx], evt);
+            if (t != event_ticnum) {
+                // seems like an error in unpacking event
+            }
             //printf("Post: Curtic: %d, last_evt_idx: %d, extrtic: %d\n", ticnum, last_event_idx, event_ticnum);
             //printf("\n");
             // print_tick_packed_input(mock_inputs[last_event_idx]);
@@ -251,16 +254,9 @@ void R_ExecuteSetViewSize (void);
 
 void D_Display (void)
 {
-    static  boolean		viewactivestate = false;
-    static  boolean		menuactivestate = false;
-    static  boolean		inhelpscreensstate = false;
-    static  boolean		fullscreen = false;
-    static  gamestate_t		oldgamestate = -1;
-    static  int			borderdrawcount;
     int				nowtime;
     int				tics;
     int				wipestart;
-    int				y;
     boolean			done;
     boolean			wipe;
     boolean			redrawsbar;
@@ -268,7 +264,8 @@ void D_Display (void)
     redrawsbar = false;
     
     wipe = false;
-    
+    done = false;
+
     /* AAAAAAAAAAAAAAAAA
     // do buffered drawing
     switch (gamestate)
@@ -458,34 +455,9 @@ void D_IdentifyVersion(void)
 
 static void D_AddFile(char *filename)
 {
-    wad_file_t *handle;
-
     W_AddFile(filename);
-
     return;
 }
-
-
-// Initialize the game version
-static void InitGameVersion(void)
-{
-    gameversion = exe_doom_1_9;
-}
-
-// Function called at exit to display the ENDOOM screen
-
-static void D_Endoom(void)
-{
-    byte *endoom;
-
-    endoom = W_CacheLumpName(DEH_String("ENDOOM"), PU_STATIC);
-
-    I_Endoom(endoom);
-
-	//exit(0);
-}
-
-
 
 
 //
