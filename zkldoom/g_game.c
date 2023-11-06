@@ -119,8 +119,6 @@ boolean         netgame;                // only true if packets are broadcast
 boolean         playeringame[MAXPLAYERS]; 
 player_t        players[MAXPLAYERS]; 
 
-boolean         turbodetected[MAXPLAYERS];
- 
 int             consoleplayer;          // player taking events and displaying 
 int             displayplayer;          // view being displayed 
 int             levelstarttic;          // gametic at level start 
@@ -553,7 +551,6 @@ void G_DoLoadLevel (void)
     /*
     for (i=0 ; i<MAXPLAYERS ; i++) 
     { 
-	turbodetected[i] = false;
 	if (playeringame[i] && players[i].playerstate == PST_DEAD) 
 	    players[i].playerstate = PST_REBORN; 
 	memset (players[i].frags,0,sizeof(players[i].frags)); 
@@ -609,48 +606,7 @@ static void SetMouseButtons(unsigned int buttons_mask)
 // 
 boolean G_Responder (event_t* ev) 
 { 
-    // allow spy mode changes even during the demo
-    if (gamestate == GS_LEVEL && ev->type == ev_keydown 
-     && ev->data1 == key_spy && (singledemo || !deathmatch) )
-    {
-	// spy mode 
-	do 
-	{ 
-	    displayplayer++; 
-	    if (displayplayer == MAXPLAYERS) 
-		displayplayer = 0; 
-	} while (!playeringame[displayplayer] && displayplayer != consoleplayer); 
-	return true; 
-    }
-    
-    // any other key pops up menu if in demos
-    if (gameaction == ga_nothing && !singledemo && 
-	(demoplayback || gamestate == GS_DEMOSCREEN) 
-	) 
-    { 
-	if (ev->type == ev_keydown ||  
-	    (ev->type == ev_mouse && ev->data1) )
-	{ 
-	    M_StartControlPanel (); 
-	    return true; 
-	} 
-	return false; 
-    } 
-
-    if (gamestate == GS_LEVEL) 
-    { 
-	if (ST_Responder (ev)) 
-	    return true;	// status window ate it 
-	if (AM_Responder (ev)) 
-	    return true;	// automap ate it 
-    } 
-	 
-    if (gamestate == GS_FINALE) 
-    { 
-	if (F_Responder (ev)) 
-	    return true;	// finale ate the event 
-    } 
-
+   
     // If the next/previous weapon keys are pressed, set the next_weapon
     // variable to change weapons when the next ticcmd is generated.
 
@@ -665,27 +621,27 @@ boolean G_Responder (event_t* ev)
 
     switch (ev->type) 
     { 
-      case ev_keydown: 
-        if (ev->data1 <NUMKEYS) 
-        {
-	        gamekeydown[ev->data1] = true; 
-        }
+        case ev_keydown: 
+            if (ev->data1 <NUMKEYS) 
+            {
+	            gamekeydown[ev->data1] = true; 
+            }
 
-	return true;    // eat key down events 
+	        return true;    // eat key down events 
  
-      case ev_keyup: 
-	if (ev->data1 <NUMKEYS) 
-	    gamekeydown[ev->data1] = false; 
-	return false;   // always let key up events filter down 
+        case ev_keyup: 
+	        if (ev->data1 <NUMKEYS) 
+	            gamekeydown[ev->data1] = false; 
+	        return false;   // always let key up events filter down 
 		 
-      case ev_mouse: 
-        SetMouseButtons(ev->data1);
-	mousex = ev->data2*(mouseSensitivity+5)/10; 
-	mousey = ev->data3*(mouseSensitivity+5)/10; 
-	return true;    // eat events 
+        case ev_mouse: 
+            SetMouseButtons(ev->data1);
+	        mousex = ev->data2*(mouseSensitivity+5)/10; 
+	        mousey = ev->data3*(mouseSensitivity+5)/10; 
+	        return true;    // eat events 
  
-      default: 
-	break; 
+        default: 
+	        break; 
     } 
  
     return false; 
@@ -719,28 +675,23 @@ void G_Ticker (void)
 	  case ga_newgame: 
 	    G_DoNewGame (); 
 	    break; 
-	  case ga_loadgame: 
-	    G_DoLoadGame (); 
-	    break; 
-	  case ga_savegame: 
-	    G_DoSaveGame (); 
-	    break; 
-	  case ga_playdemo: 
-	    G_DoPlayDemo (); 
-	    break; 
+	  //case ga_loadgame: 
+	  //  G_DoLoadGame (); 
+	  //  break; 
+	  //case ga_savegame: 
+	  //  G_DoSaveGame (); 
+	  //  break; 
+	  //case ga_playdemo: 
+	  //  G_DoPlayDemo (); 
+	  //  break; 
 	  case ga_completed: 
 	    G_DoCompleted (); 
 	    break; 
-	  case ga_victory: 
-	    F_StartFinale (); 
-	    break; 
+	  //case ga_victory: 
+	  //  F_StartFinale (); 
+	  //  break; 
 	  case ga_worlddone: 
 	    G_DoWorldDone (); 
-	    break; 
-	  case ga_screenshot: 
-	    V_ScreenShot("DOOM%02i.%s"); 
-            players[consoleplayer].message = DEH_String("screen shot");
-	    gameaction = ga_nothing; 
 	    break; 
 	  case ga_nothing: 
 	    break; 
@@ -759,43 +710,19 @@ void G_Ticker (void)
 
 	    memcpy(cmd, &netcmds[i], sizeof(ticcmd_t));
 
-	    if (demoplayback) 
-		G_ReadDemoTiccmd (cmd); 
-	    if (demorecording) 
-		G_WriteDemoTiccmd (cmd);
-	    
 	}
     }
     
-    // Have we just finished displaying an intermission screen?
-
-    if (oldgamestate == GS_INTERMISSION && gamestate != GS_INTERMISSION)
-    {
-        WI_End();
-    }
-
     oldgamestate = gamestate;
     
     // do main actions
     switch (gamestate) 
     { 
       case GS_LEVEL: 
-	P_Ticker (); 
-	ST_Ticker (); 
-	AM_Ticker (); 
-	break; 
+	    P_Ticker (); 
+	    break; 
 	 
-      case GS_INTERMISSION: 
-	WI_Ticker (); 
-	break; 
-			 
-      case GS_FINALE: 
-	F_Ticker (); 
-	break; 
- 
-      case GS_DEMOSCREEN: 
-	    break;
-    }        
+        }        
 } 
  
  

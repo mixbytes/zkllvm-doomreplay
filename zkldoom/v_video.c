@@ -612,14 +612,6 @@ void WritePNGfile(char *filename, byte *data,
 }
 #endif
 
-//
-// V_ScreenShot
-//
-
-void V_ScreenShot(char *format)
-{
-}
-
 #define MOUSE_SPEED_BOX_WIDTH  120
 #define MOUSE_SPEED_BOX_HEIGHT 9
 
