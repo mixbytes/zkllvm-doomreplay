@@ -206,8 +206,6 @@ static int      dclicktime2;
 static boolean  dclickstate2;
 static int      dclicks2;
 
-static int      savegameslot; 
- 
 #define	BODYQUESIZE	32
 
 mobj_t*		bodyque[BODYQUESIZE]; 
@@ -566,10 +564,6 @@ void G_DoLoadLevel (void)
     memset(mousearray, 0, sizeof(mousearray));
 
 } 
-
-static void SetJoyButtons(unsigned int buttons_mask)
-{
-}
 
 static void SetMouseButtons(unsigned int buttons_mask)
 {
@@ -1212,7 +1206,6 @@ G_InitNew
   int		episode,
   int		map )
 {
-    char *skytexturename;
     int             i;
 
     if (skill > sk_nightmare)
@@ -1306,12 +1299,6 @@ G_InitNew
 void G_ReadDemoTiccmd (ticcmd_t* cmd) 
 { 
 } 
-
-// Increase the size of the demo buffer to allow unlimited demos
-
-static void IncreaseDemoBuffer(void)
-{
-}
 
 void G_WriteDemoTiccmd (ticcmd_t* cmd) 
 { 
