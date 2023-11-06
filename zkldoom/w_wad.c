@@ -197,7 +197,6 @@ lumpindex_t W_CheckNumForName(const char *name)
 {
     lumpindex_t i;
     // Do we have a hash table yet?
-
     if (lumphash != NULL)
     {
         int hash;
@@ -296,6 +295,7 @@ void *W_CacheLumpNum(lumpindex_t lumpnum, int tag)
     // AAAAAAAAA  - same read, we don't have a cache
     lumpinfo_t *l;
     l = &(ZK_LUMPSTRUCTS[lumpnum]);
+    printf("RL:%s %d\n", l->name, l->size);
     byte *result = malloc(l->size);
     for(int i =0; i < l->size; i++) {
         *(unsigned char *)(result + i) = ZK_LUMPBODIES[lumpnum][i];
