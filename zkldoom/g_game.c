@@ -213,9 +213,6 @@ static int      savegameslot;
 mobj_t*		bodyque[BODYQUESIZE]; 
 int		bodyqueslot; 
  
-int             vanilla_savegame_limit = 1;
-int             vanilla_demo_limit = 1;
- 
 int G_CmdChecksum (ticcmd_t* cmd) 
 { 
     size_t		i;
@@ -1308,109 +1305,16 @@ G_InitNew
 
 void G_ReadDemoTiccmd (ticcmd_t* cmd) 
 { 
-    if (*demo_p == DEMOMARKER) 
-    {
-	// end of demo data stream 
-	G_CheckDemoStatus (); 
-	return; 
-    } 
-    cmd->forwardmove = ((signed char)*demo_p++); 
-    cmd->sidemove = ((signed char)*demo_p++); 
-
-    // If this is a longtics demo, read back in higher resolution
-
-    if (longtics)
-    {
-        cmd->angleturn = *demo_p++;
-        cmd->angleturn |= (*demo_p++) << 8;
-    }
-    else
-    {
-        cmd->angleturn = ((unsigned char) *demo_p++)<<8; 
-    }
-
-    cmd->buttons = (unsigned char)*demo_p++; 
 } 
 
 // Increase the size of the demo buffer to allow unlimited demos
 
 static void IncreaseDemoBuffer(void)
 {
-    int current_length;
-    byte *new_demobuffer;
-    byte *new_demop;
-    int new_length;
-
-    // Find the current size
-
-    current_length = demoend - demobuffer;
-    
-    // Generate a new buffer twice the size
-    new_length = current_length * 2;
-    
-    new_demobuffer = Z_Malloc(new_length, PU_STATIC, 0);
-    new_demop = new_demobuffer + (demo_p - demobuffer);
-
-    // Copy over the old data
-
-    memcpy(new_demobuffer, demobuffer, current_length);
-
-    // Free the old buffer and point the demo pointers at the new buffer.
-
-    Z_Free(demobuffer);
-
-    demobuffer = new_demobuffer;
-    demo_p = new_demop;
-    demoend = demobuffer + new_length;
 }
 
 void G_WriteDemoTiccmd (ticcmd_t* cmd) 
 { 
-    byte *demo_start;
-
-    if (gamekeydown[key_demo_quit])           // press q to end demo recording 
-	G_CheckDemoStatus (); 
-
-    demo_start = demo_p;
-
-    *demo_p++ = cmd->forwardmove; 
-    *demo_p++ = cmd->sidemove; 
-
-    // If this is a longtics demo, record in higher resolution
- 
-    if (longtics)
-    {
-        *demo_p++ = (cmd->angleturn & 0xff);
-        *demo_p++ = (cmd->angleturn >> 8) & 0xff;
-    }
-    else
-    {
-        *demo_p++ = cmd->angleturn >> 8; 
-    }
-
-    *demo_p++ = cmd->buttons; 
-
-    // reset demo pointer back
-    demo_p = demo_start;
-
-    if (demo_p > demoend - 16)
-    {
-        if (vanilla_demo_limit)
-        {
-            // no more space 
-            G_CheckDemoStatus (); 
-            return; 
-        }
-        else
-        {
-            // Vanilla demo limit disabled: unlimited
-            // demo lengths!
-
-            IncreaseDemoBuffer();
-        }
-    } 
-	
-    G_ReadDemoTiccmd (cmd);         // make SURE it is exactly the same 
 } 
  
  
@@ -1444,44 +1348,6 @@ int G_VanillaVersionCode(void)
 
 void G_BeginRecording (void) 
 { 
-    int             i; 
-
-    //!
-    // @category demo
-    //
-    // Record a high resolution "Doom 1.91" demo.
-    //
-
-    longtics = M_CheckParm("-longtics") != 0;
-
-    // If not recording a longtics demo, record in low res
-
-    lowres_turn = !longtics;
-    
-    demo_p = demobuffer;
-	
-    // Save the right version code for this demo
- 
-    if (longtics)
-    {
-        *demo_p++ = DOOM_191_VERSION;
-    }
-    else
-    {
-        *demo_p++ = G_VanillaVersionCode();
-    }
-
-    *demo_p++ = gameskill; 
-    *demo_p++ = gameepisode; 
-    *demo_p++ = gamemap; 
-    *demo_p++ = deathmatch; 
-    *demo_p++ = respawnparm;
-    *demo_p++ = fastparm;
-    *demo_p++ = nomonsters;
-    *demo_p++ = consoleplayer;
-	 
-    for (i=0 ; i<MAXPLAYERS ; i++) 
-	*demo_p++ = playeringame[i]; 		 
 } 
  
 
@@ -1493,8 +1359,6 @@ char*	defdemoname;
  
 void G_DeferedPlayDemo (char* name) 
 { 
-    defdemoname = name; 
-    gameaction = ga_playdemo; 
 } 
 
 void G_DoPlayDemo (void) 
@@ -1506,19 +1370,6 @@ void G_DoPlayDemo (void)
 //
 void G_TimeDemo (char* name) 
 {
-    //!
-    // @vanilla 
-    //
-    // Disable rendering the screen entirely.
-    //
-
-    nodrawers = M_CheckParm ("-nodraw"); 
-
-    timingdemo = true; 
-    singletics = true; 
-
-    defdemoname = name; 
-    gameaction = ga_playdemo; 
 } 
  
  
@@ -1534,25 +1385,6 @@ void G_TimeDemo (char* name)
  
 boolean G_CheckDemoStatus (void) 
 { 
-    int             endtime; 
-	 
-    if (timingdemo) 
-    { 
-        float fps;
-        int realtics;
-
-	endtime = I_GetTime (); 
-        realtics = endtime - starttime;
-        fps = ((float) gametic * TICRATE) / realtics;
-
-        // Prevent recursive calls
-        timingdemo = false;
-        demoplayback = false;
-    } 
-	 
-
-    return false; 
+    return false;
 } 
- 
- 
  

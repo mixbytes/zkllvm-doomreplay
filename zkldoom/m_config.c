@@ -833,28 +833,6 @@ static default_t extra_defaults_list[] =
     CONFIG_VARIABLE_INT(png_screenshots),
 
     //!
-    // @game doom strife
-    //
-    // If non-zero, the Vanilla savegame limit is enforced; if the
-    // savegame exceeds 180224 bytes in size, the game will exit with
-    // an error.  If this has a value of zero, there is no limit to
-    // the size of savegames.
-    //
-
-    CONFIG_VARIABLE_INT(vanilla_savegame_limit),
-
-    //!
-    // @game doom strife
-    //
-    // If non-zero, the Vanilla demo size limit is enforced; the game
-    // exits with an error when a demo exceeds the demo size limit
-    // (128KiB by default).  If this has a value of zero, there is no
-    // limit to the size of demos.
-    //
-
-    CONFIG_VARIABLE_INT(vanilla_demo_limit),
-
-    //!
     // If non-zero, the game behaves like Vanilla Doom, always assuming
     // an American keyboard mapping.  If this has a value of zero, the
     // native keyboard mapping of the keyboard is used.
