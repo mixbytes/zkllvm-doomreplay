@@ -173,7 +173,7 @@ function(add_circuit name)
                       COMMAND 
                       ${PROVER}
                       --circuit_input=${name}-statement.json
-                      --public_input=${name}-input.json
+                      --public_input=${TEST_INPUT_JSON}
                       --proof_out=${name}-proof.bin
                       VERBATIM COMMAND_EXPAND_LISTS
                       )

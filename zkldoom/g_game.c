@@ -106,8 +106,6 @@ int             gamemap;
 int             timelimit;
 
 boolean         paused; 
-boolean         sendpause;             	// send a pause event next tic 
-boolean         sendsave;             	// send a save event next tic 
 boolean         usergame;               // ok to save / end game 
  
 boolean         timingdemo;             // if true, exit with report on completion 
@@ -141,11 +139,6 @@ boolean         singledemo;            	// quit after playing a demo from cmdlin
  
 boolean         precache = true;        // if true, load all graphics at start 
 
-boolean         testcontrols = false;    // Invoked by setup to test controls
-int             testcontrols_mousespeed;
- 
-
- 
 wbstartstruct_t wminfo;               	// parms for world map / intermission 
  
 byte		consistancy[MAXPLAYERS][BACKUPTICS]; 
@@ -498,13 +491,6 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
     else 
 	cmd->angleturn -= mousex*0x8; 
 
-    if (mousex == 0)
-    {
-        // No movement in the previous frame
-
-        testcontrols_mousespeed = 0;
-    }
-    
     mousex = mousey = 0; 
 	 
     if (forward > MAXPLMOVE) 
@@ -519,21 +505,6 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
     cmd->forwardmove += forward; 
     cmd->sidemove += side;
     
-    /*
-    // special buttons
-    if (sendpause) 
-    { 
-	sendpause = false; 
-	cmd->buttons = BT_SPECIAL | BTS_PAUSE; 
-    } 
- 
-    if (sendsave) 
-    { 
-	sendsave = false; 
-	cmd->buttons = BT_SPECIAL | BTS_SAVEGAME | (savegameslot<<BTS_SAVESHIFT); 
-    } 
-    */
-
     // low-res turning
 
     if (lowres_turn)
@@ -598,13 +569,8 @@ void G_DoLoadLevel (void)
 
     memset (gamekeydown, 0, sizeof(gamekeydown));
     mousex = mousey = 0;
-    sendpause = sendsave = paused = false;
     memset(mousearray, 0, sizeof(mousearray));
 
-    if (testcontrols)
-    {
-        players[consoleplayer].message = "Press escape to quit.";
-    }
 } 
 
 static void SetJoyButtons(unsigned int buttons_mask)
@@ -685,16 +651,6 @@ boolean G_Responder (event_t* ev)
 	    return true;	// finale ate the event 
     } 
 
-    if (testcontrols && ev->type == ev_mouse)
-    {
-        // If we are invoked by setup to test the controls, save the 
-        // mouse speed so that we can display it on-screen.
-        // Perform a low pass filter on this so that the thermometer 
-        // appears to move smoothly.
-
-        testcontrols_mousespeed = abss(ev->data2);
-    }
-
     // If the next/previous weapon keys are pressed, set the next_weapon
     // variable to change weapons when the next ticcmd is generated.
 
@@ -710,13 +666,9 @@ boolean G_Responder (event_t* ev)
     switch (ev->type) 
     { 
       case ev_keydown: 
-	if (ev->data1 == key_pause) 
-	{ 
-	    sendpause = true; 
-	}
-        else if (ev->data1 <NUMKEYS) 
+        if (ev->data1 <NUMKEYS) 
         {
-	    gamekeydown[ev->data1] = true; 
+	        gamekeydown[ev->data1] = true; 
         }
 
 	return true;    // eat key down events 
@@ -1403,7 +1355,7 @@ G_InitNew
     // but seems like DANGEROUS   
     
     for (i=0 ; i<MAXPLAYERS ; i++)
-	    players[i].playerstate = PST_REBORN;
+        players[i].playerstate = PST_REBORN;
     
 
     usergame = true;                // will be set false if a demo
@@ -1416,23 +1368,6 @@ G_InitNew
     gameskill = skill;
 
     viewactive = true;
-
-    // Set the sky to use.
-    //
-    // Note: This IS broken, but it is how Vanilla Doom behaves.
-    // See http://doomwiki.org/wiki/Sky_never_changes_in_Doom_II.
-    //
-    // Because we set the sky here at the start of a game, not at the
-    // start of a level, the sky texture never changes unless we
-    // restore from a saved game.  This was fixed before the Doom
-    // source release, but this IS the way Vanilla DOS Doom behaves.
-
-    // AAAAAAAAAAAA - fuck all the SKY
-    skytexturename = "SKY1";
-
-
-    skytexturename = DEH_String(skytexturename);
-    skytexture = R_TextureNumForName(skytexturename);
 
     G_DoLoadLevel ();
 }
