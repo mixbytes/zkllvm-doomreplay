@@ -62,32 +62,6 @@ static void addConvertedKeyToQueue(int pressed, unsigned char key) {
 }
 
 void DR_Init(replay_data_t replay_data) {
-    g_key_map[dr_key_escape      ] = KEY_ESCAPE;
-    g_key_map[dr_key_enter       ] = KEY_ENTER;
-    g_key_map[dr_key_left        ] = KEY_LEFTARROW;
-    g_key_map[dr_key_right       ] = KEY_RIGHTARROW;
-    g_key_map[dr_key_up          ] = KEY_UPARROW;
-    g_key_map[dr_key_down        ] = KEY_DOWNARROW;
-    g_key_map[dr_key_alt         ] = KEY_LALT;
-    g_key_map[dr_key_shift       ] = KEY_RSHIFT;
-    g_key_map[dr_key_use         ] = KEY_USE;
-    g_key_map[dr_key_fire        ] = KEY_FIRE;
-    g_key_map[dr_key_tab         ] = KEY_TAB;
-    g_key_map[dr_key_yes         ] = 'y';
-    g_key_map[dr_key_no          ] = 'n';
-    g_key_map[dr_key_strafe_left ] = KEY_STRAFE_L;
-    g_key_map[dr_key_strafe_right] = KEY_STRAFE_R;
-    g_key_map[dr_key_0           ] = '0';
-    g_key_map[dr_key_1           ] = '1';
-    g_key_map[dr_key_2           ] = '2';
-    g_key_map[dr_key_3           ] = '3';
-    g_key_map[dr_key_4           ] = '4';
-    g_key_map[dr_key_5           ] = '5';
-    g_key_map[dr_key_6           ] = '6';
-    g_key_map[dr_key_7           ] = '7';
-    g_key_map[dr_key_8           ] = '8';
-    g_key_map[dr_key_9           ] = '9';
-
     g_replay_data = replay_data;
 
     for (int i = 0; i < dr_key_COUNT; ++i) {
