@@ -17,6 +17,9 @@ CC=clang-12  # gcc or g++
 CFLAGS+=-O3 $(INCLUDES)
 CFLAGS+=-Wall -DNORMALUNIX -DLINUX -DSNDSERV # -DUSEASM
 
+# to ignore ZKLLVM attributes like "__attribute__((packed))"
+CFLAGS+=-Wno-ignored-attributes
+
 LDFLAGS+=-Wl,-dead_strip
 LIBS+=-lm -lc
 

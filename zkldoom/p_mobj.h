@@ -266,7 +266,7 @@ typedef struct mobj_s
 
     // Additional info record for player avatars only.
     // Only valid if type == MT_PLAYER
-    struct player_s*	player;
+    struct __attribute__((packed)) player_s*	player;
 
     // Player number last looked for.
     int			lastlook;	

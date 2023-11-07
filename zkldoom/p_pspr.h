@@ -59,7 +59,7 @@ typedef enum
 
 } psprnum_t;
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     state_t*	state;	// a NULL state means not active
     int		tics;

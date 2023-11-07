@@ -75,7 +75,7 @@ typedef enum
 //
 // Extended player object info: player_t
 //
-typedef struct player_s
+typedef struct __attribute__((packed)) player_s
 {
     mobj_t*		mo;
     playerstate_t	playerstate;
