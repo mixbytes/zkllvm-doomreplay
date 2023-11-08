@@ -34,7 +34,7 @@
 // WADFILE I/O related stuff.
 //
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     // Should be "IWAD" or "PWAD".
     char		identification[4];
@@ -43,7 +43,7 @@ typedef struct
 } wadinfo_t;
 
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     int			filepos;
     int			size;
@@ -51,10 +51,10 @@ typedef struct
 } filelump_t;
 
 
-typedef struct lumpinfo_s lumpinfo_t;
+typedef struct __attribute__((packed)) lumpinfo_s lumpinfo_t;
 typedef int lumpindex_t;
 
-struct lumpinfo_s
+__attribute__((packed)) struct lumpinfo_s
 {
     char	name[8];
     int		position;

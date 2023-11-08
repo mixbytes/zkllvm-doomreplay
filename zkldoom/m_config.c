@@ -57,7 +57,7 @@ typedef enum
     DEFAULT_KEY,
 } default_type_t;
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     // Name of the variable
     char *name;
@@ -84,7 +84,7 @@ typedef struct
     boolean bound;
 } default_t;
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     default_t *defaults;
     int numdefaults;

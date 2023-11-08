@@ -37,7 +37,7 @@
 
 #define MAX_MOUSE_BUTTONS 8
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     // Screen width and height
 

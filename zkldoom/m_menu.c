@@ -132,7 +132,7 @@ char	endstring[160];
 //
 // MENU TYPEDEFS
 //
-typedef struct
+typedef struct __attribute__((packed))
 {
     // 0 = no cursor here, 1 = ok, 2 = arrows ok
     short	status;
@@ -150,7 +150,7 @@ typedef struct
 
 
 
-typedef struct menu_s
+typedef struct __attribute__((packed)) menu_s
 {
     short		numitems;	// # of menu items
     struct menu_s*	prevMenu;	// previous menu

@@ -23,7 +23,7 @@
 
 #define MAX_INSTRUMENTS 256
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     char *patch_names[MAX_INSTRUMENTS];
     int mapping[MAX_INSTRUMENTS];

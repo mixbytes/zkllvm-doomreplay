@@ -16,7 +16,7 @@
 #ifndef MEMIO_H
 #define MEMIO_H
 
-typedef struct _MEMFILE MEMFILE;
+typedef struct __attribute__((packed)) _MEMFILE MEMFILE;
 
 typedef enum 
 {

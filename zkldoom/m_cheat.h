@@ -32,7 +32,7 @@
 #define MAX_CHEAT_LEN 25
 #define MAX_CHEAT_PARAMS 5
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     // settings for this cheat
 

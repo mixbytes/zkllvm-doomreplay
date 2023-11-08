@@ -119,7 +119,7 @@ int EV_DoDonut(line_t* line);
 //
 // P_LIGHTS
 //
-typedef struct
+typedef struct __attribute__((packed))
 {
     thinker_t	thinker;
     sector_t*	sector;
@@ -131,7 +131,7 @@ typedef struct
 
 
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     thinker_t	thinker;
     sector_t*	sector;
@@ -145,7 +145,7 @@ typedef struct
 
 
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     thinker_t	thinker;
     sector_t*	sector;
@@ -160,7 +160,7 @@ typedef struct
 
 
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     thinker_t	thinker;
     sector_t*	sector;
@@ -204,7 +204,7 @@ void    P_SpawnGlowingLight(sector_t* sector);
 //
 // P_SWITCH
 //
-typedef struct
+typedef struct __attribute__((packed))
 {
     char	name1[9];
     char	name2[9];
@@ -222,7 +222,7 @@ typedef enum
 } bwhere_e;
 
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     line_t*	line;
     bwhere_e	where;
@@ -279,7 +279,7 @@ typedef enum
 
 
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     thinker_t	thinker;
     sector_t*	sector;
@@ -337,7 +337,7 @@ typedef enum
 
 
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     thinker_t	thinker;
     vldoor_e	type;
@@ -412,7 +412,7 @@ typedef enum
 
 
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     thinker_t	thinker;
     sdt_e	type;
@@ -428,7 +428,7 @@ typedef struct
 
 
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     char	frontFrame1[9];
     char	frontFrame2[9];
@@ -443,7 +443,7 @@ typedef struct
 
 
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     int             frontFrames[4];
     int             backFrames[4];
@@ -487,7 +487,7 @@ typedef enum
 
 
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     thinker_t	thinker;
     ceiling_e	type;
@@ -578,7 +578,7 @@ typedef enum
 
 
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     thinker_t	thinker;
     floor_e	type;

@@ -198,7 +198,7 @@ typedef enum
 
 
 // Map Object definition.
-typedef struct mobj_s
+typedef struct __attribute__((packed)) mobj_s
 {
     // List: thinker links.
     thinker_t		thinker;

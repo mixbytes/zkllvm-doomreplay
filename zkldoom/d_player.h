@@ -165,7 +165,7 @@ typedef struct __attribute__((packed)) player_s
 // INTERMISSION
 // Structure passed e.g. to WI_Start(wb)
 //
-typedef struct
+typedef struct __attribute__((packed))
 {
     boolean	in;	// whether the player is in game
     
@@ -179,7 +179,7 @@ typedef struct
   
 } wbplayerstruct_t;
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     int		epsd;	// episode # (0-2)
 

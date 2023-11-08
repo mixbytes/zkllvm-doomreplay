@@ -29,7 +29,7 @@
 
 // Number widget
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     // upper right-hand corner
     //  of the number (right-justified)
@@ -61,7 +61,7 @@ typedef struct
 
 // Percent widget ("child" of number widget,
 //  or, more precisely, contains a number widget.)
-typedef struct
+typedef struct __attribute__((packed))
 {
     // number information
     st_number_t		n;
@@ -74,7 +74,7 @@ typedef struct
 
 
 // Multiple Icon widget
-typedef struct
+typedef struct __attribute__((packed))
 {
      // center-justified location of icons
     int			x;
@@ -103,7 +103,7 @@ typedef struct
 
 // Binary Icon widget
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     // center-justified location of icon
     int			x;

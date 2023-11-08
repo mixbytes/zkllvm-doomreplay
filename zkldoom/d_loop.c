@@ -59,7 +59,7 @@ extern ticcmd_t *netcmds;
 //    }
 //
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     ticcmd_t cmds[NET_MAXPLAYERS];
     boolean ingame[NET_MAXPLAYERS];

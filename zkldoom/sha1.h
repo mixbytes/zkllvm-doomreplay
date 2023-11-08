@@ -20,7 +20,7 @@
 
 #include "doomtype.h"
 
-typedef struct sha1_context_s sha1_context_t;
+typedef struct __attribute__((packed)) sha1_context_s sha1_context_t;
 typedef byte sha1_digest_t[20];
 
 struct sha1_context_s {

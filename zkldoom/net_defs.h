@@ -42,10 +42,10 @@
 
 #define BACKUPTICS 128
 
-typedef struct _net_module_s net_module_t;
-typedef struct _net_packet_s net_packet_t;
-typedef struct _net_addr_s net_addr_t;
-typedef struct _net_context_s net_context_t;
+typedef struct __attribute__((packed)) _net_module_s net_module_t;
+typedef struct __attribute__((packed)) _net_packet_s net_packet_t;
+typedef struct __attribute__((packed)) _net_addr_s net_addr_t;
+typedef struct __attribute__((packed)) _net_context_s net_context_t;
 
 struct _net_packet_s
 {
@@ -142,7 +142,7 @@ typedef enum
 
 // Settings specified when the client connects to the server.
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     int gamemode;
     int gamemission;
@@ -158,7 +158,7 @@ typedef struct
 // Game settings sent by client to server when initiating game start,
 // and received from the server by clients when the game starts.
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     int ticdup;
     int extratics;
@@ -197,7 +197,7 @@ typedef struct
 #define NET_TICDIFF_RAVEN        (1 << 6)
 #define NET_TICDIFF_STRIFE       (1 << 7)
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     unsigned int diff;
     ticcmd_t cmd;
@@ -205,7 +205,7 @@ typedef struct
 
 // Complete set of ticcmds from all players
 
-typedef struct 
+typedef struct __attribute__((packed)) 
 {
     signed int latency;
     unsigned int seq;
@@ -215,7 +215,7 @@ typedef struct
 
 // Data sent in response to server queries
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     char *version;
     int server_state;
@@ -228,7 +228,7 @@ typedef struct
 
 // Data sent by the server while waiting for the game to start.
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     int num_players;
     int num_drones;

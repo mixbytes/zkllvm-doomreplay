@@ -45,27 +45,27 @@
 boolean    	automapactive = false;
 
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     int x, y;
 } fpoint_t;
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     fpoint_t a, b;
 } fline_t;
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     fixed_t		x,y;
 } mpoint_t;
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     mpoint_t a, b;
 } mline_t;
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     fixed_t slp, islp;
 } islope_t;

@@ -1143,7 +1143,7 @@ typedef enum
 void dispatch_state_func1(unsigned int action_id, void * ptr1);
 void dispatch_state_func2(unsigned int action_id, void * ptr1, void *ptr2);
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     spritenum_t sprite;
     int frame;
@@ -1299,7 +1299,7 @@ typedef enum {
 
 } mobjtype_t;
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     int	doomednum;
     int	spawnstate;

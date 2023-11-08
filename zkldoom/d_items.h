@@ -25,7 +25,7 @@
 
 
 // Weapon info: sprite frames, ammunition use.
-typedef struct
+typedef struct __attribute__((packed))
 {
     ammotype_t	ammo;
     int		upstate;

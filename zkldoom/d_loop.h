@@ -28,7 +28,7 @@
 typedef boolean (*netgame_startup_callback_t)(int ready_players,
                                               int num_players);
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     // Read events from the event queue, and process them.
 

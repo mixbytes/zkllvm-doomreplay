@@ -735,7 +735,7 @@ extern fixed_t bulletslope;
 // which this is based on.
 
 /* AAAAAAAAAAAAAA
-typedef struct
+typedef struct __attribute__((packed))
 {
     int len;
     void *addr;

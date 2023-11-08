@@ -26,7 +26,7 @@
 // and we compose textures from the TEXTURE1/2 lists
 // of patches.
 
-typedef struct 
+typedef struct __attribute__((packed)) 
 { 
     short		width;		// bounding box size 
     short		height; 
@@ -37,7 +37,7 @@ typedef struct
 } PACKEDATTR patch_t;
 
 // posts are runs of non masked source pixels
-typedef struct
+typedef struct __attribute__((packed))
 {
     byte		topdelta;	// -1 is the last post in a column
     byte		length; 	// length data bytes follows

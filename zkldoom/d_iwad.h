@@ -31,7 +31,7 @@
 #define IWAD_MASK_HEXEN   (1 << hexen)
 #define IWAD_MASK_STRIFE  (1 << strife)
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     char *name;
     GameMission_t mission;

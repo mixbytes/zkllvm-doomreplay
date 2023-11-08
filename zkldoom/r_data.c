@@ -56,7 +56,7 @@
 // into the rectangular texture space using origin
 // and possibly other attributes.
 //
-typedef struct
+typedef struct __attribute__((packed))
 {
     short	originx;
     short	originy;
@@ -71,7 +71,7 @@ typedef struct
 // A DOOM wall texture is a list of patches
 // which are to be combined in a predefined order.
 //
-typedef struct
+typedef struct __attribute__((packed))
 {
     char		name[8];
     int			masked;	
@@ -86,7 +86,7 @@ typedef struct
 // A single patch from a texture definition,
 //  basically a rectangular area within
 //  the texture rectangle.
-typedef struct
+typedef struct __attribute__((packed))
 {
     // Block origin (allways UL),
     // which has allready accounted
@@ -101,9 +101,9 @@ typedef struct
 //  which is composed of one or more mappatch_t structures
 //  that arrange graphic patches.
 
-typedef struct texture_s texture_t;
+typedef struct __attribute__((packed)) texture_s texture_t;
 
-struct texture_s
+__attribute__((packed)) struct texture_s
 {
     // Keep name for switch changing, etc.
     char	name[8];		

@@ -553,7 +553,7 @@ void V_RestoreBuffer(void)
 // SCREEN SHOTS
 //
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     char		manufacturer;
     char		version;

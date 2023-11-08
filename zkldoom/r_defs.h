@@ -64,7 +64,7 @@
 // Note: transformed values not buffered locally,
 //  like some DOOM-alikes ("wt", "WebView") did.
 //
-typedef struct
+typedef struct __attribute__((packed))
 {
     fixed_t	x;
     fixed_t	y;
@@ -81,7 +81,7 @@ struct line_s;
 //  moving objects (doppler), because
 //  position is prolly just buffered, not
 //  updated.
-typedef struct
+typedef struct __attribute__((packed))
 {
     thinker_t		thinker;	// not used for anything
     fixed_t		x;
@@ -94,7 +94,7 @@ typedef struct
 // The SECTORS record, at runtime.
 // Stores things/mobjs.
 //
-typedef	struct
+typedef struct __attribute__((packed))
 {
     fixed_t	floorheight;
     fixed_t	ceilingheight;
@@ -137,7 +137,7 @@ typedef	struct
 // The SideDef.
 //
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     // add this to the calculated texture column
     fixed_t	textureoffset;
@@ -172,7 +172,7 @@ typedef enum
 
 
 
-typedef struct line_s
+typedef struct __attribute__((packed)) line_s
 {
     // Vertices, from v1 to v2.
     vertex_t*	v1;
@@ -220,7 +220,7 @@ typedef struct line_s
 //  indicating the visible walls that define
 //  (all or some) sides of a convex BSP leaf.
 //
-typedef struct subsector_s
+typedef struct __attribute__((packed)) subsector_s
 {
     sector_t*	sector;
     short	numlines;
@@ -233,7 +233,7 @@ typedef struct subsector_s
 //
 // The LineSeg.
 //
-typedef struct
+typedef struct __attribute__((packed))
 {
     vertex_t*	v1;
     vertex_t*	v2;
@@ -258,7 +258,7 @@ typedef struct
 //
 // BSP node.
 //
-typedef struct
+typedef struct __attribute__((packed))
 {
     // Partition line.
     fixed_t	x;
@@ -303,7 +303,7 @@ typedef byte	lighttable_t;
 //
 // ?
 //
-typedef struct drawseg_s
+typedef struct __attribute__((packed)) drawseg_s
 {
     seg_t*		curline;
     int			x1;
@@ -335,7 +335,7 @@ typedef struct drawseg_s
 // A vissprite_t is a thing
 //  that will be drawn during a refresh.
 // I.e. a sprite object that is partly visible.
-typedef struct vissprite_s
+typedef struct __attribute__((packed)) vissprite_s
 {
     // Doubly linked list.
     struct vissprite_s*	prev;
@@ -387,7 +387,7 @@ typedef struct vissprite_s
 // Some sprites will only have one picture used
 // for all views: NNNNF0
 //
-typedef struct
+typedef struct __attribute__((packed))
 {
     // If false use 0 for any position.
     // Note: as eight entries are available,
@@ -408,7 +408,7 @@ typedef struct
 // A sprite definition:
 //  a number of animation frames.
 //
-typedef struct
+typedef struct __attribute__((packed))
 {
     int			numframes;
     spriteframe_t*	spriteframes;
@@ -420,7 +420,7 @@ typedef struct
 //
 // Now what is a visplane, anyway?
 // 
-typedef struct
+typedef struct __attribute__((packed))
 {
   fixed_t		height;
   int			picnum;

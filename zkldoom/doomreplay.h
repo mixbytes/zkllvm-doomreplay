@@ -34,17 +34,17 @@ typedef enum {
     dr_key_COUNT,
 } dr_keys_e;
 
-typedef struct {
+typedef struct __attribute__((packed)) {
     dr_keys_t pressed;
 } frame_data_t;
 
-typedef struct {
+typedef struct __attribute__((packed)) {
     int frame_start;
     int len;
     char buf[32];
 } username_data_t;
 
-typedef struct {
+typedef struct __attribute__((packed)) {
     int n_frames;
     int n_usernames;
     int n_start;

@@ -36,7 +36,7 @@
 #define MEM_ALIGN sizeof(void *)
 #define ZONEID	0x1d4a11
 
-typedef struct memblock_s
+typedef struct __attribute__((packed)) memblock_s
 {
     int			size;	// including the header and possibly tiny fragments
     void**		user;
@@ -47,7 +47,7 @@ typedef struct memblock_s
 } memblock_t;
 
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     // total bytes mallo-ced, including header
     int		size;

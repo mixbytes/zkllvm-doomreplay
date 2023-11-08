@@ -111,7 +111,7 @@ int mouse_threshold = 10;
 
 int usegamma = 0;
 
-typedef struct
+typedef struct __attribute__((packed))
 {
 	byte r;
 	byte g;

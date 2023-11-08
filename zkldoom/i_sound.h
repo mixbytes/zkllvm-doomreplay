@@ -26,7 +26,7 @@
 //
 // SoundFX struct.
 //
-typedef struct sfxinfo_struct	sfxinfo_t;
+typedef struct __attribute__((packed)) sfxinfo_struct	sfxinfo_t;
 
 struct sfxinfo_struct
 {
@@ -69,7 +69,7 @@ struct sfxinfo_struct
 //
 // MusicInfo struct.
 //
-typedef struct
+typedef struct __attribute__((packed))
 {
     // up to 6-character name
     char *name;
@@ -102,7 +102,7 @@ typedef enum
 
 // Interface for sound modules
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     // List of sound devices that this sound module is used for.
 
@@ -161,7 +161,7 @@ void I_PrecacheSounds(sfxinfo_t *sounds, int num_sounds);
 
 // Interface for music modules
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     // List of sound devices that this music module is used for.
 

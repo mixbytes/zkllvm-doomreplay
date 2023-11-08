@@ -42,7 +42,7 @@
 
 
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     int		x1;
     int		x2;

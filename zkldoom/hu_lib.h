@@ -33,7 +33,7 @@
 
 // Text Line widget
 //  (parent of Scrolling Text and Input Text widgets)
-typedef struct
+typedef struct __attribute__((packed))
 {
     // left-justified position of scrolling text window
     int		x;
@@ -53,7 +53,7 @@ typedef struct
 
 // Scrolling Text window widget
 //  (child of Text Line widget)
-typedef struct
+typedef struct __attribute__((packed))
 {
     hu_textline_t	l[HU_MAXLINES];	// text lines to draw
     int			h;		// height in lines
@@ -69,7 +69,7 @@ typedef struct
 
 // Input Text Line widget
 //  (child of Text Line widget)
-typedef struct
+typedef struct __attribute__((packed))
 {
     hu_textline_t	l;		// text line to input on
 

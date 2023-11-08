@@ -130,7 +130,7 @@ void P_NoiseAlert (mobj_t* target, mobj_t* emmiter);
 //
 // P_MAPUTL
 //
-typedef struct
+typedef struct __attribute__((packed))
 {
     fixed_t	x;
     fixed_t	y;
@@ -139,7 +139,7 @@ typedef struct
     
 } divline_t;
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     fixed_t	frac;		// along trace line
     boolean	isaline;

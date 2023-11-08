@@ -39,7 +39,7 @@ typedef enum
 } evtype_t;
 
 // Event structure.
-typedef struct
+typedef struct __attribute__((packed))
 {
     evtype_t type;
 

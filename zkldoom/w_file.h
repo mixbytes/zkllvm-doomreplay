@@ -24,9 +24,9 @@
 
 #define SHARD_SIZE 256
 
-typedef struct _wad_file_s wad_file_t;
+typedef struct __attribute__((packed)) _wad_file_s wad_file_t;
 
-typedef struct
+typedef struct __attribute__((packed))
 {
     // Open a file for reading.
 
