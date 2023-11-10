@@ -54,7 +54,7 @@ typedef struct __attribute__((packed))
 typedef struct __attribute__((packed)) lumpinfo_s lumpinfo_t;
 typedef int lumpindex_t;
 
-__attribute__((packed)) struct lumpinfo_s
+struct __attribute__((packed)) lumpinfo_s
 {
     char	name[8];
     int		position;

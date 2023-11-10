@@ -98,7 +98,8 @@ Z_Malloc
 #ifndef __ZKLLVM__
     //printf("Malloc %d bytes\n", size);
 #endif
-    return malloc(size);
+    size = size + 1;// DDDDDDDDDDDDDDDDDDDDDDDDD [TEMP] fix 
+    return malloc(size); // DDDDDDDDDDDDDDDDDDDDDDDDD - [TEMP] fix
 }
 
 

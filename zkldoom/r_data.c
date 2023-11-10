@@ -103,7 +103,7 @@ typedef struct __attribute__((packed))
 
 typedef struct __attribute__((packed)) texture_s texture_t;
 
-__attribute__((packed)) struct texture_s
+struct __attribute__((packed)) texture_s
 {
     // Keep name for switch changing, etc.
     char	name[8];		

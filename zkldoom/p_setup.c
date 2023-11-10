@@ -70,6 +70,17 @@ side_t*		sides;
 
 static int      totallines;
 
+
+void own_memset(void *s, unsigned char c,  unsigned int len)
+{
+    unsigned char* p = s;
+    while(len--)
+    {
+        *p++ = c;
+    }
+    return;
+}
+
 // BLOCKMAP
 // Created from axis aligned bounding box
 // of the map, a rectangular array of
@@ -156,7 +167,9 @@ sector_t* GetSectorAtNullAddress(void)
 
     if (!null_sector_is_initialized)
     {
-        memset(&null_sector, 0, sizeof(null_sector));
+        // AAAAAAAAAAA memset(&null_sector, 0, sizeof(null_sector));
+        own_memset((void *)&null_sector, 0, sizeof(null_sector));
+
         I_GetMemoryValue(0, &null_sector.floorheight, 4);
         I_GetMemoryValue(4, &null_sector.ceilingheight, 4);
         null_sector_is_initialized = true;
@@ -181,7 +194,10 @@ void P_LoadSegs (int lump)
 	
     numsegs = W_LumpLength (lump) / sizeof(mapseg_t);
     segs = Z_Malloc (numsegs*sizeof(seg_t),PU_LEVEL,0);	
-    memset (segs, 0, numsegs*sizeof(seg_t));
+    
+    // AAAAAAAAAAAAA memset (segs, 0, numsegs*sizeof(seg_t));
+    own_memset ((void *)segs, 0, numsegs*sizeof(seg_t));
+
     data = W_CacheLumpNum (lump,PU_STATIC);
 	
     ml = (mapseg_t *)data;
@@ -245,7 +261,9 @@ void P_LoadSubsectors (int lump)
     data = W_CacheLumpNum (lump,PU_STATIC);
 	
     ms = (mapsubsector_t *)data;
-    memset (subsectors,0, numsubsectors*sizeof(subsector_t));
+    // AAAAAAAAAAA   memset (subsectors,0, numsubsectors*sizeof(subsector_t));
+    own_memset ((void *)subsectors,0, numsubsectors*sizeof(subsector_t));
+
     ss = subsectors;
     
     for (i=0 ; i<numsubsectors ; i++, ss++, ms++)
@@ -271,7 +289,10 @@ void P_LoadSectors (int lump)
 	
     numsectors = W_LumpLength (lump) / sizeof(mapsector_t);
     sectors = Z_Malloc (numsectors*sizeof(sector_t),PU_LEVEL,0);	
-    memset (sectors, 0, numsectors*sizeof(sector_t));
+
+    // AAAAAAAAAAAA       memset (sectors, 0, numsectors*sizeof(sector_t));
+    own_memset ((void *)sectors, 0, numsectors*sizeof(sector_t));
+
     data = W_CacheLumpNum (lump,PU_STATIC);
 	
     ms = (mapsector_t *)data;
@@ -400,7 +421,10 @@ void P_LoadLineDefs (int lump)
 	
     numlines = W_LumpLength (lump) / sizeof(maplinedef_t);
     lines = Z_Malloc (numlines*sizeof(line_t),PU_LEVEL,0);	
-    memset (lines, 0, numlines*sizeof(line_t));
+    
+    // AAAAAAAAAA memset (lines, 0, numlines*sizeof(line_t));
+    own_memset ((void *)lines, 0, numlines*sizeof(line_t));
+    
     data = W_CacheLumpNum (lump,PU_STATIC);
 
     mld = (maplinedef_t *)data;
@@ -478,7 +502,10 @@ void P_LoadSideDefs (int lump)
 	
     numsides = W_LumpLength (lump) / sizeof(mapsidedef_t);
     sides = Z_Malloc (numsides*sizeof(side_t),PU_LEVEL,0);	
-    memset (sides, 0, numsides*sizeof(side_t));
+
+    // AAAAAAAAAAAAAA  memset (sides, 0, numsides*sizeof(side_t));
+    own_memset ((void *)sides, 0, numsides*sizeof(side_t));
+
     data = W_CacheLumpNum (lump,PU_STATIC);
 	
     msd = (mapsidedef_t *)data;
@@ -531,7 +558,9 @@ void P_LoadBlockMap (int lump)
 
     count = sizeof(*blocklinks) * bmapwidth * bmapheight;
     blocklinks = Z_Malloc(count, PU_LEVEL, 0);
-    memset(blocklinks, 0, count);
+
+    // AAAAAAAAAAAAAAAAA     memset(blocklinks, 0, count);
+    own_memset(blocklinks, 0, count);
 }
 
 
@@ -701,7 +730,8 @@ static void PadRejectArray(byte *array, unsigned int len)
             padvalue = 0x00;
         }
 
-        memset(array + sizeof(rejectpad), padvalue, len - sizeof(rejectpad));
+        //  AAAAAAAAAAA  memset(array + sizeof(rejectpad), padvalue, len - sizeof(rejectpad));
+        own_memset((void *)(array + sizeof(rejectpad)), padvalue, len - sizeof(rejectpad));
     }
 }
 

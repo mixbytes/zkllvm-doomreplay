@@ -39,6 +39,12 @@ FixedMul
 }
 
 
+// DDDDDDDDDDDDDDDDDDDDDDDD -- own abs() impl [TEMP]
+fixed_t my_abs(fixed_t a) {
+    if (a < 0)
+        return -1 * a;
+    return a;
+}
 
 //
 // FixedDiv, C version.
@@ -46,7 +52,7 @@ FixedMul
 
 fixed_t FixedDiv(fixed_t a, fixed_t b)
 {
-    if ((abs(a) >> 14) >= abs(b))
+    if ((my_abs(a) >> 14) >= my_abs(b))
     {
 	return (a^b) < 0 ? INT_MIN : INT_MAX;
     }

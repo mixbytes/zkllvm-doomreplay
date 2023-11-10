@@ -63,4 +63,5 @@ process_circuit(zkldoom SOURCES z_main.c doomgeneric_dr.c doomgeneric.c d_main.c
                 i_timer.c
                 st_stuff.c
                 m_random.c
+                m_fixed.c
 INPUT test-input.json)
