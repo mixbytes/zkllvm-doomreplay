@@ -18,16 +18,32 @@ Now you can run multiple variants of zkldoom (I assume project resides in ```~/z
 ```
 cd ~/zkllvm-doomreplay/build/ && cmake .. && make zkldoom_compile_sources
 ```
+with Ninja
+```
+cd ~/zkllvm-doomreplay/build/ && cmake .. && ninja zkldoom_compile_sources
+```
+
 
 ## 2. Run assigner (compile and then assign, inputs are already pre-generated or saved in repo):
 ```
 cd ~/zkllvm-doomreplay/build/ && cmake .. && make zkldoom_run_assigner
 ```
+with Ninja
+```
+cd ~/zkllvm-doomreplay/build/ && cmake .. && ninja zkldoom_run_assigner
+```
+
 
 ## 3. Run prover (compile, assign, prepare statement, run prover)
 ```
 cd ~/zkllvm-doomreplay/build/ && cmake .. && make zkldoom_run_prover
 ```
+with Ninja
+```
+cd ~/zkllvm-doomreplay/build/ && cmake .. && ninja zkldoom_run_prover
+```
+
+
 
 (all targets are described in [CircuitCompile.cmake](https://github.com/mixbytes/zkllvm-doomreplay/blob/main/cmake/CircuitCompile.cmake) file
 
